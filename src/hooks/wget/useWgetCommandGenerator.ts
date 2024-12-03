@@ -4,8 +4,16 @@ export const useWgetCommandGenerator = () => {
   const generateCommand = (options: WgetOptions) => {
     const flags = [];
     
-    if (!options.url) return "wget";
+    if (!options.url && !options.inputFile) return "wget";
     
+    if (options.inputFile) {
+      flags.push(`-i "${options.inputFile}"`);
+    }
+
+    if (options.directoryPrefix) {
+      flags.push(`-P "${options.directoryPrefix}"`);
+    }
+
     if (options.recursive) {
       flags.push("-r");
       if (options.maxDepth > 0) {
@@ -171,7 +179,8 @@ export const useWgetCommandGenerator = () => {
       flags.push("--timestamping");
     }
 
-    return `wget ${flags.join(" ")} "${options.url}"`;
+    const baseCommand = `wget ${flags.join(" ")}`;
+    return options.inputFile ? baseCommand : `${baseCommand} "${options.url}"`;
   };
 
   return { generateCommand };

@@ -15,6 +15,33 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
     <Card className="p-6 bg-black border border-white/20 space-y-6">
       <h2 className="text-xl font-semibold text-white mb-4">Advanced Options</h2>
       
+      {/* Input File Settings */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium text-white">Input Settings</h3>
+        
+        <div className="space-y-2">
+          <Label className="text-white">Input File (-i)</Label>
+          <Input
+            value={options.inputFile}
+            onChange={(e) => setOptions({ ...options, inputFile: e.target.value })}
+            placeholder="Path to file containing URLs"
+            className="bg-black border-white/20 text-white"
+          />
+          <p className="text-sm text-zinc-400">Read URLs from a local or external file</p>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-white">Directory Prefix (-P)</Label>
+          <Input
+            value={options.directoryPrefix}
+            onChange={(e) => setOptions({ ...options, directoryPrefix: e.target.value })}
+            placeholder="Directory prefix for all files"
+            className="bg-black border-white/20 text-white"
+          />
+          <p className="text-sm text-zinc-400">Set directory prefix for all files</p>
+        </div>
+      </div>
+
       {/* Network Settings */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-white">Network Settings</h3>

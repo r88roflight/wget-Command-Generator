@@ -1,7 +1,7 @@
 export interface WgetOptions {
   url: string;
   recursive: boolean;
-  maxDepth: number;  // This is likely the equivalent of 'level'
+  maxDepth: number;
   waitTime: number;
   followLinks: boolean;
   includePattern: string;
@@ -40,7 +40,7 @@ export interface WgetOptions {
   maxFileSize: string;
   minFileSize: string;
   rejectRegex: string;
-  recursionLevel: number;  // This is another similar property
+  recursionLevel: number;
   sameDomain: boolean;
   domains: string;
   excludeDomains: string;
@@ -57,6 +57,8 @@ export interface WgetOptions {
   spiderMode: boolean;
   pageRequisites: boolean;
   verifySSL: boolean;
+  inputFile: string;  // New option for -i flag
+  directoryPrefix: string;  // New option for -P flag
 }
 
 export type FileTypeOption = {
