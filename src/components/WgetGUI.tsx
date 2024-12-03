@@ -102,6 +102,17 @@ const WgetGUI = () => {
                 </Button>
               </div>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="outputDocument" className="text-base sm:text-lg font-medium text-white">Save As</Label>
+              <Input
+                id="outputDocument"
+                placeholder="filename.html"
+                value={options.outputDocument}
+                onChange={(e) => setOptions({ ...options, outputDocument: e.target.value })}
+                className="bg-black border-white/20 text-white"
+              />
+            </div>
           </div>
         </Card>
 

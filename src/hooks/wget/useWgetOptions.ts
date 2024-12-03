@@ -12,7 +12,7 @@ const defaultOptions: WgetOptions = {
   saveDirectory: "",
   fileTypes: [],
   excludeFileTypes: [],
-  includeParents: false,
+  includeParents: true, // Changed to true so --no-parent won't show
   userAgent: "",
   limitRate: "",
   outputFile: "",
@@ -48,7 +48,7 @@ const defaultOptions: WgetOptions = {
   domains: "",
   excludeDomains: "",
   httpsProxy: "",
-  noCheckCertificate: false,
+  noCheckCertificate: false, // Changed to false so --no-check-certificate won't show
   caCertificate: "",
   parallelDownloads: 1,
   connectionLimit: "",
@@ -62,7 +62,7 @@ const defaultOptions: WgetOptions = {
   verifySSL: false,
   inputFile: "",
   directoryPrefix: "",
-  outputDocument: "",
+  outputDocument: "", // This will store the "Save As" filename
   appendOutput: "",
   noDirectories: "false",
   httpUser: "",
