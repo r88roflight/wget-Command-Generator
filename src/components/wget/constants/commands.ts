@@ -40,8 +40,8 @@ export const commandToFlag: { [key: string]: string } = {
   "Adjust Extension": "--adjust-extension",
   "Page Requisites": "--page-requisites",
   "No Parent": "--no-parent",
-  "Limit Rate": "--limit-rate=1m",
-  "Wait": "--wait=1",
+  "Limit Rate": "--limit-rate",
+  "Wait": "--wait",
   "Random Wait": "--random-wait",
   "Follow Links": "--follow-links",
   "Follow FTP": "--follow-ftp",
@@ -56,18 +56,18 @@ export const commandToFlag: { [key: string]: string } = {
   "Delete After": "--delete-after",
   "Same Domain Only": "--span-hosts",
   "Log Only Errors": "--quiet",
-  "Verify SSL": "--secure-protocol=auto",
+  "Verify SSL": "--secure-protocol",
   "No Verbose": "--no-verbose",
   "Show Progress": "--show-progress",
   "Retry Connection Refused": "--retry-connrefused",
   "No Clobber": "--no-clobber",
-  "Input File": "--input-file=",
-  "Tries": "--tries=0",
-  "Timeout": "--timeout=60",
+  "Input File": "--input-file",
+  "Tries": "--tries",
+  "Timeout": "--timeout",
   "Background": "--background",
-  "Directory Prefix": "--directory-prefix=",
+  "Directory Prefix": "--directory-prefix",
   "No Host Directories": "--no-host-directories",
-  "Skip Directory Levels": "--cut-dirs=0"
+  "Skip Directory Levels": "--cut-dirs"
 };
 
 export const flagToCommand = Object.entries(commandToFlag).reduce((acc, [key, value]) => {

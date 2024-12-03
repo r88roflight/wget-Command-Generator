@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { PresetCommand } from "../PresetCommand";
 import { Preset } from "../types/preset";
-import { AVAILABLE_COMMANDS, flagToCommand } from "../constants/commands";
+import { AVAILABLE_COMMANDS, commandToFlag } from "../constants/commands";
 
 interface PresetCommandsProps {
   preset: Preset;
@@ -25,10 +25,13 @@ export const PresetCommands = ({
   };
 
   const getCommandTitle = (command: string) => {
-    // First, handle commands with parameters by removing the parameter part
-    const baseCommand = command.split("=")[0] + (command.includes("=") ? "=" : "");
-    // Look up the command in our flagToCommand mapping
-    return flagToCommand[baseCommand] || command;
+    // For commands with parameters (e.g., --limit-rate=1m), get the base command
+    const baseCommand = command.split("=")[0];
+    
+    // Find the human-readable title by looking through commandToFlag
+    const title = Object.entries(commandToFlag).find(([_, value]) => value === baseCommand)?.[0];
+    
+    return title || command;
   };
 
   return (
@@ -61,9 +64,10 @@ export const PresetCommands = ({
               )}
             </div>
             <Select
-              value={command}
+              value={getCommandTitle(command)}
               onValueChange={(value) => {
-                onUpdateCommand(preset.name, index, value);
+                const newCommand = commandToFlag[value];
+                onUpdateCommand(preset.name, index, newCommand);
               }}
             >
               <SelectTrigger className="w-8 h-8 bg-black border-white/20 p-0">
