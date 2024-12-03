@@ -67,27 +67,27 @@ export type FileTypeOption = {
 
 export const FILE_TYPE_OPTIONS: FileTypeOption[] = [
   {
-    label: "Text Files",
+    label: "Text (.txt, .html, .htm, .xml, .json, .md, .csv)",
     value: "text",
     patterns: ["*.txt", "*.html", "*.htm", "*.xml", "*.json", "*.md", "*.csv"]
   },
   {
-    label: "Images",
+    label: "Images (.jpg, .jpeg, .png, .gif, .bmp, .webp, .svg)",
     value: "images",
     patterns: ["*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp", "*.webp", "*.svg"]
   },
   {
-    label: "Videos",
+    label: "Videos (.mp4, .webm, .avi, .mov, .mkv)",
     value: "videos",
     patterns: ["*.mp4", "*.webm", "*.avi", "*.mov", "*.mkv"]
   },
   {
-    label: "Audio",
+    label: "Audio (.mp3, .wav, .ogg, .m4a, .flac)",
     value: "audio",
     patterns: ["*.mp3", "*.wav", "*.ogg", "*.m4a", "*.flac"]
   },
   {
-    label: "Documents",
+    label: "Documents (.pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx)",
     value: "documents",
     patterns: ["*.pdf", "*.doc", "*.docx", "*.xls", "*.xlsx", "*.ppt", "*.pptx"]
   }

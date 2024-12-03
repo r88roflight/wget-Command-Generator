@@ -12,36 +12,48 @@ interface Props {
 
 export const WgetFileTypes = ({ options, setOptions }: Props) => {
   const handleFileTypeChange = (value: string, isExclude: boolean = false) => {
+    const selectedOption = FILE_TYPE_OPTIONS.find(opt => opt.value === value);
+    if (!selectedOption) return;
+
     if (isExclude) {
       const newExcludeTypes = options.excludeFileTypes.includes(value)
         ? options.excludeFileTypes.filter(type => type !== value)
         : [...options.excludeFileTypes, value];
       
+      const allPatterns = newExcludeTypes
+        .map(type => FILE_TYPE_OPTIONS.find(opt => opt.value === type)?.patterns || [])
+        .flat();
+
       setOptions({
         ...options,
         excludeFileTypes: newExcludeTypes,
-        excludePattern: newExcludeTypes.length > 0 ? `*.${newExcludeTypes.join(",*.")}` : ""
+        excludePattern: allPatterns.length > 0 ? allPatterns.join(",") : ""
       });
     } else {
       const newFileTypes = options.fileTypes.includes(value)
         ? options.fileTypes.filter(type => type !== value)
         : [...options.fileTypes, value];
       
+      const allPatterns = newFileTypes
+        .map(type => FILE_TYPE_OPTIONS.find(opt => opt.value === type)?.patterns || [])
+        .flat();
+
       setOptions({
         ...options,
         fileTypes: newFileTypes,
-        includePattern: newFileTypes.length > 0 ? `*.${newFileTypes.join(",*.")}` : ""
+        includePattern: allPatterns.length > 0 ? allPatterns.join(",") : ""
       });
     }
   };
 
   const handleSelectAll = () => {
     const allFileTypes = FILE_TYPE_OPTIONS.map(option => option.value);
+    const allPatterns = FILE_TYPE_OPTIONS.map(option => option.patterns).flat();
     
     setOptions({
       ...options,
       fileTypes: allFileTypes,
-      includePattern: "*"  // Using * to include all files instead of listing extensions
+      includePattern: allPatterns.join(",")
     });
   };
 
@@ -74,18 +86,18 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
             </Button>
           </div>
         </div>
-        <div className="flex justify-between gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {FILE_TYPE_OPTIONS.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+            <div key={option.value} className="flex items-start space-x-2">
               <Checkbox
                 id={`include-${option.value}`}
                 checked={options.fileTypes.includes(option.value)}
                 onCheckedChange={() => handleFileTypeChange(option.value)}
-                className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                className="mt-1 border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
               />
               <Label
                 htmlFor={`include-${option.value}`}
-                className="text-sm font-medium leading-none text-white cursor-pointer whitespace-nowrap"
+                className="text-sm font-medium leading-tight text-white cursor-pointer"
               >
                 {option.label}
               </Label>
@@ -96,18 +108,18 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
 
       <div>
         <Label className="text-white mb-4 block">Exclude File Types</Label>
-        <div className="flex justify-between gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {FILE_TYPE_OPTIONS.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+            <div key={option.value} className="flex items-start space-x-2">
               <Checkbox
                 id={`exclude-${option.value}`}
                 checked={options.excludeFileTypes.includes(option.value)}
                 onCheckedChange={() => handleFileTypeChange(option.value, true)}
-                className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                className="mt-1 border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
               />
               <Label
                 htmlFor={`exclude-${option.value}`}
-                className="text-sm font-medium leading-none text-white cursor-pointer whitespace-nowrap"
+                className="text-sm font-medium leading-tight text-white cursor-pointer"
               >
                 {option.label}
               </Label>
