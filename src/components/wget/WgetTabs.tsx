@@ -7,7 +7,7 @@ import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
 import { Card } from "@/components/ui/card";
 import { WgetDebuggingOptions } from "./WgetDebuggingOptions";
 import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
-import { WgetRequirementsList } from "./WgetRequirementsList";
+import { WgetPresets } from "./WgetPresets";
 
 interface Props {
   options: WgetOptions;
@@ -16,8 +16,14 @@ interface Props {
 
 export const WgetTabs = ({ options, setOptions }: Props) => {
   return (
-    <Tabs defaultValue="options" className="w-full">
-      <TabsList className="grid w-full grid-cols-4 bg-transparent gap-2">
+    <Tabs defaultValue="presets" className="w-full">
+      <TabsList className="grid w-full grid-cols-5 bg-transparent gap-2">
+        <TabsTrigger 
+          value="presets" 
+          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary"
+        >
+          Presets
+        </TabsTrigger>
         <TabsTrigger 
           value="options" 
           className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary"
@@ -44,10 +50,13 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
         </TabsTrigger>
       </TabsList>
       
+      <TabsContent value="presets" className="mt-4">
+        <WgetPresets options={options} setOptions={setOptions} />
+      </TabsContent>
+
       <TabsContent value="options" className="mt-4">
         <Card className="p-6 bg-black border border-white/20">
           <div className="space-y-6">
-            <WgetRequirementsList options={options} setOptions={setOptions} />
             <WgetRecursiveOptions options={options} setOptions={setOptions} />
             <WgetFileTypes options={options} setOptions={setOptions} />
           </div>
