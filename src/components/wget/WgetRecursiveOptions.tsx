@@ -48,6 +48,20 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
 
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
+          <Label className="text-base text-white">Include Parent Directories</Label>
+          <p className="text-sm text-zinc-400">Download parent directories</p>
+        </div>
+        <Switch
+          checked={options.includeParents}
+          onCheckedChange={(checked) =>
+            setOptions({ ...options, includeParents: checked })
+          }
+          className="bg-zinc-700 data-[state=checked]:bg-white"
+        />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
           <Label className="text-base text-white">No Clobber</Label>
           <p className="text-sm text-zinc-400">Don't overwrite existing files</p>
         </div>
@@ -71,6 +85,20 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
           checked={options.mirror}
           onCheckedChange={(checked) =>
             setOptions({ ...options, mirror: checked })
+          }
+          className="bg-zinc-700 data-[state=checked]:bg-white"
+        />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <Label className="text-base text-white">Use Timestamping</Label>
+          <p className="text-sm text-zinc-400">Only download newer files</p>
+        </div>
+        <Switch
+          checked={options.timestamping}
+          onCheckedChange={(checked) =>
+            setOptions({ ...options, timestamping: checked })
           }
           className="bg-zinc-700 data-[state=checked]:bg-white"
         />

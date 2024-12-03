@@ -11,9 +11,11 @@ export const useWgetCommandGenerator = () => {
       if (options.maxDepth > 0) {
         flags.push(`--level=${options.maxDepth}`);
       }
-      if (!options.includeParents) {
-        flags.push("--no-parent");
-      }
+    }
+
+    // Handle parent directory option explicitly
+    if (!options.includeParents) {
+      flags.push("--no-parent");
     }
 
     if (options.waitTime > 0) {
@@ -163,6 +165,10 @@ export const useWgetCommandGenerator = () => {
 
     if (options.debug) {
       flags.push("--debug");
+    }
+
+    if (options.timestamping) {
+      flags.push("--timestamping");
     }
 
     return `wget ${flags.join(" ")} "${options.url}"`;
