@@ -84,48 +84,6 @@ export const WgetDownloadBehavior = ({ options, setOptions }: Props) => {
           className="bg-zinc-700 data-[state=checked]:bg-white"
         />
       </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">Content Disposition</Label>
-          <p className="text-sm text-zinc-400">Use server's suggested filename</p>
-        </div>
-        <Switch
-          checked={options.contentDisposition}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, contentDisposition: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">Adjust Extension</Label>
-          <p className="text-sm text-zinc-400">Add appropriate extensions to files</p>
-        </div>
-        <Switch
-          checked={options.adjustExtension}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, adjustExtension: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">Continue Downloads</Label>
-          <p className="text-sm text-zinc-400">Resume getting a partially-downloaded file</p>
-        </div>
-        <Switch
-          checked={options.continueTransfer}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, continueTransfer: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
     </div>
   );
 };
