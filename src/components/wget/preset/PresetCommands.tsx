@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { PresetCommand } from "../PresetCommand";
 import { Preset } from "../types/preset";
-import { AVAILABLE_COMMANDS, flagToCommand, commandToDescription } from "../constants/commands";
+import { AVAILABLE_COMMANDS, flagToCommand } from "../constants/commands";
 
 interface PresetCommandsProps {
   preset: Preset;
