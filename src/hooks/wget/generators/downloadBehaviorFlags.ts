@@ -22,45 +22,55 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
     if (isAllTypesSelected) {
       flags.push(`--accept='*'`);
     } else {
-      // Check for complete categories
-      const categories = FILE_TYPE_OPTIONS.map(category => ({
+      // Group by categories
+      const selectedByCategory = FILE_TYPE_OPTIONS.map(category => ({
         ...category,
-        isComplete: category.patterns.every(ext => options.fileTypes.includes(ext))
+        isComplete: category.patterns.every(ext => options.fileTypes.includes(ext)),
+        selectedPatterns: category.patterns.filter(ext => options.fileTypes.includes(ext))
       }));
 
-      const completeCategories = categories.filter(cat => cat.isComplete);
-      const incompleteTypes = options.fileTypes.filter(type => 
-        !completeCategories.some(cat => cat.patterns.includes(type))
-      );
+      const acceptPatterns: string[] = [];
 
-      if (completeCategories.length > 0 || incompleteTypes.length > 0) {
-        const acceptPatterns = [
-          ...completeCategories.map(cat => `*.{${cat.patterns.join(",")}}`),
-          ...incompleteTypes.map(type => `*.${type}`)
-        ];
-        flags.push(`--accept=${acceptPatterns.join(",")}`);
+      selectedByCategory.forEach(category => {
+        if (category.isComplete && category.selectedPatterns.length > 0) {
+          // If all extensions in a category are selected, use the grouped format
+          acceptPatterns.push(`*.{${category.selectedPatterns.join(',')}}`);
+        } else if (category.selectedPatterns.length > 0) {
+          // If only some extensions are selected, list them individually
+          category.selectedPatterns.forEach(ext => {
+            acceptPatterns.push(`*.${ext}`);
+          });
+        }
+      });
+
+      if (acceptPatterns.length > 0) {
+        flags.push(`--accept='${acceptPatterns.join(',')}'`);
       }
     }
   }
 
-  // Handle exclude file types
+  // Handle exclude file types similarly
   if (options.excludeFileTypes.length > 0) {
-    const categories = FILE_TYPE_OPTIONS.map(category => ({
+    const selectedByCategory = FILE_TYPE_OPTIONS.map(category => ({
       ...category,
-      isComplete: category.patterns.every(ext => options.excludeFileTypes.includes(ext))
+      isComplete: category.patterns.every(ext => options.excludeFileTypes.includes(ext)),
+      selectedPatterns: category.patterns.filter(ext => options.excludeFileTypes.includes(ext))
     }));
 
-    const completeCategories = categories.filter(cat => cat.isComplete);
-    const incompleteTypes = options.excludeFileTypes.filter(type => 
-      !completeCategories.some(cat => cat.patterns.includes(type))
-    );
+    const rejectPatterns: string[] = [];
 
-    if (completeCategories.length > 0 || incompleteTypes.length > 0) {
-      const rejectPatterns = [
-        ...completeCategories.map(cat => `*.{${cat.patterns.join(",")}}`),
-        ...incompleteTypes.map(type => `*.${type}`)
-      ];
-      flags.push(`--reject=${rejectPatterns.join(",")}`);
+    selectedByCategory.forEach(category => {
+      if (category.isComplete && category.selectedPatterns.length > 0) {
+        rejectPatterns.push(`*.{${category.selectedPatterns.join(',')}}`);
+      } else if (category.selectedPatterns.length > 0) {
+        category.selectedPatterns.forEach(ext => {
+          rejectPatterns.push(`*.${ext}`);
+        });
+      }
+    });
+
+    if (rejectPatterns.length > 0) {
+      flags.push(`--reject='${rejectPatterns.join(',')}'`);
     }
   }
 
@@ -94,6 +104,6 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
   if (options.caCertificate) flags.push(`--ca-certificate=${options.caCertificate}`);
   if (options.connectionLimit) flags.push(`--limit-rate=${options.connectionLimit}`);
   if (options.timestamping) flags.push('--timestamping');
-  
+
   return flags;
 };
