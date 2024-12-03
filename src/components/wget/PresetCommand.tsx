@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Minus, X } from "lucide-react";
 
@@ -9,6 +9,20 @@ interface PresetCommandProps {
 
 export const PresetCommand = ({ command, onDelete }: PresetCommandProps) => {
   const [showX, setShowX] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
+        setShowX(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleClick = () => {
     if (showX) {
@@ -22,6 +36,7 @@ export const PresetCommand = ({ command, onDelete }: PresetCommandProps) => {
     <div className="flex items-center justify-between p-2 mb-2 border border-white/20 rounded-md bg-black/50">
       <span className="text-sm text-zinc-400">{command}</span>
       <Button
+        ref={buttonRef}
         variant="ghost"
         size="icon"
         className="hover:bg-zinc-900"
