@@ -35,23 +35,57 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
     }
   };
 
+  const handleCategoryChange = (category: string, isExclude: boolean = false) => {
+    const categoryPatterns = FILE_TYPE_OPTIONS.find(opt => opt.value === category)?.patterns || [];
+    
+    if (isExclude) {
+      const otherCategories = options.excludeFileTypes.filter(
+        type => !categoryPatterns.includes(type)
+      );
+      const newExcludeTypes = categoryPatterns.every(ext => 
+        options.excludeFileTypes.includes(ext)
+      )
+        ? otherCategories
+        : [...otherCategories, ...categoryPatterns];
+
+      setOptions({
+        ...options,
+        excludeFileTypes: newExcludeTypes,
+        excludePattern: newExcludeTypes.length > 0 ? `*.{${newExcludeTypes.join(",")}}` : ""
+      });
+    } else {
+      const otherCategories = options.fileTypes.filter(
+        type => !categoryPatterns.includes(type)
+      );
+      const newFileTypes = categoryPatterns.every(ext => 
+        options.fileTypes.includes(ext)
+      )
+        ? otherCategories
+        : [...otherCategories, ...categoryPatterns];
+
+      setOptions({
+        ...options,
+        fileTypes: newFileTypes,
+        includePattern: newFileTypes.length > 0 ? `*.{${newFileTypes.join(",")}}` : ""
+      });
+    }
+  };
+
   const handleSelectAll = () => {
     const allExtensions = FILE_TYPE_OPTIONS.flatMap(category => category.patterns);
     const allSelected = allExtensions.every(ext => options.fileTypes.includes(ext));
     
-    if (allSelected) {
-      setOptions({
-        ...options,
-        fileTypes: [],
-        includePattern: ""
-      });
-    } else {
-      setOptions({
-        ...options,
-        fileTypes: allExtensions,
-        includePattern: allExtensions.map(ext => `*.${ext}`).join(",")
-      });
-    }
+    setOptions({
+      ...options,
+      fileTypes: allSelected ? [] : allExtensions,
+      includePattern: allSelected ? "" : "*"
+    });
+  };
+
+  const isCategorySelected = (category: string, isExclude: boolean = false) => {
+    const patterns = FILE_TYPE_OPTIONS.find(opt => opt.value === category)?.patterns || [];
+    const typesList = isExclude ? options.excludeFileTypes : options.fileTypes;
+    return patterns.every(ext => typesList.includes(ext));
   };
 
   return (
@@ -74,7 +108,20 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
         <div className="space-y-6">
           {FILE_TYPE_OPTIONS.map((category) => (
             <div key={category.value} className="space-y-2">
-              <Label className="text-white font-medium block mb-2">{category.label}</Label>
+              <div className="flex items-center space-x-2 mb-2">
+                <Checkbox
+                  id={`category-${category.value}`}
+                  checked={isCategorySelected(category.value)}
+                  onCheckedChange={() => handleCategoryChange(category.value)}
+                  className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                />
+                <Label
+                  htmlFor={`category-${category.value}`}
+                  className="text-white font-medium cursor-pointer"
+                >
+                  {category.label}
+                </Label>
+              </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-2 pl-2 sm:pl-4">
                 {category.patterns.map((extension) => (
                   <div key={extension} className="flex items-center space-x-2">
@@ -103,7 +150,20 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
         <div className="space-y-6">
           {FILE_TYPE_OPTIONS.map((category) => (
             <div key={category.value} className="space-y-2">
-              <Label className="text-white font-medium block mb-2">{category.label}</Label>
+              <div className="flex items-center space-x-2 mb-2">
+                <Checkbox
+                  id={`exclude-category-${category.value}`}
+                  checked={isCategorySelected(category.value, true)}
+                  onCheckedChange={() => handleCategoryChange(category.value, true)}
+                  className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                />
+                <Label
+                  htmlFor={`exclude-category-${category.value}`}
+                  className="text-white font-medium cursor-pointer"
+                >
+                  {category.label}
+                </Label>
+              </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-2 pl-2 sm:pl-4">
                 {category.patterns.map((extension) => (
                   <div key={extension} className="flex items-center space-x-2">

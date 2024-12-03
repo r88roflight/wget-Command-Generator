@@ -1,9 +1,9 @@
 import { WgetOptions } from "@/types/wget";
+import { FILE_TYPE_OPTIONS } from "@/types/wget";
 
 export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] => {
   const flags: string[] = [];
   
-  // Mirror mode takes precedence over basic recursive
   if (options.mirror) {
     flags.push('--mirror');
   } else if (options.recursive) {
@@ -13,23 +13,55 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
     }
   }
 
-  // File type handling - use --accept='*' if all types are selected
-  const allFileTypes = ['txt', 'html', 'htm', 'xml', 'json', 'md', 'csv', 
-    'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg',
-    'mp4', 'webm', 'avi', 'mov', 'mkv',
-    'mp3', 'wav', 'ogg', 'm4a', 'flac',
-    'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+  // Handle file type selections
+  if (options.fileTypes.length > 0) {
+    // Check if all file types are selected
+    const allFileTypes = FILE_TYPE_OPTIONS.flatMap(category => category.patterns);
+    const isAllTypesSelected = allFileTypes.every(type => options.fileTypes.includes(type));
 
-  const isAllTypesSelected = allFileTypes.every(type => options.fileTypes.includes(type));
+    if (isAllTypesSelected) {
+      flags.push(`--accept='*'`);
+    } else {
+      // Check for complete categories
+      const categories = FILE_TYPE_OPTIONS.map(category => ({
+        ...category,
+        isComplete: category.patterns.every(ext => options.fileTypes.includes(ext))
+      }));
 
-  if (isAllTypesSelected) {
-    flags.push(`--accept='*'`);
-  } else if (options.fileTypes && options.fileTypes.length > 0) {
-    flags.push(`--accept=${options.fileTypes.join(',')}`);
+      const completeCategories = categories.filter(cat => cat.isComplete);
+      const incompleteTypes = options.fileTypes.filter(type => 
+        !completeCategories.some(cat => cat.patterns.includes(type))
+      );
+
+      if (completeCategories.length > 0 || incompleteTypes.length > 0) {
+        const acceptPatterns = [
+          ...completeCategories.map(cat => `*.{${cat.patterns.join(",")}}`),
+          ...incompleteTypes.map(type => `*.${type}`)
+        ];
+        flags.push(`--accept=${acceptPatterns.join(",")}`);
+      }
+    }
   }
 
-  if (options.excludeFileTypes && options.excludeFileTypes.length > 0) {
-    flags.push(`--reject=${options.excludeFileTypes.join(',')}`);
+  // Handle exclude file types
+  if (options.excludeFileTypes.length > 0) {
+    const categories = FILE_TYPE_OPTIONS.map(category => ({
+      ...category,
+      isComplete: category.patterns.every(ext => options.excludeFileTypes.includes(ext))
+    }));
+
+    const completeCategories = categories.filter(cat => cat.isComplete);
+    const incompleteTypes = options.excludeFileTypes.filter(type => 
+      !completeCategories.some(cat => cat.patterns.includes(type))
+    );
+
+    if (completeCategories.length > 0 || incompleteTypes.length > 0) {
+      const rejectPatterns = [
+        ...completeCategories.map(cat => `*.{${cat.patterns.join(",")}}`),
+        ...incompleteTypes.map(type => `*.${type}`)
+      ];
+      flags.push(`--reject=${rejectPatterns.join(",")}`);
+    }
   }
 
   if (options.pageRequisites) flags.push('--page-requisites');
