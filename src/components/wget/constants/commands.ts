@@ -11,4 +11,14 @@ export const AVAILABLE_COMMANDS = [
   "Spider Mode",
   "Use Timestamping",
   "Debug Mode",
+  "Page Requisites",
+  "HTTPS Only",
+  "Random Wait",
+  "Ignore Robots",
+  "Backup Converted",
+  "Delete After",
+  "Same Domain Only",
+  "Log Only Errors",
+  "Verify SSL",
+  "Continue Download"
 ];

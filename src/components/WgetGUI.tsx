@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { WgetTabs } from "./wget/WgetTabs";
 import { useWgetCommand } from "@/hooks/useWgetCommand";
-import { Clipboard } from "lucide-react";
+import { Clipboard, RecycleBin } from "lucide-react";
 
 const WgetGUI = () => {
   const { toast } = useToast();
-  const { options, setOptions, generateCommand } = useWgetCommand();
+  const { options, setOptions, generateCommand, resetOptions } = useWgetCommand();
 
   const handleCopyCommand = async () => {
     const command = generateCommand();
@@ -18,6 +18,14 @@ const WgetGUI = () => {
     toast({
       title: "Success",
       description: "Command copied to clipboard",
+    });
+  };
+
+  const handleResetAll = () => {
+    resetOptions();
+    toast({
+      title: "Success",
+      description: "All options have been reset to default values",
     });
   };
 
@@ -42,6 +50,15 @@ const WgetGUI = () => {
               className="border-white/20 hover:bg-zinc-900 bg-black"
             >
               <Clipboard className="h-4 w-4 text-white" />
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={handleResetAll}
+              className="border-white/20 hover:bg-zinc-900 bg-black"
+            >
+              <RecycleBin className="h-4 w-4 text-white" />
             </Button>
           </div>
         </Card>

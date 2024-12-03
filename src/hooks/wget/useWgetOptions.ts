@@ -3,7 +3,7 @@ import { WgetOptions } from "@/types/wget";
 
 const defaultOptions: WgetOptions = {
   url: "",
-  recursive: false,
+  recursive: true,
   maxDepth: 5,
   waitTime: 0,
   followLinks: true,
@@ -12,7 +12,7 @@ const defaultOptions: WgetOptions = {
   saveDirectory: "",
   fileTypes: [],
   excludeFileTypes: [],
-  includeParents: true,
+  includeParents: false, // Removed from default preset
   userAgent: "",
   limitRate: "",
   outputFile: "",
@@ -28,12 +28,12 @@ const defaultOptions: WgetOptions = {
   cutDirs: 0,
   noClobber: true,
   debug: false,
-  convertLinks: false,
+  convertLinks: true,
   adjustExtension: true,
   proxyEnabled: false,
   proxyUser: "",
   proxyPass: "",
-  timestamping: false,
+  timestamping: true,
   randomWait: false,
   httpsOnly: false,
   ignoreRobots: false,
@@ -53,16 +53,21 @@ const defaultOptions: WgetOptions = {
   parallelDownloads: 1,
   connectionLimit: "",
   logOnlyErrors: false,
-  followFtp: false,
-  contentDisposition: false,
-  continueTransfer: false,
-  mirror: false,
+  followFtp: true,
+  contentDisposition: true,
+  continueTransfer: true,
+  mirror: true,
   spiderMode: false,
-  pageRequisites: false,
+  pageRequisites: true,
   verifySSL: true,
 };
 
 export const useWgetOptions = () => {
   const [options, setOptions] = useState<WgetOptions>(defaultOptions);
-  return { options, setOptions };
+  
+  const resetOptions = () => {
+    setOptions(defaultOptions);
+  };
+
+  return { options, setOptions, resetOptions };
 };

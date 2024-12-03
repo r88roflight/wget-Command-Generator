@@ -4,7 +4,7 @@ import { useWgetCommandGenerator } from "./wget/useWgetCommandGenerator";
 
 export const useWgetCommand = () => {
   const [loading, setLoading] = useState(false);
-  const { options, setOptions } = useWgetOptions();
+  const { options, setOptions, resetOptions } = useWgetOptions();
   const { generateCommand } = useWgetCommandGenerator();
 
   return {
@@ -12,6 +12,7 @@ export const useWgetCommand = () => {
     setOptions,
     loading,
     setLoading,
+    resetOptions,
     generateCommand: () => generateCommand(options),
   };
 };
