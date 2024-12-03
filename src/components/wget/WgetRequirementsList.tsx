@@ -95,10 +95,10 @@ export const WgetRequirementsList = ({ options, setOptions }: Props) => {
       return acc;
     }, {} as Record<string, boolean>);
 
-    setOptions(prev => ({
-      ...prev,
+    setOptions({
+      ...options,
       ...defaultOptions
-    }));
+    });
   }, []);
 
   return (
