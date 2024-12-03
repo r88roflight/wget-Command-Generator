@@ -6,11 +6,17 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { WgetTabs } from "./wget/WgetTabs";
 import { useWgetCommand } from "@/hooks/useWgetCommand";
-import { Clipboard } from "lucide-react";
+import { Clipboard, ChevronDown } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const WgetGUI = () => {
   const { toast } = useToast();
   const { options, setOptions, loading, generateCommand } = useWgetCommand();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,8 +114,23 @@ const WgetGUI = () => {
           </div>
         </Card>
 
-        {/* Tabs Section */}
-        <WgetTabs options={options} setOptions={setOptions} />
+        {/* Collapsible Advanced Options */}
+        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full bg-black border-white/20 text-white hover:bg-zinc-900 flex items-center justify-between"
+            >
+              Advanced Options
+              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="pt-4">
+              <WgetTabs options={options} setOptions={setOptions} />
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
 
         <Button
           type="submit"
