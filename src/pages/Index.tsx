@@ -1,7 +1,7 @@
-import WgetForm from "@/components/wget/WgetForm";
+import WgetGUI from "@/components/WgetGUI";
 
 const Index = () => {
-  return <WgetForm />;
+  return <WgetGUI />;
 };
 
 export default Index;
