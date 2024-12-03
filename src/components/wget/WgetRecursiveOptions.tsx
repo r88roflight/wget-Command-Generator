@@ -27,7 +27,7 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
           onCheckedChange={(checked) =>
             setOptions({ ...options, recursive: checked })
           }
-          className="bg-zinc-700"
+          className="bg-zinc-700 data-[state=checked]:bg-white"
         />
       </div>
 
@@ -51,10 +51,10 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
             setOptions({ ...options, maxDepth: parseInt(value) })
           }
         >
-          <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
+          <SelectTrigger className="bg-zinc-800 border-white/20 text-white">
             <SelectValue placeholder="Select depth" />
           </SelectTrigger>
-          <SelectContent className="bg-zinc-800 border-zinc-700">
+          <SelectContent className="bg-zinc-800 border-white/20">
             {[1, 2, 3, 4, 5, 10].map((depth) => (
               <SelectItem key={depth} value={depth.toString()} className="text-white">
                 {depth}

@@ -38,7 +38,7 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
               id={option.value}
               checked={options.fileTypes.includes(option.value)}
               onCheckedChange={() => handleFileTypeChange(option.value)}
-              className="border-zinc-700 data-[state=checked]:bg-white data-[state=checked]:text-black"
+              className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
             />
             <Label
               htmlFor={option.value}

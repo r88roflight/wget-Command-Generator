@@ -30,13 +30,13 @@ export const WgetDirectoryInput = ({ options, setOptions }: Props) => {
           value={options.saveDirectory}
           readOnly
           placeholder="/path/to/downloads"
-          className="bg-zinc-800 border-zinc-700 text-white flex-1"
+          className="bg-zinc-800 border-white/20 text-white flex-1"
         />
         <Button 
           type="button"
           onClick={handleDirectorySelect}
           variant="outline"
-          className="bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700"
+          className="bg-zinc-800 border-white/20 text-white hover:bg-zinc-700"
         >
           <Folder className="w-4 h-4 mr-2" />
           Choose

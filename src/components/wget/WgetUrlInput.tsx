@@ -22,7 +22,7 @@ export const WgetUrlInput = ({ options, setOptions }: Props) => {
         onChange={(e) =>
           setOptions({ ...options, url: e.target.value })
         }
-        className="w-full bg-zinc-800 border-zinc-700 text-white"
+        className="w-full bg-zinc-800 border-white/20 text-white"
       />
     </div>
   );
