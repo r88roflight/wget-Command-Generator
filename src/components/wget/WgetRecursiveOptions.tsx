@@ -11,12 +11,30 @@ interface Props {
 
 export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
   return (
-    <>
+    <div className="space-y-6">
+      <h3 className="text-lg font-medium text-white">Download Options</h3>
+
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <Label className="text-base text-white">Spider Mode</Label>
+          <p className="text-sm text-zinc-400">
+            Check links without downloading
+          </p>
+        </div>
+        <Switch
+          checked={options.spiderMode}
+          onCheckedChange={(checked) =>
+            setOptions({ ...options, spiderMode: checked })
+          }
+          className="bg-zinc-700 data-[state=checked]:bg-white"
+        />
+      </div>
+
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <Label className="text-base text-white">Recursive Download</Label>
           <p className="text-sm text-zinc-400">
-            Download all linked pages
+            Download subdirectories recursively
           </p>
         </div>
         <Switch
@@ -28,57 +46,66 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
         />
       </div>
 
-      {options.recursive && (
-        <>
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label className="text-base text-white">Include Parent Directories</Label>
-              <p className="text-sm text-zinc-400">
-                Download parent directory content
-              </p>
-            </div>
-            <Switch
-              checked={options.includeParents}
-              onCheckedChange={(checked) =>
-                setOptions({ ...options, includeParents: checked })
-              }
-              className="bg-zinc-700 data-[state=checked]:bg-white"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-white">Maximum Depth</Label>
-            <Input
-              type="number"
-              value={options.maxDepth}
-              onChange={(e) =>
-                setOptions({ ...options, maxDepth: parseInt(e.target.value) || 0 })
-              }
-              min="0"
-              className="bg-black border-white/20 text-white"
-            />
-          </div>
-        </>
-      )}
-
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label className="text-white">Wait Time (seconds)</Label>
-          <span className="text-sm text-zinc-400">
-            {options.waitTime}s
-          </span>
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <Label className="text-base text-white">No Clobber</Label>
+          <p className="text-sm text-zinc-400">Don't overwrite existing files</p>
         </div>
-        <Input
-          type="number"
-          value={options.waitTime}
-          onChange={(e) =>
-            setOptions({ ...options, waitTime: parseInt(e.target.value) || 0 })
+        <Switch
+          checked={options.noClobber}
+          onCheckedChange={(checked) =>
+            setOptions({ ...options, noClobber: checked })
           }
-          min="0"
-          max="60"
-          className="bg-black border-white/20 text-white"
+          className="bg-zinc-700 data-[state=checked]:bg-white"
         />
       </div>
-    </>
+
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <Label className="text-base text-white">Mirror Website</Label>
+          <p className="text-sm text-zinc-400">
+            Create a mirror of the website
+          </p>
+        </div>
+        <Switch
+          checked={options.mirror}
+          onCheckedChange={(checked) =>
+            setOptions({ ...options, mirror: checked })
+          }
+          className="bg-zinc-700 data-[state=checked]:bg-white"
+        />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <Label className="text-base text-white">Page Requirements</Label>
+          <p className="text-sm text-zinc-400">
+            Download all page requisites (CSS, images, etc.)
+          </p>
+        </div>
+        <Switch
+          checked={options.pageRequisites}
+          onCheckedChange={(checked) =>
+            setOptions({ ...options, pageRequisites: checked })
+          }
+          className="bg-zinc-700 data-[state=checked]:bg-white"
+        />
+      </div>
+
+      {options.recursive && (
+        <div className="space-y-2">
+          <Label className="text-base text-white">Maximum Depth</Label>
+          <Input
+            type="number"
+            min="0"
+            value={options.maxDepth}
+            onChange={(e) =>
+              setOptions({ ...options, maxDepth: parseInt(e.target.value) || 0 })
+            }
+            className="bg-black border-white/20 text-white"
+          />
+        </div>
+      )}
+    </div>
   );
 };

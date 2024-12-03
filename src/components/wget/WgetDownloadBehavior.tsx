@@ -31,54 +31,6 @@ export const WgetDownloadBehavior = ({ options, setOptions }: Props) => {
 
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
-          <Label className="text-base text-white">Mirror Website</Label>
-          <p className="text-sm text-zinc-400">
-            Create a mirror of the website
-          </p>
-        </div>
-        <Switch
-          checked={options.mirror}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, mirror: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">Spider Mode</Label>
-          <p className="text-sm text-zinc-400">
-            Check links without downloading
-          </p>
-        </div>
-        <Switch
-          checked={options.spiderMode}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, spiderMode: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">Download Page Requirements</Label>
-          <p className="text-sm text-zinc-400">
-            Download all page requisites (CSS, images, etc.)
-          </p>
-        </div>
-        <Switch
-          checked={options.pageRequisites}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, pageRequisites: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
           <Label className="text-base text-white">Follow FTP Links</Label>
           <p className="text-sm text-zinc-400">Follow links to FTP resources</p>
         </div>
@@ -114,20 +66,6 @@ export const WgetDownloadBehavior = ({ options, setOptions }: Props) => {
           checked={options.adjustExtension}
           onCheckedChange={(checked) =>
             setOptions({ ...options, adjustExtension: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">No Clobber</Label>
-          <p className="text-sm text-zinc-400">Don't overwrite existing files</p>
-        </div>
-        <Switch
-          checked={options.noClobber}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, noClobber: checked })
           }
           className="bg-zinc-700 data-[state=checked]:bg-white"
         />
