@@ -5,6 +5,7 @@ import { PresetHeader } from "./preset/PresetHeader";
 import { PresetList } from "./preset/PresetList";
 import { usePresetActions } from "./preset/usePresetActions";
 import { DeletePresetDialog } from "./DeletePresetDialog";
+import { usePresetContext } from "./preset/PresetContext";
 
 interface Props {
   options: WgetOptions;
@@ -14,6 +15,7 @@ interface Props {
 export const WgetPresets = ({ options, setOptions }: Props) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [selectedPreset, setSelectedPreset] = React.useState<string | null>(null);
+  const { presets } = usePresetContext();
 
   const { handleDeletePreset, handleRestorePresets, handleResetPreset } = 
     usePresetActions(options, setOptions);
@@ -26,11 +28,18 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     }
   };
 
+  const handleSavePreset = () => {
+    // This will be implemented later
+    console.log("Save preset");
+  };
+
   return (
     <PresetProvider>
       <div className="space-y-4">
         <PresetHeader 
+          handleSavePreset={handleSavePreset}
           onRestorePresets={handleRestorePresets}
+          presets={presets}
         />
         <PresetList
           options={options}

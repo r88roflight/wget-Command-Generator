@@ -2,6 +2,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { usePresetContext } from './PresetContext';
 import { defaultMirrorPreset } from './defaultPreset';
 import { WgetOptions } from '@/types/wget';
+import { Preset } from '../types/preset';
 
 export const usePresetActions = (options: WgetOptions, setOptions: (options: WgetOptions) => void) => {
   const { toast } = useToast();
@@ -17,8 +18,8 @@ export const usePresetActions = (options: WgetOptions, setOptions: (options: Wge
   const handleDeletePreset = (presetName: string) => {
     const presetToDelete = presets.find(p => p.name === presetName);
     if (presetToDelete) {
-      setDeletedPresets(prev => [...prev, presetToDelete]);
-      setPresets(prev => prev.filter(preset => preset.name !== presetName));
+      setDeletedPresets([...deletedPresets, presetToDelete]);
+      setPresets(presets.filter(preset => preset.name !== presetName));
       toast({
         title: "Success",
         description: "Preset deleted successfully",
@@ -28,7 +29,7 @@ export const usePresetActions = (options: WgetOptions, setOptions: (options: Wge
 
   const handleRestorePresets = () => {
     if (deletedPresets.length > 0) {
-      setPresets(prev => [...prev, ...deletedPresets]);
+      setPresets([...presets, ...deletedPresets]);
       setDeletedPresets([]);
       toast({
         title: "Success",
@@ -39,11 +40,9 @@ export const usePresetActions = (options: WgetOptions, setOptions: (options: Wge
 
   const handleResetPreset = (preset: Preset) => {
     if (preset.name === "Mirror Website Locally") {
-      setPresets((prev) =>
-        prev.map((p) =>
-          p.name === preset.name ? { ...defaultMirrorPreset } : p
-        )
-      );
+      setPresets(presets.map((p) =>
+        p.name === preset.name ? { ...defaultMirrorPreset } : p
+      ));
       if (activePreset === preset.name) {
         setOptions({
           ...options,
