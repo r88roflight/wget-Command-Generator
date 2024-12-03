@@ -23,10 +23,18 @@ export const PresetList = ({ options, setOptions }: Props) => {
 
   const handleTogglePreset = (checked: boolean, preset: Preset) => {
     if (checked) {
-      setOptions({
+      // Apply all preset options
+      const newOptions = {
         ...options,
         ...preset.options,
-      });
+        // Ensure specific flags from commands are set
+        recursive: preset.commands.includes('--recursive') || preset.commands.includes('-r'),
+        noParent: preset.commands.includes('--no-parent'),
+        convertLinks: preset.commands.includes('--convert-links') || preset.commands.includes('-k'),
+        pageRequisites: preset.commands.includes('--page-requisites') || preset.commands.includes('-p'),
+      };
+      
+      setOptions(newOptions);
       setActivePreset(preset.name);
       toast({
         title: "Success",

@@ -30,7 +30,7 @@ export const PresetCommands = ({
               onValueChange={(value) => onUpdateCommand(preset.name, index, value)}
             >
               <SelectTrigger className="flex-1 bg-black border-white/20 text-white">
-                <SelectValue placeholder="Select a command" />
+                <SelectValue placeholder="Select a command">{command}</SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-black border-white/20">
                 {AVAILABLE_COMMANDS.map((cmd) => (
