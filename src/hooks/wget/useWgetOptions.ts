@@ -60,8 +60,16 @@ const defaultOptions: WgetOptions = {
   spiderMode: false,
   pageRequisites: false,
   verifySSL: false,
-  inputFile: "",  // Added new property
-  directoryPrefix: ""  // Added new property
+  inputFile: "",
+  directoryPrefix: "",
+  outputDocument: "",
+  appendOutput: "",
+  noDirectories: "",
+  httpUser: "",
+  httpPassword: "",
+  postData: "",
+  ftpUser: "",
+  ftpPassword: ""
 };
 
 export const useWgetOptions = () => {
