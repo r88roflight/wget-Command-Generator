@@ -12,7 +12,7 @@ const defaultOptions: WgetOptions = {
   saveDirectory: "",
   fileTypes: [],
   excludeFileTypes: [],
-  includeParents: false,
+  includeParents: true, // Changed to true as default
   userAgent: "",
   limitRate: "",
   outputFile: "",
