@@ -58,7 +58,7 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
           </TabsTrigger>
         </TabsList>
 
-        <div className="mt-4 sm:mt-6 px-2 sm:px-0">
+        <div className="mt-16 sm:mt-6 px-2 sm:px-0">
           <TabsContent value="presets" className="m-0">
             <WgetPresets options={options} setOptions={setOptions} />
           </TabsContent>
