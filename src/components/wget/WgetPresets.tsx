@@ -218,11 +218,21 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
                     />
                     <EditableText
                       text={preset.description}
-                      onSave={(newDescription) => handleUpdatePresetDescription(preset.name, newDescription)}
+                      onSave={(newDescription) =>
+                        handleUpdatePresetDescription(preset.name, newDescription)
+                      }
                       className="text-sm text-zinc-400 block"
                     />
                   </div>
                   <div className="flex items-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="hover:bg-zinc-900"
+                      onClick={() => togglePresetExpansion(preset.name)}
+                    >
+                      <Settings className="h-4 w-4 text-white" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
