@@ -17,18 +17,13 @@ interface Props {
 }
 
 export const WgetTabs = ({ options, setOptions }: Props) => {
-  const [activeTab, setActiveTab] = React.useState<string | undefined>(undefined);
-
-  const handleTabClick = (value: string) => {
-    // If the clicked tab is already active, close it by setting activeTab to undefined
-    // Otherwise, open the clicked tab by setting it as active
-    setActiveTab((currentTab) => currentTab === value ? undefined : value);
-  };
+  const [activeTab, setActiveTab] = React.useState<string>("presets");
 
   return (
     <PresetProvider>
       <Tabs 
         value={activeTab} 
+        onValueChange={setActiveTab}
         className="w-full mt-6 sm:mt-0"
       >
         <div className="flex flex-col gap-6">
@@ -44,7 +39,6 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
               <TabsTrigger 
                 key={tab.value}
                 value={tab.value}
-                onClick={() => handleTabClick(tab.value)}
                 className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
               >
                 {tab.label}
