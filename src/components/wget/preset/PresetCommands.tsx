@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, ChevronDown } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { PresetCommand } from "../PresetCommand";
 import { Preset } from "../types/preset";
@@ -20,12 +20,13 @@ export const PresetCommands = ({
   onUpdateCommand,
   onRemoveCommand,
 }: PresetCommandsProps) => {
-  const getCommandTitle = (command: string) => {
-    return flagToCommand[command] || command;
-  };
-
   const needsParameter = (command: string) => {
     return command.includes("=");
+  };
+
+  const getCommandTitle = (command: string) => {
+    const baseCommand = command.split("=")[0];
+    return Object.entries(commandToFlag).find(([_, value]) => value === baseCommand)?.[0] || command;
   };
 
   return (
@@ -71,7 +72,7 @@ export const PresetCommands = ({
                 {AVAILABLE_COMMANDS.map((cmd) => (
                   <SelectItem 
                     key={cmd} 
-                    value={cmd} 
+                    value={cmd}
                     className="text-white hover:bg-zinc-800"
                   >
                     {cmd}
