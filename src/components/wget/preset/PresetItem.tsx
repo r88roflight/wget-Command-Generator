@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Settings, Minus, RotateCw } from "lucide-react";
+import { Settings, Minus, X } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { EditableText } from "../EditableText";
-import { PresetCommands } from "./PresetCommands";
-import { Preset } from "../types/preset";
+import { PresetCommands } from "../PresetCommands";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
+import { Preset } from "../types/preset";
 
 interface PresetItemProps {
   preset: Preset;
@@ -36,6 +36,16 @@ export const PresetItem = ({
   onRemoveCommand,
   onResetPreset,
 }: PresetItemProps) => {
+  const [showDeleteIcon, setShowDeleteIcon] = useState(false);
+
+  const handleDeleteClick = () => {
+    if (showDeleteIcon) {
+      onDelete(preset.name);
+    } else {
+      setShowDeleteIcon(true);
+    }
+  };
+
   return (
     <Collapsible
       open={isExpanded}
@@ -75,16 +85,21 @@ export const PresetItem = ({
               className="hover:bg-zinc-900"
               onClick={() => onResetPreset(preset)}
             >
-              <RotateCw className="h-4 w-4 text-white" />
+              <Settings className="h-4 w-4 text-white" />
             </Button>
           )}
           <Button
             variant="ghost"
             size="icon"
             className="hover:bg-zinc-900"
-            onClick={() => onDelete(preset.name)}
+            onClick={handleDeleteClick}
+            onBlur={() => setShowDeleteIcon(false)}
           >
-            <Minus className="h-4 w-4 text-white" />
+            {showDeleteIcon ? (
+              <X className="h-4 w-4 text-white" />
+            ) : (
+              <Minus className="h-4 w-4 text-white" />
+            )}
           </Button>
           <Switch
             checked={activePreset === preset.name}
