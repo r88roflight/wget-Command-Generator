@@ -20,7 +20,11 @@ export const AVAILABLE_COMMANDS = [
   "Delete After",
   "Same Domain Only",
   "Log Only Errors",
-  "Verify SSL"
+  "Verify SSL",
+  "No Verbose",
+  "Show Progress",
+  "Retry Connection Refused",
+  "No Clobber"
 ];
 
 export const commandToFlag: { [key: string]: string } = {
@@ -45,7 +49,11 @@ export const commandToFlag: { [key: string]: string } = {
   "Delete After": "--delete-after",
   "Same Domain Only": "--span-hosts",
   "Log Only Errors": "--quiet",
-  "Verify SSL": "--secure-protocol=auto"
+  "Verify SSL": "--secure-protocol=auto",
+  "No Verbose": "--no-verbose",
+  "Show Progress": "--show-progress",
+  "Retry Connection Refused": "--retry-connrefused",
+  "No Clobber": "--no-clobber"
 };
 
 export const flagToCommand = Object.entries(commandToFlag).reduce((acc, [key, value]) => {

@@ -1,11 +1,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, ChevronDown } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { PresetCommand } from "../PresetCommand";
 import { Preset } from "../types/preset";
-import { AVAILABLE_COMMANDS, flagToCommand } from "../constants/commands";
+import { AVAILABLE_COMMANDS, flagToCommand, commandToFlag } from "../constants/commands";
 
 interface PresetCommandsProps {
   preset: Preset;
@@ -59,10 +59,13 @@ export const PresetCommands = ({
             </div>
             <Select
               value={command}
-              onValueChange={(value) => onUpdateCommand(preset.name, index, value)}
+              onValueChange={(value) => {
+                const newCommand = commandToFlag[value] || value;
+                onUpdateCommand(preset.name, index, newCommand);
+              }}
             >
-              <SelectTrigger className="w-8 h-8 bg-black border-white/20">
-                <SelectValue />
+              <SelectTrigger className="w-8 h-8 bg-black border-white/20 p-0">
+                <ChevronDown className="h-4 w-4 text-white" />
               </SelectTrigger>
               <SelectContent className="bg-black border-white/20">
                 {AVAILABLE_COMMANDS.map((cmd) => (
