@@ -36,28 +36,20 @@ export interface WgetOptions {
   ignoreRobots: boolean;
   backupConverted: boolean;
   deleteAfter: boolean;
-  verifySSL: boolean;
-  spiderMode: boolean;
-  mirror: boolean;
-  pageRequisites: boolean;
-  executeCommand: string;
+  tempFile: boolean;
+  maxFileSize: string;
+  minFileSize: string;
+  rejectRegex: string;
+  recursionLevel: number;
+  sameDomain: boolean;
   domains: string;
   excludeDomains: string;
-  noParent: boolean;
-  relativePaths: boolean;
-  backupOriginal: boolean;
-  strictComments: boolean;
-  infiniteRecursion: boolean;
-  dontRemoveListings: boolean;
-  quotaCommand: string;
-  bindAddress: string;
-  cacheDir: string;
-  noCache: boolean;
+  httpsProxy: string;
   noCheckCertificate: boolean;
-  noVerbose: boolean;
-  followFtp: boolean;
-  contentDisposition: boolean;
-  continueTransfer: boolean;
+  caCertificate: string;
+  parallelDownloads: number;
+  connectionLimit: string;
+  logOnlyErrors: boolean;
 }
 
 export type FileTypeOption = {

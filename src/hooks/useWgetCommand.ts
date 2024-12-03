@@ -63,13 +63,30 @@ export const useWgetCommand = () => {
     followFtp: false,
     contentDisposition: false,
     continueTransfer: false,
+    maxFileSize: "",
+    minFileSize: "",
+    rejectRegex: "",
+    recursionLevel: 5,
+    sameDomain: false,
+    domains: "",
+    excludeDomains: "",
+    ignoreRobots: false,
+    httpsProxy: "",
+    noCheckCertificate: false,
+    caCertificate: "",
+    parallelDownloads: 1,
+    connectionLimit: "",
+    logOnlyErrors: false,
+    debug: false,
+    backupConverted: false,
+    deleteAfter: false,
+    tempFile: false,
   });
 
   const generateCommand = () => {
     const flags = [];
     
     if (options.url) {
-      // Basic options
       if (options.recursive) {
         flags.push("-r");
         flags.push(`--level=${options.maxDepth}`);
@@ -86,7 +103,6 @@ export const useWgetCommand = () => {
         flags.push("--random-wait");
       }
 
-      // File type options
       if (options.fileTypes && options.fileTypes.length > 0) {
         flags.push(`--accept=${options.fileTypes.join(',')}`);
       }
@@ -95,7 +111,6 @@ export const useWgetCommand = () => {
         flags.push(`--reject=${options.excludeFileTypes.join(',')}`);
       }
 
-      // Download behavior
       if (options.noClobber) {
         flags.push("--no-clobber");
       }
@@ -112,7 +127,6 @@ export const useWgetCommand = () => {
         flags.push("--convert-links");
       }
 
-      // Advanced options
       if (options.userAgent) {
         flags.push(`--user-agent="${options.userAgent}"`);
       }
@@ -129,18 +143,15 @@ export const useWgetCommand = () => {
         flags.push(`--tries=${options.retries}`);
       }
 
-      // Authentication
       if (options.username && options.password) {
         flags.push(`--user=${options.username}`);
         flags.push(`--password=${options.password}`);
       }
 
-      // Spider mode
       if (options.spiderMode) {
         flags.push("--spider");
       }
 
-      // Mirror options
       if (options.mirror) {
         flags.push("--mirror");
       }
@@ -149,12 +160,10 @@ export const useWgetCommand = () => {
         flags.push("--page-requisites");
       }
 
-      // HTTPS options
       if (options.httpsOnly) {
         flags.push("--https-only");
       }
 
-      // Additional features
       if (options.continueDownload) {
         flags.push("-c");
       }
@@ -167,9 +176,76 @@ export const useWgetCommand = () => {
         flags.push("--content-disposition");
       }
 
-      // Directory options
       if (options.saveDirectory) {
         flags.push(`-P "${options.saveDirectory}"`);
+      }
+
+      if (options.backupConverted) {
+        flags.push("--backup-converted");
+      }
+
+      if (options.deleteAfter) {
+        flags.push("--delete-after");
+      }
+
+      if (options.tempFile) {
+        flags.push("--output-document=.tmp");
+      }
+
+      if (options.maxFileSize) {
+        flags.push(`--max-filesize=${options.maxFileSize}`);
+      }
+
+      if (options.minFileSize) {
+        flags.push(`--min-filesize=${options.minFileSize}`);
+      }
+
+      if (options.rejectRegex) {
+        flags.push(`--reject-regex="${options.rejectRegex}"`);
+      }
+
+      if (options.recursionLevel > 0) {
+        flags.push(`--level=${options.recursionLevel}`);
+      }
+
+      if (options.sameDomain) {
+        flags.push("--span-hosts=off");
+      }
+
+      if (options.domains) {
+        flags.push(`--domains=${options.domains}`);
+      }
+
+      if (options.excludeDomains) {
+        flags.push(`--exclude-domains=${options.excludeDomains}`);
+      }
+
+      if (options.ignoreRobots) {
+        flags.push("--execute robots=off");
+      }
+
+      if (options.httpsProxy) {
+        flags.push(`--https-proxy=${options.httpsProxy}`);
+      }
+
+      if (options.noCheckCertificate) {
+        flags.push("--no-check-certificate");
+      }
+
+      if (options.caCertificate) {
+        flags.push(`--ca-certificate=${options.caCertificate}`);
+      }
+
+      if (options.connectionLimit) {
+        flags.push(`--limit-rate=${options.connectionLimit}`);
+      }
+
+      if (options.logOnlyErrors) {
+        flags.push("--quiet");
+      }
+
+      if (options.debug) {
+        flags.push("--debug");
       }
 
       return `wget ${flags.join(" ")} "${options.url}"`;
