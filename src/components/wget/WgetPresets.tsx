@@ -3,7 +3,6 @@ import { WgetOptions } from "@/types/wget";
 import { PresetProvider } from "./preset/PresetContext";
 import { PresetHeader } from "./preset/PresetHeader";
 import { PresetList } from "./preset/PresetList";
-import { usePresetActions } from "./preset/usePresetActions";
 import { DeletePresetDialog } from "./DeletePresetDialog";
 
 interface Props {
