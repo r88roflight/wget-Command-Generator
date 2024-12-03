@@ -11,14 +11,20 @@ interface Props {
 }
 
 export const WgetDirectoryInput = ({ options, setOptions }: Props) => {
-  const handleDirectorySelect = async () => {
-    try {
-      // @ts-ignore - This is a webkit API that exists in desktop browsers
-      const directoryHandle = await window.showDirectoryPicker();
-      setOptions({ ...options, saveDirectory: directoryHandle.name });
-    } catch (error) {
-      console.error("Failed to select directory:", error);
-    }
+  const handleDirectorySelect = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.webkitdirectory = true;
+    
+    input.onchange = (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (files && files.length > 0) {
+        const path = files[0].webkitRelativePath.split('/')[0];
+        setOptions({ ...options, saveDirectory: path });
+      }
+    };
+    
+    input.click();
   };
 
   return (
@@ -30,13 +36,13 @@ export const WgetDirectoryInput = ({ options, setOptions }: Props) => {
           value={options.saveDirectory}
           readOnly
           placeholder="/path/to/downloads"
-          className="bg-zinc-800 border-white/20 text-white flex-1"
+          className="bg-black border-white/20 text-white flex-1"
         />
         <Button 
           type="button"
           onClick={handleDirectorySelect}
           variant="outline"
-          className="bg-zinc-800 border-white/20 text-white hover:bg-zinc-700"
+          className="bg-black border-white/20 text-white hover:bg-zinc-900"
         >
           <Folder className="w-4 h-4 mr-2" />
           Choose

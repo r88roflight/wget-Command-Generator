@@ -5,13 +5,13 @@ import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
 import { WgetDirectoryInput } from "./WgetDirectoryInput";
 import { WgetFileTypes } from "./WgetFileTypes";
 import { useWgetCommand } from "@/hooks/useWgetCommand";
-import { Clipboard, Terminal } from "lucide-react";
+import { Clipboard } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 
 const WgetForm = () => {
   const { toast } = useToast();
-  const { options, setOptions, generateCommand, loading } = useWgetCommand();
+  const { options, setOptions, generateCommand } = useWgetCommand();
 
   const handleCopyCommand = async () => {
     const command = generateCommand();
@@ -20,49 +20,6 @@ const WgetForm = () => {
       title: "Success",
       description: "Command copied to clipboard",
     });
-  };
-
-  const handleRunInTerminal = async () => {
-    if (!options.url) {
-      toast({
-        title: "Error",
-        description: "Please enter a URL",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!options.saveDirectory) {
-      toast({
-        title: "Error",
-        description: "Please select a save directory",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const command = generateCommand();
-    const script = `
-      tell application "Terminal"
-        activate
-        do script "cd ${options.saveDirectory} && ${command}"
-      end tell
-    `;
-    
-    try {
-      // @ts-ignore - This is a webkit API that exists in desktop browsers
-      await window.webkit.messageHandlers.runAppleScript.postMessage(script);
-      toast({
-        title: "Success",
-        description: "Command sent to Terminal",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to open Terminal. Make sure you're on macOS.",
-        variant: "destructive",
-      });
-    }
   };
 
   return (
@@ -80,17 +37,9 @@ const WgetForm = () => {
             variant="outline"
             size="icon"
             onClick={handleCopyCommand}
-            className="border-white/20 hover:bg-zinc-800"
+            className="border-white/20 hover:bg-zinc-900 bg-black"
           >
             <Clipboard className="h-4 w-4 text-white" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleRunInTerminal}
-            className="border-white/20 hover:bg-zinc-800"
-          >
-            <Terminal className="h-4 w-4 text-white" />
           </Button>
         </div>
       </Card>

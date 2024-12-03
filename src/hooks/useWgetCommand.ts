@@ -12,7 +12,9 @@ export const useWgetCommand = () => {
     includePattern: "",
     excludePattern: "",
     saveDirectory: "",
-    fileTypes: []
+    fileTypes: [],
+    excludeFileTypes: [],
+    includeParents: true
   });
 
   const generateCommand = () => {
@@ -21,6 +23,9 @@ export const useWgetCommand = () => {
     if (options.recursive) {
       flags.push("-r");
       flags.push(`--level=${options.maxDepth}`);
+      if (!options.includeParents) {
+        flags.push("--no-parent");
+      }
     }
     
     if (options.waitTime > 0) {

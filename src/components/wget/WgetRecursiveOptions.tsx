@@ -28,18 +28,38 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
         />
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-white">Maximum Depth</Label>
-        <Input
-          type="number"
-          value={options.maxDepth}
-          onChange={(e) =>
-            setOptions({ ...options, maxDepth: parseInt(e.target.value) || 0 })
-          }
-          min="0"
-          className="bg-zinc-800 border-white/20 text-white"
-        />
-      </div>
+      {options.recursive && (
+        <>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Include Parent Directories</Label>
+              <p className="text-sm text-zinc-400">
+                Download parent directory content
+              </p>
+            </div>
+            <Switch
+              checked={options.includeParents}
+              onCheckedChange={(checked) =>
+                setOptions({ ...options, includeParents: checked })
+              }
+              className="bg-zinc-700 data-[state=checked]:bg-white"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-white">Maximum Depth</Label>
+            <Input
+              type="number"
+              value={options.maxDepth}
+              onChange={(e) =>
+                setOptions({ ...options, maxDepth: parseInt(e.target.value) || 0 })
+              }
+              min="0"
+              className="bg-black border-white/20 text-white"
+            />
+          </div>
+        </>
+      )}
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
@@ -56,7 +76,7 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
           }
           min="0"
           max="60"
-          className="bg-zinc-800 border-white/20 text-white"
+          className="bg-black border-white/20 text-white"
         />
       </div>
     </>

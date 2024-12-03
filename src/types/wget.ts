@@ -8,6 +8,8 @@ export interface WgetOptions {
   excludePattern: string;
   saveDirectory: string;
   fileTypes: string[];
+  excludeFileTypes: string[];
+  includeParents: boolean;
 }
 
 export type FileTypeOption = {

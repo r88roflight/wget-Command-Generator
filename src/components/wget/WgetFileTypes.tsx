@@ -10,22 +10,40 @@ interface Props {
 }
 
 export const WgetFileTypes = ({ options, setOptions }: Props) => {
-  const handleFileTypeChange = (value: string) => {
-    const newFileTypes = options.fileTypes.includes(value)
-      ? options.fileTypes.filter(type => type !== value)
-      : [...options.fileTypes, value];
+  const handleFileTypeChange = (value: string, isExclude: boolean = false) => {
+    if (isExclude) {
+      const newExcludeTypes = options.excludeFileTypes.includes(value)
+        ? options.excludeFileTypes.filter(type => type !== value)
+        : [...options.excludeFileTypes, value];
 
-    const selectedOptions = FILE_TYPE_OPTIONS.filter(option => 
-      newFileTypes.includes(option.value)
-    );
+      const selectedOptions = FILE_TYPE_OPTIONS.filter(option => 
+        newExcludeTypes.includes(option.value)
+      );
+      
+      const excludePatterns = selectedOptions.flatMap(option => option.patterns);
+      
+      setOptions({
+        ...options,
+        excludeFileTypes: newExcludeTypes,
+        excludePattern: excludePatterns.join(",")
+      });
+    } else {
+      const newFileTypes = options.fileTypes.includes(value)
+        ? options.fileTypes.filter(type => type !== value)
+        : [...options.fileTypes, value];
 
-    const includePatterns = selectedOptions.flatMap(option => option.patterns);
-    
-    setOptions({
-      ...options,
-      fileTypes: newFileTypes,
-      includePattern: includePatterns.join(",")
-    });
+      const selectedOptions = FILE_TYPE_OPTIONS.filter(option => 
+        newFileTypes.includes(option.value)
+      );
+      
+      const includePatterns = selectedOptions.flatMap(option => option.patterns);
+      
+      setOptions({
+        ...options,
+        fileTypes: newFileTypes,
+        includePattern: includePatterns.join(",")
+      });
+    }
   };
 
   const handleSelectAll = () => {
@@ -40,34 +58,58 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <Label className="text-white">File Types to Download</Label>
-        <button
-          onClick={handleSelectAll}
-          type="button"
-          className="text-sm text-zinc-400 hover:text-white transition-colors"
-        >
-          Select All
-        </button>
+    <div className="space-y-6">
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <Label className="text-white">Include File Types</Label>
+          <button
+            onClick={handleSelectAll}
+            type="button"
+            className="text-sm text-zinc-400 hover:text-white transition-colors"
+          >
+            Select All
+          </button>
+        </div>
+        <div className="flex justify-between gap-4">
+          {FILE_TYPE_OPTIONS.map((option) => (
+            <div key={option.value} className="flex items-center space-x-2">
+              <Checkbox
+                id={`include-${option.value}`}
+                checked={options.fileTypes.includes(option.value)}
+                onCheckedChange={() => handleFileTypeChange(option.value)}
+                className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+              />
+              <Label
+                htmlFor={`include-${option.value}`}
+                className="text-sm font-medium leading-none text-white cursor-pointer whitespace-nowrap"
+              >
+                {option.label}
+              </Label>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {FILE_TYPE_OPTIONS.map((option) => (
-          <div key={option.value} className="flex items-center space-x-2">
-            <Checkbox
-              id={option.value}
-              checked={options.fileTypes.includes(option.value)}
-              onCheckedChange={() => handleFileTypeChange(option.value)}
-              className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
-            />
-            <Label
-              htmlFor={option.value}
-              className="text-sm font-medium leading-none text-white cursor-pointer"
-            >
-              {option.label}
-            </Label>
-          </div>
-        ))}
+
+      <div>
+        <Label className="text-white mb-4 block">Exclude File Types</Label>
+        <div className="flex justify-between gap-4">
+          {FILE_TYPE_OPTIONS.map((option) => (
+            <div key={option.value} className="flex items-center space-x-2">
+              <Checkbox
+                id={`exclude-${option.value}`}
+                checked={options.excludeFileTypes.includes(option.value)}
+                onCheckedChange={() => handleFileTypeChange(option.value, true)}
+                className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+              />
+              <Label
+                htmlFor={`exclude-${option.value}`}
+                className="text-sm font-medium leading-none text-white cursor-pointer whitespace-nowrap"
+              >
+                {option.label}
+              </Label>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
