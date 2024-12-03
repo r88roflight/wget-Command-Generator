@@ -15,48 +15,74 @@ export const WgetFlags = ({ options, setOptions }: Props) => {
     <Card className="p-6 bg-black border border-white/20">
       <div className="space-y-6">
         <h2 className="text-xl font-semibold text-white mb-4">Command Flags</h2>
+        
+        {/* Basic Download Flags */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium text-white">Download Flags</h3>
+          
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Mirror Website (-m)</Label>
+              <p className="text-sm text-zinc-400">Download website recursively with proper settings</p>
+            </div>
+            <Switch
+              checked={options.mirror}
+              onCheckedChange={(checked) => setOptions({ ...options, mirror: checked })}
+              className="bg-zinc-700 data-[state=checked]:bg-white"
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Convert Links (-k)</Label>
+              <p className="text-sm text-zinc-400">Convert links for offline viewing</p>
+            </div>
+            <Switch
+              checked={options.convertLinks}
+              onCheckedChange={(checked) => setOptions({ ...options, convertLinks: checked })}
+              className="bg-zinc-700 data-[state=checked]:bg-white"
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Download Prerequisites (-p)</Label>
+              <p className="text-sm text-zinc-400">Get all files needed to display HTML page</p>
+            </div>
+            <Switch
+              checked={options.pageRequisites}
+              onCheckedChange={(checked) => setOptions({ ...options, pageRequisites: checked })}
+              className="bg-zinc-700 data-[state=checked]:bg-white"
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Execute Command (-e)</Label>
+              <p className="text-sm text-zinc-400">Additional wget commands</p>
+            </div>
+            <Input
+              value={options.executeCommand || ""}
+              onChange={(e) => setOptions({ ...options, executeCommand: e.target.value })}
+              placeholder="e.g., robots=off"
+              className="bg-black border-white/20 text-white w-[200px]"
+            />
+          </div>
+        </div>
 
         {/* Input/Output Flags */}
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-white">Input/Output Flags</h3>
           
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label className="text-base text-white">Input File (-i)</Label>
-              <p className="text-sm text-zinc-400">Read URLs from a file</p>
-            </div>
-            <Input
-              value={options.inputFile}
-              onChange={(e) => setOptions({ ...options, inputFile: e.target.value })}
-              placeholder="Path to file containing URLs"
-              className="bg-black border-white/20 text-white w-[200px]"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label className="text-base text-white">Directory Prefix (-P)</Label>
-              <p className="text-sm text-zinc-400">Set directory prefix for all files</p>
-            </div>
-            <Input
-              value={options.directoryPrefix}
-              onChange={(e) => setOptions({ ...options, directoryPrefix: e.target.value })}
-              placeholder="Directory prefix"
-              className="bg-black border-white/20 text-white w-[200px]"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label className="text-base text-white">Output Document (-O)</Label>
-              <p className="text-sm text-zinc-400">Write documents to FILE</p>
-            </div>
+          <div className="space-y-2">
+            <Label className="text-white">Output Document (-O)</Label>
             <Input
               value={options.outputDocument}
               onChange={(e) => setOptions({ ...options, outputDocument: e.target.value })}
               placeholder="Output filename"
-              className="bg-black border-white/20 text-white w-[200px]"
+              className="bg-black border-white/20 text-white"
             />
+            <p className="text-sm text-zinc-400">Save all output to this filename</p>
           </div>
 
           <div className="flex items-center justify-between">
@@ -72,79 +98,31 @@ export const WgetFlags = ({ options, setOptions }: Props) => {
           </div>
         </div>
 
-        {/* HTTP Options */}
+        {/* Additional Flags */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-white">HTTP Options</h3>
+          <h3 className="text-lg font-medium text-white">Additional Flags</h3>
           
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label className="text-base text-white">HTTP User</Label>
-              <p className="text-sm text-zinc-400">Set HTTP user</p>
+              <Label className="text-base text-white">Recursive (-r)</Label>
+              <p className="text-sm text-zinc-400">Basic recursive download (use with caution)</p>
             </div>
-            <Input
-              value={options.httpUser}
-              onChange={(e) => setOptions({ ...options, httpUser: e.target.value })}
-              placeholder="HTTP username"
-              className="bg-black border-white/20 text-white w-[200px]"
+            <Switch
+              checked={options.recursive}
+              onCheckedChange={(checked) => setOptions({ ...options, recursive: checked })}
+              className="bg-zinc-700 data-[state=checked]:bg-white"
             />
           </div>
 
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label className="text-base text-white">HTTP Password</Label>
-              <p className="text-sm text-zinc-400">Set HTTP password</p>
+              <Label className="text-base text-white">Continue (-c)</Label>
+              <p className="text-sm text-zinc-400">Resume partially downloaded files</p>
             </div>
-            <Input
-              type="password"
-              value={options.httpPassword}
-              onChange={(e) => setOptions({ ...options, httpPassword: e.target.value })}
-              placeholder="HTTP password"
-              className="bg-black border-white/20 text-white w-[200px]"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label className="text-base text-white">Post Data</Label>
-              <p className="text-sm text-zinc-400">Use POST method; send string</p>
-            </div>
-            <Input
-              value={options.postData}
-              onChange={(e) => setOptions({ ...options, postData: e.target.value })}
-              placeholder="POST data"
-              className="bg-black border-white/20 text-white w-[200px]"
-            />
-          </div>
-        </div>
-
-        {/* FTP Options */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium text-white">FTP Options</h3>
-          
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label className="text-base text-white">FTP User</Label>
-              <p className="text-sm text-zinc-400">Set FTP user</p>
-            </div>
-            <Input
-              value={options.ftpUser}
-              onChange={(e) => setOptions({ ...options, ftpUser: e.target.value })}
-              placeholder="FTP username"
-              className="bg-black border-white/20 text-white w-[200px]"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label className="text-base text-white">FTP Password</Label>
-              <p className="text-sm text-zinc-400">Set FTP password</p>
-            </div>
-            <Input
-              type="password"
-              value={options.ftpPassword}
-              onChange={(e) => setOptions({ ...options, ftpPassword: e.target.value })}
-              placeholder="FTP password"
-              className="bg-black border-white/20 text-white w-[200px]"
+            <Switch
+              checked={options.continueTransfer}
+              onCheckedChange={(checked) => setOptions({ ...options, continueTransfer: checked })}
+              className="bg-zinc-700 data-[state=checked]:bg-white"
             />
           </div>
         </div>
