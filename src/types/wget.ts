@@ -10,7 +10,6 @@ export interface WgetOptions {
   fileTypes: string[];
   excludeFileTypes: string[];
   includeParents: boolean;
-  // New options
   userAgent: string;
   limitRate: string;
   outputFile: string;
@@ -38,6 +37,24 @@ export interface WgetOptions {
   backupConverted: boolean;
   deleteAfter: boolean;
   verifySSL: boolean;
+  spiderMode: boolean;
+  mirror: boolean;
+  pageRequisites: boolean;
+  executeCommand: string;
+  domains: string;
+  excludeDomains: string;
+  noParent: boolean;
+  relativePaths: boolean;
+  backupOriginal: boolean;
+  strictComments: boolean;
+  infiniteRecursion: boolean;
+  dontRemoveListings: boolean;
+  quotaCommand: string;
+  bindAddress: string;
+  cacheDir: string;
+  noCache: boolean;
+  noCheckCertificate: boolean;
+  noVerbose: boolean;
 }
 
 export type FileTypeOption = {

@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { WgetOptions } from "@/types/wget";
 import { Card } from "@/components/ui/card";
+import { WgetSpiderOptions } from "./WgetSpiderOptions";
+import { WgetMirrorOptions } from "./WgetMirrorOptions";
 
 interface Props {
   options: WgetOptions;
@@ -24,7 +26,7 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
           <Input
             value={options.userAgent}
             onChange={(e) => setOptions({ ...options, userAgent: e.target.value })}
-            placeholder="Mozilla/5.0..."
+            placeholder="e.g., Mozilla/5.0..."
             className="bg-black border-white/20 text-white"
           />
         </div>
@@ -43,8 +45,9 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
           <Label className="text-white">Timeout (seconds)</Label>
           <Input
             type="number"
-            value={options.timeout}
+            value={options.timeout || ""}
             onChange={(e) => setOptions({ ...options, timeout: parseInt(e.target.value) || 0 })}
+            placeholder="e.g., 30"
             className="bg-black border-white/20 text-white"
           />
         </div>
@@ -53,8 +56,20 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
           <Label className="text-white">Retries</Label>
           <Input
             type="number"
-            value={options.retries}
+            value={options.retries || ""}
             onChange={(e) => setOptions({ ...options, retries: parseInt(e.target.value) || 0 })}
+            placeholder="e.g., 3"
+            className="bg-black border-white/20 text-white"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-white">Wait Time (seconds)</Label>
+          <Input
+            type="number"
+            value={options.waitTime || ""}
+            onChange={(e) => setOptions({ ...options, waitTime: parseInt(e.target.value) || 0 })}
+            placeholder="e.g., 1"
             className="bg-black border-white/20 text-white"
           />
         </div>
@@ -136,6 +151,9 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
           />
         </div>
       </div>
+
+      <WgetSpiderOptions options={options} setOptions={setOptions} />
+      <WgetMirrorOptions options={options} setOptions={setOptions} />
     </Card>
   );
 };
