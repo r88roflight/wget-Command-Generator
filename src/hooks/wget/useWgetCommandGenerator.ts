@@ -1,226 +1,106 @@
-import { WgetOptions } from "@/types/wget";
+const escapeValue = (value: string) => {
+  // Escape special characters and wrap in quotes if contains spaces
+  if (!value) return '';
+  const needsQuotes = value.includes(' ') || value.includes('\t');
+  const escaped = value.replace(/(["'$`\\])/g, '\\$1');
+  return needsQuotes ? `"${escaped}"` : escaped;
+};
 
 export const useWgetCommandGenerator = () => {
   const generateCommand = (options: WgetOptions) => {
-    const flags = [];
+    const flags: string[] = [];
     
+    // Helper to add a flag with optional value
+    const addFlag = (flag: string, value?: string) => {
+      if (value !== undefined && value !== '') {
+        flags.push(`${flag}=${escapeValue(value)}`);
+      }
+    };
+
+    // Helper to add a boolean flag
+    const addBooleanFlag = (flag: string, value: boolean) => {
+      if (value) flags.push(flag);
+    };
+
+    // URL validation
     if (!options.url && !options.inputFile) return "wget";
     
     // Input/Output flags
-    if (options.inputFile) {
-      flags.push(`-i "${options.inputFile}"`);
-    }
-
-    if (options.directoryPrefix) {
-      flags.push(`-P "${options.directoryPrefix}"`);
-    }
-
-    if (options.outputDocument) {
-      flags.push(`-O "${options.outputDocument}"`);
-    }
-
-    if (options.appendOutput) {
-      flags.push(`-a "${options.appendOutput}"`);
-    }
+    if (options.inputFile) addFlag('-i', options.inputFile);
+    if (options.directoryPrefix) addFlag('-P', options.directoryPrefix);
+    if (options.outputDocument) addFlag('-O', options.outputDocument);
+    if (options.appendOutput) addFlag('-a', options.appendOutput);
 
     // Directory options
-    if (options.cutDirs > 0) {
-      flags.push(`--cut-dirs=${options.cutDirs}`);
-    }
+    if (options.cutDirs > 0) addFlag('--cut-dirs', options.cutDirs.toString());
+    addBooleanFlag('-nd', options.noDirectories === 'true');
 
-    if (options.noDirectories) {
-      flags.push('-nd');
-    }
-
+    // Authentication
+    if (options.basicUser) addFlag('--user', options.basicUser);
+    if (options.basicPassword) addFlag('--password', options.basicPassword);
+    
     // HTTP options
-    if (options.httpUser) {
-      flags.push(`-U "${options.httpUser}"`);
-    }
-
-    if (options.httpPassword) {
-      flags.push(`--password="${options.httpPassword}"`);
-    }
-
-    if (options.postData) {
-      flags.push(`--post-data="${options.postData}"`);
-    }
+    if (options.httpUser) addFlag('--http-user', options.httpUser);
+    if (options.httpPassword) addFlag('--http-password', options.httpPassword);
+    if (options.postData) addFlag('--post-data', options.postData);
 
     // FTP options
-    if (options.ftpUser) {
-      flags.push(`--ftp-user="${options.ftpUser}"`);
+    if (options.ftpUser) addFlag('--ftp-user', options.ftpUser);
+    if (options.ftpPassword) addFlag('--ftp-password', options.ftpPassword);
+
+    // Recursive and depth options
+    addBooleanFlag('-r', options.recursive);
+    if (options.recursive && options.maxDepth > 0) {
+      addFlag('--level', options.maxDepth.toString());
     }
 
-    if (options.ftpPassword) {
-      flags.push(`--ftp-password="${options.ftpPassword}"`);
-    }
+    // Parent directory handling
+    if (!options.includeParents) flags.push('--no-parent');
 
-    if (options.recursive) {
-      flags.push("-r");
-      if (options.maxDepth > 0) {
-        flags.push(`--level=${options.maxDepth}`);
-      }
-    }
+    // Wait times
+    if (options.waitTime > 0) addFlag('--wait', options.waitTime.toString());
+    addBooleanFlag('--random-wait', options.randomWait);
 
-    // Handle parent directory option independently of recursive
-    if (!options.includeParents) {
-      flags.push("--no-parent");
-    }
-
-    if (options.waitTime > 0) {
-      flags.push(`--wait=${options.waitTime}`);
-    }
-
-    if (options.randomWait) {
-      flags.push("--random-wait");
-    }
-
+    // File type handling
     if (options.fileTypes?.length > 0) {
-      flags.push(`--accept=${options.fileTypes.join(',')}`);
+      addFlag('--accept', options.fileTypes.join(','));
     }
-
     if (options.excludeFileTypes?.length > 0) {
-      flags.push(`--reject=${options.excludeFileTypes.join(',')}`);
+      addFlag('--reject', options.excludeFileTypes.join(','));
     }
 
-    if (options.noClobber) {
-      flags.push("--no-clobber");
-    }
+    // Various boolean flags
+    addBooleanFlag('--no-clobber', options.noClobber);
+    addBooleanFlag('--adjust-extension', options.adjustExtension);
+    addBooleanFlag('--continue', options.continueTransfer);
+    addBooleanFlag('-k', options.convertLinks);
+    addBooleanFlag('--spider', options.spiderMode);
+    addBooleanFlag('--mirror', options.mirror);
+    addBooleanFlag('--page-requisites', options.pageRequisites);
+    addBooleanFlag('--https-only', options.httpsOnly);
+    addBooleanFlag('--follow-ftp', options.followFtp);
+    addBooleanFlag('--content-disposition', options.contentDisposition);
 
-    if (options.adjustExtension) {
-      flags.push("--adjust-extension");
-    }
+    // Rate limiting and timeouts
+    if (options.limitRate) addFlag('--limit-rate', options.limitRate);
+    if (options.timeout > 0) addFlag('--timeout', options.timeout.toString());
+    if (options.retries > 0) addFlag('--tries', options.retries.toString());
 
-    if (options.continueTransfer) {
-      flags.push("--continue");
-    }
+    // New options
+    addBooleanFlag('--no-check-certificate', options.noCheckCert);
+    addBooleanFlag('--retry-connrefused', options.retryConnRefused);
+    addBooleanFlag('--progress=bar', options.progressBar);
+    if (options.quota) addFlag('--quota', options.quota);
+    if (options.dnsTimeout > 0) addFlag('--dns-timeout', options.dnsTimeout.toString());
+    addBooleanFlag('--dns-cache', options.dnsCache);
+    addBooleanFlag('--inet4-only', options.inet4Only);
+    addBooleanFlag('--inet6-only', options.inet6Only);
+    addBooleanFlag('--cache', options.useCache);
+    addBooleanFlag('--no-cache', options.noCache);
 
-    if (options.convertLinks) {
-      flags.push("--convert-links");
-    }
-
-    if (options.userAgent) {
-      flags.push(`--user-agent="${options.userAgent}"`);
-    }
-
-    if (options.limitRate) {
-      flags.push(`--limit-rate=${options.limitRate}`);
-    }
-
-    if (options.timeout > 0) {
-      flags.push(`--timeout=${options.timeout}`);
-    }
-
-    if (options.retries > 0) {
-      flags.push(`--tries=${options.retries}`);
-    }
-
-    if (options.username && options.password) {
-      flags.push(`--user=${options.username}`);
-      flags.push(`--password=${options.password}`);
-    }
-
-    if (options.spiderMode) {
-      flags.push("--spider");
-    }
-
-    if (options.mirror) {
-      flags.push("--mirror");
-    }
-
-    if (options.pageRequisites) {
-      flags.push("--page-requisites");
-    }
-
-    if (options.httpsOnly) {
-      flags.push("--https-only");
-    }
-
-    if (options.followFtp) {
-      flags.push("--follow-ftp");
-    }
-
-    if (options.contentDisposition) {
-      flags.push("--content-disposition");
-    }
-
-    if (options.saveDirectory) {
-      flags.push(`-P "${options.saveDirectory}"`);
-    }
-
-    if (options.backupConverted) {
-      flags.push("--backup-converted");
-    }
-
-    if (options.deleteAfter) {
-      flags.push("--delete-after");
-    }
-
-    if (options.tempFile) {
-      flags.push("--output-document=.tmp");
-    }
-
-    if (options.maxFileSize) {
-      flags.push(`--max-filesize=${options.maxFileSize}`);
-    }
-
-    if (options.minFileSize) {
-      flags.push(`--min-filesize=${options.minFileSize}`);
-    }
-
-    if (options.rejectRegex) {
-      flags.push(`--reject-regex="${options.rejectRegex}"`);
-    }
-
-    if (options.recursionLevel > 0) {
-      flags.push(`--level=${options.recursionLevel}`);
-    }
-
-    if (options.sameDomain) {
-      flags.push("--span-hosts=off");
-    }
-
-    if (options.domains) {
-      flags.push(`--domains=${options.domains}`);
-    }
-
-    if (options.excludeDomains) {
-      flags.push(`--exclude-domains=${options.excludeDomains}`);
-    }
-
-    if (options.ignoreRobots) {
-      flags.push("--execute robots=off");
-    }
-
-    if (options.httpsProxy) {
-      flags.push(`--https-proxy=${options.httpsProxy}`);
-    }
-
-    if (options.noCheckCertificate) {
-      flags.push("--no-check-certificate");
-    }
-
-    if (options.caCertificate) {
-      flags.push(`--ca-certificate=${options.caCertificate}`);
-    }
-
-    if (options.connectionLimit) {
-      flags.push(`--limit-rate=${options.connectionLimit}`);
-    }
-
-    if (options.logOnlyErrors) {
-      flags.push("--quiet");
-    }
-
-    if (options.debug) {
-      flags.push("--debug");
-    }
-
-    if (options.timestamping) {
-      flags.push("--timestamping");
-    }
-
+    // Build final command
     const baseCommand = `wget ${flags.join(" ")}`;
-    return options.inputFile ? baseCommand : `${baseCommand} "${options.url}"`;
+    return options.inputFile ? baseCommand : `${baseCommand} ${escapeValue(options.url)}`;
   };
 
   return { generateCommand };

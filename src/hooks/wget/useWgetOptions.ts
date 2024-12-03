@@ -69,7 +69,23 @@ const defaultOptions: WgetOptions = {
   httpPassword: "",
   postData: "",
   ftpUser: "",
-  ftpPassword: ""
+  ftpPassword: "",
+
+  // New options with defaults
+  basicUser: "",
+  basicPassword: "",
+  secureProtocol: "",
+  noCheckCert: false,
+  tries: 20,
+  retryConnRefused: false,
+  progressBar: true,
+  quota: "",
+  dnsTimeout: 0,
+  dnsCache: true,
+  inet4Only: false,
+  inet6Only: false,
+  useCache: true,
+  noCache: false,
 };
 
 export const useWgetOptions = () => {
