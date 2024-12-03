@@ -4,7 +4,7 @@ import { WgetOptions } from "@/types/wget";
 const defaultOptions: WgetOptions = {
   url: "",
   recursive: false,
-  maxDepth: 5,
+  maxDepth: 0,
   waitTime: 0,
   followLinks: false,
   includePattern: "",
@@ -43,7 +43,7 @@ const defaultOptions: WgetOptions = {
   maxFileSize: "",
   minFileSize: "",
   rejectRegex: "",
-  recursionLevel: 5,
+  recursionLevel: 0,
   sameDomain: false,
   domains: "",
   excludeDomains: "",
