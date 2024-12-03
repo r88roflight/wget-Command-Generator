@@ -1,5 +1,6 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { WgetOptions } from "@/types/wget";
@@ -19,72 +20,54 @@ export const WgetFlags = ({ options, setOptions }: Props) => {
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-white">Input/Output Flags</h3>
           
-          <div className="space-y-2">
-            <Label className="text-white">Input File (-i)</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Input File (-i)</Label>
+              <p className="text-sm text-zinc-400">Read URLs from a file</p>
+            </div>
             <Input
               value={options.inputFile}
               onChange={(e) => setOptions({ ...options, inputFile: e.target.value })}
               placeholder="Path to file containing URLs"
-              className="bg-black border-white/20 text-white"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
-            <p className="text-sm text-zinc-400">Read URLs from a local or external file</p>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-white">Directory Prefix (-P)</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Directory Prefix (-P)</Label>
+              <p className="text-sm text-zinc-400">Set directory prefix for all files</p>
+            </div>
             <Input
               value={options.directoryPrefix}
               onChange={(e) => setOptions({ ...options, directoryPrefix: e.target.value })}
-              placeholder="Directory prefix for all files"
-              className="bg-black border-white/20 text-white"
+              placeholder="Directory prefix"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
-            <p className="text-sm text-zinc-400">Set directory prefix for all files</p>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-white">Output Document (-O)</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Output Document (-O)</Label>
+              <p className="text-sm text-zinc-400">Write documents to FILE</p>
+            </div>
             <Input
               value={options.outputDocument}
               onChange={(e) => setOptions({ ...options, outputDocument: e.target.value })}
-              placeholder="Write documents to FILE"
-              className="bg-black border-white/20 text-white"
+              placeholder="Output filename"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-white">Append Output (-a)</Label>
-            <Input
-              value={options.appendOutput}
-              onChange={(e) => setOptions({ ...options, appendOutput: e.target.value })}
-              placeholder="Append to LOG"
-              className="bg-black border-white/20 text-white"
-            />
-          </div>
-        </div>
-
-        {/* Directory Options */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium text-white">Directory Options</h3>
-          
-          <div className="space-y-2">
-            <Label className="text-white">Cut Directories (--cut-dirs)</Label>
-            <Input
-              type="number"
-              min="0"
-              value={options.cutDirs}
-              onChange={(e) => setOptions({ ...options, cutDirs: parseInt(e.target.value) || 0 })}
-              placeholder="Number of directory components to cut"
-              className="bg-black border-white/20 text-white"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-white">Directory Prefix (-nd, --no-directories)</Label>
-            <Input
-              value={options.noDirectories}
-              onChange={(e) => setOptions({ ...options, noDirectories: e.target.value })}
-              placeholder="Don't create directories"
-              className="bg-black border-white/20 text-white"
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">No Directories (-nd)</Label>
+              <p className="text-sm text-zinc-400">Don't create directories</p>
+            </div>
+            <Switch
+              checked={options.noDirectories === "true"}
+              onCheckedChange={(checked) => setOptions({ ...options, noDirectories: checked ? "true" : "false" })}
+              className="bg-zinc-700 data-[state=checked]:bg-white"
             />
           </div>
         </div>
@@ -93,34 +76,43 @@ export const WgetFlags = ({ options, setOptions }: Props) => {
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-white">HTTP Options</h3>
           
-          <div className="space-y-2">
-            <Label className="text-white">HTTP User (-U, --user)</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">HTTP User</Label>
+              <p className="text-sm text-zinc-400">Set HTTP user</p>
+            </div>
             <Input
               value={options.httpUser}
               onChange={(e) => setOptions({ ...options, httpUser: e.target.value })}
-              placeholder="Set HTTP user"
-              className="bg-black border-white/20 text-white"
+              placeholder="HTTP username"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-white">HTTP Password (--password)</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">HTTP Password</Label>
+              <p className="text-sm text-zinc-400">Set HTTP password</p>
+            </div>
             <Input
               type="password"
               value={options.httpPassword}
               onChange={(e) => setOptions({ ...options, httpPassword: e.target.value })}
-              placeholder="Set HTTP password"
-              className="bg-black border-white/20 text-white"
+              placeholder="HTTP password"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-white">Post Data (--post-data)</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">Post Data</Label>
+              <p className="text-sm text-zinc-400">Use POST method; send string</p>
+            </div>
             <Input
               value={options.postData}
               onChange={(e) => setOptions({ ...options, postData: e.target.value })}
-              placeholder="Use POST method; send string"
-              className="bg-black border-white/20 text-white"
+              placeholder="POST data"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
           </div>
         </div>
@@ -129,24 +121,30 @@ export const WgetFlags = ({ options, setOptions }: Props) => {
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-white">FTP Options</h3>
           
-          <div className="space-y-2">
-            <Label className="text-white">FTP User</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">FTP User</Label>
+              <p className="text-sm text-zinc-400">Set FTP user</p>
+            </div>
             <Input
               value={options.ftpUser}
               onChange={(e) => setOptions({ ...options, ftpUser: e.target.value })}
-              placeholder="Set FTP user"
-              className="bg-black border-white/20 text-white"
+              placeholder="FTP username"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-white">FTP Password</Label>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base text-white">FTP Password</Label>
+              <p className="text-sm text-zinc-400">Set FTP password</p>
+            </div>
             <Input
               type="password"
               value={options.ftpPassword}
               onChange={(e) => setOptions({ ...options, ftpPassword: e.target.value })}
-              placeholder="Set FTP password"
-              className="bg-black border-white/20 text-white"
+              placeholder="FTP password"
+              className="bg-black border-white/20 text-white w-[200px]"
             />
           </div>
         </div>
