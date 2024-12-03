@@ -37,7 +37,7 @@ export const PresetCommand = ({ command, onDelete }: PresetCommandProps) => {
       ref={buttonRef}
       variant="ghost"
       size="icon"
-      className="hover:bg-zinc-900"
+      className="w-8 h-8 hover:bg-zinc-900"
       onClick={handleClick}
     >
       {showX ? (
