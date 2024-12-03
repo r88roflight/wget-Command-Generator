@@ -38,11 +38,17 @@ export const allPresets: Preset[] = [
   {
     name: "Download a File",
     description: "Downloads a single file from a URL",
-    commands: [],
+    commands: [
+      "--no-verbose",
+      "--show-progress",
+      "--content-disposition"
+    ],
     options: {
       url: "",
       saveDirectory: "",
-      outputDocument: ""
+      outputDocument: "",
+      contentDisposition: true,
+      verbose: false
     }
   },
   {
@@ -51,12 +57,14 @@ export const allPresets: Preset[] = [
     commands: [
       "--input-file=",
       "--continue",
-      "--retry-connrefused"
+      "--retry-connrefused",
+      "--no-clobber"
     ],
     options: {
       inputFile: "",
       continueTransfer: true,
-      retryConnRefused: true
+      retryConnRefused: true,
+      noClobber: true
     }
   },
   {
@@ -64,11 +72,15 @@ export const allPresets: Preset[] = [
     description: "Continues a partially downloaded file",
     commands: [
       "--continue",
-      "--retry-connrefused"
+      "--retry-connrefused",
+      "--tries=0",
+      "--timeout=60"
     ],
     options: {
       continueTransfer: true,
-      retryConnRefused: true
+      retryConnRefused: true,
+      retries: 0,
+      timeout: 60
     }
   },
   {
@@ -76,32 +88,42 @@ export const allPresets: Preset[] = [
     description: "Downloads files in the background",
     commands: [
       "--background",
-      "--no-verbose"
+      "--no-verbose",
+      "--continue"
     ],
     options: {
       background: true,
-      verbose: false
+      verbose: false,
+      continueTransfer: true
     }
   },
   {
     name: "Limit the Download Speed",
     description: "Restricts bandwidth usage",
     commands: [
-      "--limit-rate=100k"
+      "--limit-rate=100k",
+      "--wait=1",
+      "--random-wait"
     ],
     options: {
-      limitRate: "100k"
+      limitRate: "100k",
+      waitTime: 1,
+      randomWait: true
     }
   },
   {
     name: "Download to Specific Directory",
     description: "Saves files to a specified location",
     commands: [
-      "--directory-prefix="
+      "--directory-prefix=",
+      "--no-host-directories",
+      "--cut-dirs=0"
     ],
     options: {
       directoryPrefix: "",
-      saveDirectory: ""
+      saveDirectory: "",
+      noHostDirs: true,
+      cutDirs: 0
     }
   },
   {
@@ -109,11 +131,13 @@ export const allPresets: Preset[] = [
     description: "Downloads files requiring HTTP authentication",
     commands: [
       "--http-user=",
-      "--http-password="
+      "--http-password=",
+      "--auth-no-challenge"
     ],
     options: {
       httpUser: "",
-      httpPassword: ""
+      httpPassword: "",
+      executeCommand: "auth-no-challenge"
     }
   },
   {
@@ -121,7 +145,8 @@ export const allPresets: Preset[] = [
     description: "Downloads files requiring FTP authentication",
     commands: [
       "--ftp-user=",
-      "--ftp-password="
+      "--ftp-password=",
+      "--no-remove-listing"
     ],
     options: {
       ftpUser: "",
@@ -133,11 +158,15 @@ export const allPresets: Preset[] = [
     description: "Downloads files from a list of URLs",
     commands: [
       "--input-file=",
-      "--continue"
+      "--continue",
+      "--no-clobber",
+      "--wait=1"
     ],
     options: {
       inputFile: "",
-      continueTransfer: true
+      continueTransfer: true,
+      noClobber: true,
+      waitTime: 1
     }
   },
   {
@@ -174,6 +203,57 @@ export const allPresets: Preset[] = [
       adjustExtension: true,
       convertLinks: true,
       includeParents: false
+    }
+  },
+  {
+    name: "Download All Images",
+    description: "Downloads all image files from a website",
+    commands: [
+      "--recursive",
+      "--no-parent",
+      "--accept=jpg,jpeg,png,gif,bmp,webp,svg",
+      "--level=1",
+      "--no-directories"
+    ],
+    options: {
+      recursive: true,
+      includeParents: false,
+      maxDepth: 1,
+      fileTypes: ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"]
+    }
+  },
+  {
+    name: "Download All Audio",
+    description: "Downloads all audio files from a website",
+    commands: [
+      "--recursive",
+      "--no-parent",
+      "--accept=mp3,wav,ogg,m4a,flac",
+      "--level=1",
+      "--no-directories"
+    ],
+    options: {
+      recursive: true,
+      includeParents: false,
+      maxDepth: 1,
+      fileTypes: ["mp3", "wav", "ogg", "m4a", "flac"]
+    }
+  },
+  {
+    name: "Download All Videos",
+    description: "Downloads all video files from a website",
+    commands: [
+      "--recursive",
+      "--no-parent",
+      "--accept=mp4,webm,avi,mov,mkv",
+      "--level=1",
+      "--no-directories"
+    ],
+    options: {
+      recursive: true,
+      includeParents: false,
+      maxDepth: 1,
+      fileTypes: ["mp4", "webm", "avi", "mov", "mkv"]
     }
   }
 ];
