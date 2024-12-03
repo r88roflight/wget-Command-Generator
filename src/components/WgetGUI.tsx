@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { WgetTabs } from "./wget/WgetTabs";
 import { useWgetCommand } from "@/hooks/useWgetCommand";
-import { Clipboard, Recycle } from "lucide-react";
+import { Clipboard, RotateCw } from "lucide-react";
 
 const WgetGUI = () => {
   const { toast } = useToast();
@@ -58,7 +58,7 @@ const WgetGUI = () => {
               onClick={handleResetAll}
               className="border-white/20 hover:bg-zinc-900 bg-black"
             >
-              <Recycle className="h-4 w-4 text-white" />
+              <RotateCw className="h-4 w-4 text-white" />
             </Button>
           </div>
         </Card>
