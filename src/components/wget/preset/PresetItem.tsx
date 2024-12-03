@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, Minus, X } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { EditableText } from "../EditableText";
-import { PresetCommands } from "../../wget/PresetCommands";
+import { PresetCommands } from "./PresetCommands";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { Preset } from "../types/preset";
 
