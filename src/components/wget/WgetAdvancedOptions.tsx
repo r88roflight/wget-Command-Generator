@@ -4,9 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { WgetOptions } from "@/types/wget";
 import { Card } from "@/components/ui/card";
-import { WgetSpiderOptions } from "./WgetSpiderOptions";
-import { WgetMirrorOptions } from "./WgetMirrorOptions";
-import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
 
 interface Props {
   options: WgetOptions;
@@ -143,69 +140,9 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
         </div>
       </div>
 
-      {/* Recursion and Mirroring */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-white">Recursion and Mirroring</h3>
-        
-        <div className="space-y-2">
-          <Label className="text-white">Recursion Level</Label>
-          <Input
-            type="number"
-            value={options.recursionLevel || ""}
-            onChange={(e) => setOptions({ ...options, recursionLevel: parseInt(e.target.value) || 0 })}
-            placeholder="e.g., 5"
-            className="bg-black border-white/20 text-white"
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label className="text-base text-white">Same Domain Only</Label>
-            <p className="text-sm text-zinc-400">Restrict to current domain</p>
-          </div>
-          <Switch
-            checked={options.sameDomain}
-            onCheckedChange={(checked) => setOptions({ ...options, sameDomain: checked })}
-            className="bg-zinc-700 data-[state=checked]:bg-white"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-white">Include Domains</Label>
-          <Input
-            value={options.domains}
-            onChange={(e) => setOptions({ ...options, domains: e.target.value })}
-            placeholder="e.g., domain1.com,domain2.com"
-            className="bg-black border-white/20 text-white"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-white">Exclude Domains</Label>
-          <Input
-            value={options.excludeDomains}
-            onChange={(e) => setOptions({ ...options, excludeDomains: e.target.value })}
-            placeholder="e.g., ads.com,tracking.com"
-            className="bg-black border-white/20 text-white"
-          />
-        </div>
-      </div>
-
       {/* Security and Authentication */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-white">Security and Authentication</h3>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label className="text-base text-white">Ignore Robots.txt</Label>
-            <p className="text-sm text-zinc-400">Bypass robots.txt restrictions</p>
-          </div>
-          <Switch
-            checked={options.ignoreRobots}
-            onCheckedChange={(checked) => setOptions({ ...options, ignoreRobots: checked })}
-            className="bg-zinc-700 data-[state=checked]:bg-white"
-          />
-        </div>
 
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
@@ -244,40 +181,6 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
           />
         </div>
       </div>
-
-      {/* Debugging */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-white">Debugging</h3>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label className="text-base text-white">Log Only Errors</Label>
-            <p className="text-sm text-zinc-400">Suppress non-error output</p>
-          </div>
-          <Switch
-            checked={options.logOnlyErrors}
-            onCheckedChange={(checked) => setOptions({ ...options, logOnlyErrors: checked })}
-            className="bg-zinc-700 data-[state=checked]:bg-white"
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label className="text-base text-white">Debug Mode</Label>
-            <p className="text-sm text-zinc-400">Show detailed debugging information</p>
-          </div>
-          <Switch
-            checked={options.debug}
-            onCheckedChange={(checked) => setOptions({ ...options, debug: checked })}
-            className="bg-zinc-700 data-[state=checked]:bg-white"
-          />
-        </div>
-      </div>
-
-      {/* Existing components */}
-      <WgetDownloadBehavior options={options} setOptions={setOptions} />
-      <WgetSpiderOptions options={options} setOptions={setOptions} />
-      <WgetMirrorOptions options={options} setOptions={setOptions} />
     </Card>
   );
 };

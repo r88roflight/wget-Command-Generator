@@ -1,12 +1,11 @@
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WgetOptions } from "@/types/wget";
 import { WgetAdvancedOptions } from "./WgetAdvancedOptions";
-import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
 import { WgetFileTypes } from "./WgetFileTypes";
 import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { WgetDebuggingOptions } from "./WgetDebuggingOptions";
 
 interface Props {
   options: WgetOptions;
@@ -58,40 +57,15 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
       
       <TabsContent value="behavior" className="mt-4">
         <Card className="p-6 bg-black border border-white/20">
-          <WgetDownloadBehavior options={options} setOptions={setOptions} />
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-white">Download Behavior</h3>
+            {/* Add download behavior specific options here */}
+          </div>
         </Card>
       </TabsContent>
       
       <TabsContent value="debugging" className="mt-4">
-        <Card className="p-6 bg-black border border-white/20">
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-white">Debugging Options</h3>
-            
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label className="text-base text-white">Log Only Errors</Label>
-                <p className="text-sm text-zinc-400">Suppress non-error output</p>
-              </div>
-              <Switch
-                checked={options.logOnlyErrors}
-                onCheckedChange={(checked) => setOptions({ ...options, logOnlyErrors: checked })}
-                className="bg-zinc-700 data-[state=checked]:bg-white"
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label className="text-base text-white">Debug Mode</Label>
-                <p className="text-sm text-zinc-400">Show detailed debugging information</p>
-              </div>
-              <Switch
-                checked={options.debug}
-                onCheckedChange={(checked) => setOptions({ ...options, debug: checked })}
-                className="bg-zinc-700 data-[state=checked]:bg-white"
-              />
-            </div>
-          </div>
-        </Card>
+        <WgetDebuggingOptions options={options} setOptions={setOptions} />
       </TabsContent>
     </Tabs>
   );
