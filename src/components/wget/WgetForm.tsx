@@ -4,6 +4,7 @@ import { WgetUrlInput } from "./WgetUrlInput";
 import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
 import { WgetDirectoryInput } from "./WgetDirectoryInput";
 import { WgetFileTypes } from "./WgetFileTypes";
+import { WgetAdvancedOptions } from "./WgetAdvancedOptions";
 import { useWgetCommand } from "@/hooks/useWgetCommand";
 import { Clipboard } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -53,6 +54,8 @@ const WgetForm = () => {
             <WgetFileTypes options={options} setOptions={setOptions} />
           </div>
         </Card>
+
+        <WgetAdvancedOptions options={options} setOptions={setOptions} />
       </form>
     </div>
   );

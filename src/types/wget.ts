@@ -10,6 +10,34 @@ export interface WgetOptions {
   fileTypes: string[];
   excludeFileTypes: string[];
   includeParents: boolean;
+  // New options
+  userAgent: string;
+  limitRate: string;
+  outputFile: string;
+  logFile: string;
+  username: string;
+  password: string;
+  cookieFile: string;
+  saveCookies: boolean;
+  retries: number;
+  timeout: number;
+  continueDownload: boolean;
+  noHostDirs: boolean;
+  cutDirs: number;
+  noClobber: boolean;
+  debug: boolean;
+  convertLinks: boolean;
+  adjustExtension: boolean;
+  proxyEnabled: boolean;
+  proxyUser: string;
+  proxyPass: string;
+  timestamping: boolean;
+  randomWait: boolean;
+  httpsOnly: boolean;
+  ignoreRobots: boolean;
+  backupConverted: boolean;
+  deleteAfter: boolean;
+  verifySSL: boolean;
 }
 
 export type FileTypeOption = {
