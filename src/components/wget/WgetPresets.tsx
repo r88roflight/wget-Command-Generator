@@ -1,6 +1,5 @@
 import React from "react";
 import { WgetOptions } from "@/types/wget";
-import { PresetProvider } from "./preset/PresetContext";
 import { PresetHeader } from "./preset/PresetHeader";
 import { PresetList } from "./preset/PresetList";
 import { DeletePresetDialog } from "./DeletePresetDialog";
@@ -15,25 +14,23 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   const [selectedPreset, setSelectedPreset] = React.useState<string | null>(null);
 
   return (
-    <PresetProvider>
-      <div className="space-y-4">
-        <PresetHeader />
-        <PresetList
-          options={options}
-          setOptions={setOptions}
-        />
-        <DeletePresetDialog
-          open={deleteDialogOpen}
-          onOpenChange={setDeleteDialogOpen}
-          onConfirm={() => {
-            if (selectedPreset) {
-              setDeleteDialogOpen(false);
-              setSelectedPreset(null);
-            }
-          }}
-          presetName={selectedPreset || ""}
-        />
-      </div>
-    </PresetProvider>
+    <div className="space-y-4">
+      <PresetHeader />
+      <PresetList
+        options={options}
+        setOptions={setOptions}
+      />
+      <DeletePresetDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={() => {
+          if (selectedPreset) {
+            setDeleteDialogOpen(false);
+            setSelectedPreset(null);
+          }
+        }}
+        presetName={selectedPreset || ""}
+      />
+    </div>
   );
 };
