@@ -5,7 +5,7 @@ export const generateDebuggingFlags = (options: WgetOptions): string[] => {
   
   if (options.logOnlyErrors) flags.push('--quiet');
   if (options.debug) flags.push('--debug');
-  if (!options.verifySSL) flags.push('--no-check-certificate');
+  if (options.noCheckCertificate) flags.push('--no-check-certificate');
   if (options.noCheckCert) flags.push('--no-check-certificate');
   if (options.retryConnRefused) flags.push('--retry-connrefused');
   if (options.progressBar) flags.push('--progress=bar');

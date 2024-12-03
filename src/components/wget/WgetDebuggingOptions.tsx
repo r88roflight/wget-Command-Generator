@@ -17,6 +17,18 @@ export const WgetDebuggingOptions = ({ options, setOptions }: Props) => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
+            <Label className="text-base text-white">Skip Certificate Check</Label>
+            <p className="text-sm text-zinc-400">Skip certificate validation (use with caution)</p>
+          </div>
+          <Switch
+            checked={options.noCheckCertificate}
+            onCheckedChange={(checked) => setOptions({ ...options, noCheckCertificate: checked })}
+            className="bg-zinc-700 data-[state=checked]:bg-white"
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
             <Label className="text-base text-white">Log Only Errors</Label>
             <p className="text-sm text-zinc-400">Suppress non-error output</p>
           </div>
@@ -41,60 +53,48 @@ export const WgetDebuggingOptions = ({ options, setOptions }: Props) => {
 
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <Label className="text-base text-white">Verify SSL</Label>
-            <p className="text-sm text-zinc-400">Verify SSL certificates</p>
+            <Label className="text-base text-white">Progress Bar</Label>
+            <p className="text-sm text-zinc-400">Show download progress</p>
           </div>
           <Switch
-            checked={options.verifySSL}
-            onCheckedChange={(checked) => setOptions({ ...options, verifySSL: checked })}
+            checked={options.progressBar}
+            onCheckedChange={(checked) => setOptions({ ...options, progressBar: checked })}
             className="bg-zinc-700 data-[state=checked]:bg-white"
           />
         </div>
 
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <Label className="text-base text-white">Content Disposition</Label>
-            <p className="text-sm text-zinc-400">Use server's suggested filename</p>
+            <Label className="text-base text-white">DNS Cache</Label>
+            <p className="text-sm text-zinc-400">Enable DNS caching</p>
           </div>
           <Switch
-            checked={options.contentDisposition}
-            onCheckedChange={(checked) => setOptions({ ...options, contentDisposition: checked })}
+            checked={options.dnsCache}
+            onCheckedChange={(checked) => setOptions({ ...options, dnsCache: checked })}
             className="bg-zinc-700 data-[state=checked]:bg-white"
           />
         </div>
 
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <Label className="text-base text-white">Adjust Extension</Label>
-            <p className="text-sm text-zinc-400">Add appropriate extensions to files</p>
+            <Label className="text-base text-white">IPv4 Only</Label>
+            <p className="text-sm text-zinc-400">Use only IPv4</p>
           </div>
           <Switch
-            checked={options.adjustExtension}
-            onCheckedChange={(checked) => setOptions({ ...options, adjustExtension: checked })}
+            checked={options.inet4Only}
+            onCheckedChange={(checked) => setOptions({ ...options, inet4Only: checked })}
             className="bg-zinc-700 data-[state=checked]:bg-white"
           />
         </div>
 
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <Label className="text-base text-white">No Clobber</Label>
-            <p className="text-sm text-zinc-400">Don't overwrite existing files</p>
+            <Label className="text-base text-white">IPv6 Only</Label>
+            <p className="text-sm text-zinc-400">Use only IPv6</p>
           </div>
           <Switch
-            checked={options.noClobber}
-            onCheckedChange={(checked) => setOptions({ ...options, noClobber: checked })}
-            className="bg-zinc-700 data-[state=checked]:bg-white"
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label className="text-base text-white">Continue Downloads</Label>
-            <p className="text-sm text-zinc-400">Resume getting a partially-downloaded file</p>
-          </div>
-          <Switch
-            checked={options.continueTransfer}
-            onCheckedChange={(checked) => setOptions({ ...options, continueTransfer: checked })}
+            checked={options.inet6Only}
+            onCheckedChange={(checked) => setOptions({ ...options, inet6Only: checked })}
             className="bg-zinc-700 data-[state=checked]:bg-white"
           />
         </div>
