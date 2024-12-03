@@ -82,7 +82,9 @@ const defaultOptions: WgetOptions = {
   inet4Only: false,
   inet6Only: false,
   useCache: false,
-  noCache: false
+  noCache: false,
+  background: false,
+  verbose: false
 };
 
 export const useWgetOptions = () => {
