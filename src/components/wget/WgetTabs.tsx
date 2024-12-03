@@ -17,34 +17,34 @@ interface Props {
 export const WgetTabs = ({ options, setOptions }: Props) => {
   return (
     <Tabs defaultValue="presets" className="w-full">
-      <TabsList className="grid w-full grid-cols-5 bg-transparent gap-2">
+      <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 bg-transparent gap-2">
         <TabsTrigger 
           value="presets" 
-          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary"
+          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4"
         >
           Presets
         </TabsTrigger>
         <TabsTrigger 
           value="options" 
-          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary"
+          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4"
         >
           Options
         </TabsTrigger>
         <TabsTrigger 
           value="advanced" 
-          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary"
+          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4"
         >
           Advanced
         </TabsTrigger>
         <TabsTrigger 
           value="behavior" 
-          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary"
+          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4"
         >
           Download Behavior
         </TabsTrigger>
         <TabsTrigger 
           value="debugging" 
-          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary"
+          className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4"
         >
           Debugging
         </TabsTrigger>
