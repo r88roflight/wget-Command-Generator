@@ -55,16 +55,16 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div>
-        <div className="flex justify-between items-center mb-4">
-          <Label className="text-lg font-semibold text-white">Include File Types</Label>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+          <Label className="text-base sm:text-lg font-semibold text-white">Include File Types</Label>
           <Button
             onClick={handleSelectAll}
             type="button"
             variant="outline"
             size="sm"
-            className="text-xs text-zinc-400 hover:text-white transition-colors h-7"
+            className="text-xs text-zinc-400 hover:text-white transition-colors h-7 w-full sm:w-auto"
           >
             {FILE_TYPE_OPTIONS.flatMap(category => category.patterns).every(ext => options.fileTypes.includes(ext))
               ? "Deselect All"
@@ -74,8 +74,8 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
         <div className="space-y-6">
           {FILE_TYPE_OPTIONS.map((category) => (
             <div key={category.value} className="space-y-2">
-              <Label className="text-white font-medium">{category.label}</Label>
-              <div className="grid grid-cols-7 gap-2 pl-4">
+              <Label className="text-white font-medium block mb-2">{category.label}</Label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-2 pl-2 sm:pl-4">
                 {category.patterns.map((extension) => (
                   <div key={extension} className="flex items-center space-x-2">
                     <Checkbox
@@ -99,12 +99,12 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
       </div>
 
       <div>
-        <Label className="text-lg font-semibold text-white mb-4 block">Exclude File Types</Label>
+        <Label className="text-base sm:text-lg font-semibold text-white mb-4 block">Exclude File Types</Label>
         <div className="space-y-6">
           {FILE_TYPE_OPTIONS.map((category) => (
             <div key={category.value} className="space-y-2">
-              <Label className="text-white font-medium">{category.label}</Label>
-              <div className="grid grid-cols-7 gap-2 pl-4">
+              <Label className="text-white font-medium block mb-2">{category.label}</Label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-2 pl-2 sm:pl-4">
                 {category.patterns.map((extension) => (
                   <div key={extension} className="flex items-center space-x-2">
                     <Checkbox
