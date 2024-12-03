@@ -8,7 +8,9 @@ export const useWgetCommandGenerator = () => {
     
     if (options.recursive) {
       flags.push("-r");
-      flags.push(`--level=${options.maxDepth}`);
+      if (options.maxDepth > 0) {
+        flags.push(`--level=${options.maxDepth}`);
+      }
       if (!options.includeParents) {
         flags.push("--no-parent");
       }

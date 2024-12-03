@@ -23,6 +23,8 @@ const defaultMirrorPreset: Preset = {
     "Follow FTP",
     "Content Disposition",
     "Continue Transfer",
+    "Random Wait",
+    "Wait 5 Seconds"
   ],
   options: {
     recursive: true,
@@ -39,6 +41,9 @@ const defaultMirrorPreset: Preset = {
     debug: false,
     logOnlyErrors: false,
     verifySSL: true,
+    waitTime: 5,
+    randomWait: true,
+    maxDepth: 0  // Set to 0 to not include --level flag
   },
 };
 
