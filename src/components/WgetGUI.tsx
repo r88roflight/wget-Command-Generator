@@ -31,26 +31,20 @@ const WgetGUI = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-4xl font-bold text-center mb-8 text-white">
-        wget
-      </h1>
+      <h1 className="text-4xl font-bold text-center mb-8 text-white">wget</h1>
       
       <div className="space-y-8">
-        {/* Command Preview */}
         <Card className="p-4 bg-black border border-white/20">
           <div className="flex items-center gap-2">
             <pre className="flex-1 whitespace-pre-wrap break-all font-mono text-sm">
-              {generateCommand().split(' ').map((part, index) => {
-                const isInvalid = invalidFlags.some(flag => part.startsWith(flag));
-                return (
-                  <span
-                    key={index}
-                    className={`${isInvalid ? 'text-red-500' : 'text-white'}`}
-                  >
-                    {part}{' '}
-                  </span>
-                );
-              })}
+              {generateCommand().split(' ').map((part, index) => (
+                <span
+                  key={index}
+                  className={`${invalidFlags.some(flag => part.startsWith(flag)) ? 'text-red-500' : 'text-white'}`}
+                >
+                  {part}{' '}
+                </span>
+              ))}
             </pre>
             <Button
               type="button"
@@ -73,37 +67,28 @@ const WgetGUI = () => {
           </div>
         </Card>
 
-        {/* Basic Options */}
         <Card className="p-6 bg-black border border-white/20">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="url" className="text-lg font-medium text-white">
-                URL
-              </Label>
+              <Label htmlFor="url" className="text-lg font-medium text-white">URL</Label>
               <Input
                 id="url"
                 type="url"
                 placeholder="https://example.com"
                 value={options.url}
-                onChange={(e) =>
-                  setOptions({ ...options, url: e.target.value })
-                }
+                onChange={(e) => setOptions({ ...options, url: e.target.value })}
                 className="bg-black border-white/20 text-white"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="saveDirectory" className="text-lg font-medium text-white">
-                Save Directory
-              </Label>
+              <Label htmlFor="saveDirectory" className="text-lg font-medium text-white">Save Directory</Label>
               <div className="flex gap-2">
                 <Input
                   id="saveDirectory"
                   placeholder="/path/to/directory"
                   value={options.saveDirectory}
-                  onChange={(e) =>
-                    setOptions({ ...options, saveDirectory: e.target.value })
-                  }
+                  onChange={(e) => setOptions({ ...options, saveDirectory: e.target.value })}
                   className="bg-black border-white/20 text-white flex-1"
                 />
                 <Button 
