@@ -4,6 +4,7 @@ import { WgetAdvancedOptions } from "./WgetAdvancedOptions";
 import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
 import { WgetFileTypes } from "./WgetFileTypes";
 import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
+import { Card } from "@/components/ui/card";
 
 interface Props {
   options: WgetOptions;
@@ -21,10 +22,12 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
       </TabsList>
       
       <TabsContent value="options" className="mt-4">
-        <div className="space-y-6">
-          <WgetRecursiveOptions options={options} setOptions={setOptions} />
-          <WgetFileTypes options={options} setOptions={setOptions} />
-        </div>
+        <Card className="p-6 bg-black border border-white/20">
+          <div className="space-y-6">
+            <WgetRecursiveOptions options={options} setOptions={setOptions} />
+            <WgetFileTypes options={options} setOptions={setOptions} />
+          </div>
+        </Card>
       </TabsContent>
       
       <TabsContent value="advanced" className="mt-4">
@@ -32,14 +35,18 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
       </TabsContent>
       
       <TabsContent value="behavior" className="mt-4">
-        <WgetDownloadBehavior options={options} setOptions={setOptions} />
+        <Card className="p-6 bg-black border border-white/20">
+          <WgetDownloadBehavior options={options} setOptions={setOptions} />
+        </Card>
       </TabsContent>
       
       <TabsContent value="additional" className="mt-4">
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium text-white">Additional Features</h3>
-          {/* Additional features will be moved here in future updates */}
-        </div>
+        <Card className="p-6 bg-black border border-white/20">
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-white">Additional Features</h3>
+            {/* Additional features will be added in future updates */}
+          </div>
+        </Card>
       </TabsContent>
     </Tabs>
   );
