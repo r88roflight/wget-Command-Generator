@@ -27,6 +27,7 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
   if (options.followFtp) flags.push('--follow-ftp');
   if (options.contentDisposition) flags.push('--content-disposition');
   if (options.executeCommand) flags.push(`-e ${options.executeCommand}`);
+  if (options.ignoreRobots) flags.push('--execute robots=off');
   
   return flags;
 };
