@@ -8,7 +8,7 @@ export const defaultMirrorPreset: Preset = {
     url: "",
     saveDirectory: "",
     recursive: false,
-    level: 1,
+    level: 1,  // This will now be valid
     convertLinks: false,
     pageRequisites: false,
     spanHosts: false,

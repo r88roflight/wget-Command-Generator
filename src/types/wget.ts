@@ -1,7 +1,7 @@
 export interface WgetOptions {
   url: string;
   recursive: boolean;
-  maxDepth: number;
+  maxDepth: number;  // This is likely the equivalent of 'level'
   waitTime: number;
   followLinks: boolean;
   includePattern: string;
@@ -40,7 +40,7 @@ export interface WgetOptions {
   maxFileSize: string;
   minFileSize: string;
   rejectRegex: string;
-  recursionLevel: number;
+  recursionLevel: number;  // This is another similar property
   sameDomain: boolean;
   domains: string;
   excludeDomains: string;
@@ -50,7 +50,6 @@ export interface WgetOptions {
   parallelDownloads: number;
   connectionLimit: string;
   logOnlyErrors: boolean;
-  // Adding missing properties from error messages
   followFtp: boolean;
   contentDisposition: boolean;
   continueTransfer: boolean;
@@ -58,6 +57,7 @@ export interface WgetOptions {
   spiderMode: boolean;
   pageRequisites: boolean;
   verifySSL: boolean;
+  level?: number;  // Adding this optional property
 }
 
 export type FileTypeOption = {
