@@ -1,28 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, RotateCw } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { WgetOptions } from "@/types/wget";
-import { Preset } from "../types/preset";
+import { usePresetContext } from "./PresetContext";
+import { defaultMirrorPreset } from "./defaultPreset";
 
-interface PresetHeaderProps {
-  handleSavePreset: () => void;
-  onRestorePresets: () => void;
-  presets: Preset[];
-}
-
-export const PresetHeader = ({ handleSavePreset, onRestorePresets, presets }: PresetHeaderProps) => {
+export const PresetHeader = () => {
   const { toast } = useToast();
-  const [lastClickTime, setLastClickTime] = useState(0);
-  const DOUBLE_CLICK_DELAY = 300; // 300ms between clicks
+  const { presets, setPresets } = usePresetContext();
+  const [lastClickTime, setLastClickTime] = React.useState(0);
+  const DOUBLE_CLICK_DELAY = 300;
 
-  const handleRestoreClick = () => {
+  const handleSavePreset = () => {
+    const newPreset = {
+      ...defaultMirrorPreset,
+      name: `Preset ${presets.length + 1}`,
+      description: 'New preset description',
+    };
+    
+    setPresets([...presets, newPreset]);
+    toast({
+      title: "Success",
+      description: "New preset has been created",
+    });
+  };
+
+  const handleRestorePresets = () => {
     const currentTime = new Date().getTime();
     if (currentTime - lastClickTime < DOUBLE_CLICK_DELAY) {
-      // Double click detected
       const hasMirrorPreset = presets.some(preset => preset.name === "Mirror Website Locally");
       if (!hasMirrorPreset) {
-        onRestorePresets();
+        setPresets([defaultMirrorPreset]);
         toast({
           title: "Success",
           description: "Mirror Website Locally preset has been restored",
@@ -33,13 +41,6 @@ export const PresetHeader = ({ handleSavePreset, onRestorePresets, presets }: Pr
           description: "Mirror Website Locally preset already exists",
         });
       }
-    } else {
-      // Single click
-      onRestorePresets();
-      toast({
-        title: "Success",
-        description: "Deleted presets have been restored",
-      });
     }
     setLastClickTime(currentTime);
   };
@@ -49,7 +50,7 @@ export const PresetHeader = ({ handleSavePreset, onRestorePresets, presets }: Pr
       <h3 className="text-lg font-medium text-white">Presets</h3>
       <div className="flex gap-2">
         <Button
-          onClick={handleRestoreClick}
+          onClick={handleRestorePresets}
           variant="outline"
           size="icon"
           className="bg-black border-white/20 text-white hover:bg-zinc-900"

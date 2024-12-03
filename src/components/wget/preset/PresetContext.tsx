@@ -5,8 +5,6 @@ import { defaultMirrorPreset } from './defaultPreset';
 interface PresetContextType {
   presets: Preset[];
   setPresets: (presets: Preset[]) => void;
-  deletedPresets: Preset[];
-  setDeletedPresets: (presets: Preset[]) => void;
   activePreset: string | null;
   setActivePreset: (preset: string | null) => void;
   expandedPresets: string[];
@@ -17,7 +15,6 @@ const PresetContext = createContext<PresetContextType | undefined>(undefined);
 
 export const PresetProvider = ({ children }: { children: React.ReactNode }) => {
   const [presets, setPresets] = useState<Preset[]>([defaultMirrorPreset]);
-  const [deletedPresets, setDeletedPresets] = useState<Preset[]>([]);
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [expandedPresets, setExpandedPresets] = useState<string[]>([]);
 
@@ -26,8 +23,6 @@ export const PresetProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         presets,
         setPresets,
-        deletedPresets,
-        setDeletedPresets,
         activePreset,
         setActivePreset,
         expandedPresets,

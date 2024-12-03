@@ -59,6 +59,9 @@ export const PresetList = ({ options, setOptions }: Props) => {
 
   const handleDelete = (name: string) => {
     setPresets(presets.filter(p => p.name !== name));
+    if (activePreset === name) {
+      setActivePreset(null);
+    }
   };
 
   const handleAddCommand = (presetName: string) => {
@@ -100,10 +103,10 @@ export const PresetList = ({ options, setOptions }: Props) => {
           isExpanded={expandedPresets.includes(preset.name)}
           activePreset={activePreset}
           onToggleExpansion={handleToggleExpansion}
-          onTogglePreset={handleTogglePreset}
           onRename={handleRenamePreset}
           onUpdateDescription={handleUpdatePresetDescription}
           onDelete={handleDelete}
+          onTogglePreset={handleTogglePreset}
           onAddCommand={handleAddCommand}
           onUpdateCommand={handleUpdateCommand}
           onRemoveCommand={handleRemoveCommand}

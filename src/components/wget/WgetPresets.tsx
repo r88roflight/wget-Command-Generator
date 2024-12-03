@@ -15,25 +15,10 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [selectedPreset, setSelectedPreset] = React.useState<string | null>(null);
 
-  const { handleDeletePreset, handleRestorePresets, handleSavePreset } = 
-    usePresetActions(options, setOptions);
-
-  const confirmDeletePreset = () => {
-    if (selectedPreset) {
-      handleDeletePreset(selectedPreset);
-      setDeleteDialogOpen(false);
-      setSelectedPreset(null);
-    }
-  };
-
   return (
     <PresetProvider>
       <div className="space-y-4">
-        <PresetHeader 
-          handleSavePreset={handleSavePreset}
-          onRestorePresets={handleRestorePresets}
-          presets={[]}
-        />
+        <PresetHeader />
         <PresetList
           options={options}
           setOptions={setOptions}
@@ -41,7 +26,12 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
         <DeletePresetDialog
           open={deleteDialogOpen}
           onOpenChange={setDeleteDialogOpen}
-          onConfirm={confirmDeletePreset}
+          onConfirm={() => {
+            if (selectedPreset) {
+              setDeleteDialogOpen(false);
+              setSelectedPreset(null);
+            }
+          }}
           presetName={selectedPreset || ""}
         />
       </div>
