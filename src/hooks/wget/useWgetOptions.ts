@@ -12,7 +12,7 @@ const defaultOptions: WgetOptions = {
   saveDirectory: "",
   fileTypes: [],
   excludeFileTypes: [],
-  includeParents: true, // Changed to true as default
+  includeParents: true,
   userAgent: "",
   limitRate: "",
   outputFile: "",
@@ -60,6 +60,8 @@ const defaultOptions: WgetOptions = {
   spiderMode: false,
   pageRequisites: false,
   verifySSL: false,
+  inputFile: "",  // Added new property
+  directoryPrefix: ""  // Added new property
 };
 
 export const useWgetOptions = () => {
