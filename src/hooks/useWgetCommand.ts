@@ -41,28 +41,7 @@ export const useWgetCommand = () => {
     ignoreRobots: false,
     backupConverted: false,
     deleteAfter: false,
-    verifySSL: true,
-    spiderMode: false,
-    mirror: false,
-    pageRequisites: false,
-    executeCommand: "",
-    domains: "",
-    excludeDomains: "",
-    noParent: false,
-    relativePaths: false,
-    backupOriginal: false,
-    strictComments: false,
-    infiniteRecursion: false,
-    dontRemoveListings: false,
-    quotaCommand: "",
-    bindAddress: "",
-    cacheDir: "",
-    noCache: false,
-    noCheckCertificate: false,
-    noVerbose: false,
-    followFtp: false,
-    contentDisposition: false,
-    continueTransfer: false,
+    tempFile: false,
     maxFileSize: "",
     minFileSize: "",
     rejectRegex: "",
@@ -70,17 +49,19 @@ export const useWgetCommand = () => {
     sameDomain: false,
     domains: "",
     excludeDomains: "",
-    ignoreRobots: false,
     httpsProxy: "",
     noCheckCertificate: false,
     caCertificate: "",
     parallelDownloads: 1,
     connectionLimit: "",
     logOnlyErrors: false,
-    debug: false,
-    backupConverted: false,
-    deleteAfter: false,
-    tempFile: false,
+    followFtp: false,
+    contentDisposition: false,
+    continueTransfer: false,
+    mirror: false,
+    spiderMode: false,
+    pageRequisites: false,
+    verifySSL: true
   });
 
   const generateCommand = () => {
@@ -162,10 +143,6 @@ export const useWgetCommand = () => {
 
       if (options.httpsOnly) {
         flags.push("--https-only");
-      }
-
-      if (options.continueDownload) {
-        flags.push("-c");
       }
 
       if (options.followFtp) {
