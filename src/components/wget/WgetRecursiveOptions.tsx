@@ -3,6 +3,13 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { WgetOptions } from "@/types/wget";
+import { HelpCircle } from "lucide-react";
+import { Tooltip } from "@/components/ui/tooltip";
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Props {
   options: WgetOptions;
@@ -33,13 +40,25 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1 space-y-0.5">
-            <Label className="text-base text-white">Recursive Download</Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-base text-white">Recursive Download</Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <HelpCircle className="h-4 w-4 text-zinc-400" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Note: Mirror option includes recursive downloading automatically</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <p className="text-sm text-zinc-400">
               Download subdirectories recursively
             </p>
           </div>
           <div className="flex items-center gap-4">
-            {options.recursive && (
+            {(options.recursive || options.mirror) && (
               <Input
                 type="number"
                 min="0"
@@ -52,10 +71,11 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
               />
             )}
             <Switch
-              checked={options.recursive}
+              checked={options.recursive || options.mirror}
               onCheckedChange={(checked) =>
                 setOptions({ ...options, recursive: checked })
               }
+              disabled={options.mirror}
               className="bg-zinc-700 data-[state=checked]:bg-white"
             />
           </div>
@@ -64,7 +84,19 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
 
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
-          <Label className="text-base text-white">Mirror Website</Label>
+          <div className="flex items-center gap-2">
+            <Label className="text-base text-white">Mirror Website</Label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HelpCircle className="h-4 w-4 text-zinc-400" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Mirror includes recursive downloading and other optimized settings</p>
+                </TooltipContent>
+              </Tooltip>
+              </TooltipProvider>
+          </div>
           <p className="text-sm text-zinc-400">
             Create a mirror of the website
           </p>
