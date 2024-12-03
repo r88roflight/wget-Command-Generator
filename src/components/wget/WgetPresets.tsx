@@ -11,6 +11,38 @@ interface Props {
   setOptions: (options: WgetOptions) => void;
 }
 
+const defaultMirrorPreset: Preset = {
+  name: "Mirror Website Locally",
+  description: "Optimized settings for creating a complete local copy of a website",
+  commands: [
+    "Mirror Website",
+    "Follow Links",
+    "Convert Links",
+    "Adjust Extensions",
+    "No Clobber",
+    "Follow FTP",
+    "Content Disposition",
+    "Continue Transfer",
+  ],
+  options: {
+    recursive: true,
+    noClobber: true,
+    convertLinks: true,
+    adjustExtension: true,
+    mirror: true,
+    includeParents: false, // Removed from default preset
+    followLinks: true,
+    spiderMode: false,
+    timestamping: true,
+    continueTransfer: true,
+    followFtp: true,
+    contentDisposition: true,
+    debug: false,
+    logOnlyErrors: false,
+    verifySSL: true,
+  },
+};
+
 export const WgetPresets = ({ options, setOptions }: Props) => {
   const { toast } = useToast();
   const [presetName, setPresetName] = useState("");
@@ -20,40 +52,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [activePreset, setActivePreset] = useState<string | null>(null);
-  const [presets, setPresets] = useState<Preset[]>([
-    {
-      name: "Mirror Website Locally",
-      description: "Optimized settings for creating a complete local copy of a website",
-      commands: [
-        "Mirror Website",
-        "Follow Links",
-        "Convert Links",
-        "Adjust Extensions",
-        "No Clobber",
-        "Include Parents",
-        "Follow FTP",
-        "Content Disposition",
-        "Continue Transfer",
-      ],
-      options: {
-        recursive: true,
-        noClobber: true,
-        convertLinks: true,
-        adjustExtension: true,
-        mirror: true,
-        includeParents: true,
-        followLinks: true,
-        spiderMode: false,
-        timestamping: true,
-        continueTransfer: true,
-        followFtp: true,
-        contentDisposition: true,
-        debug: false,
-        logOnlyErrors: false,
-        verifySSL: true,
-      },
-    },
-  ]);
+  const [presets, setPresets] = useState<Preset[]>([defaultMirrorPreset]);
 
   const togglePresetExpansion = (presetName: string) => {
     setExpandedPresets((prev) =>
@@ -140,6 +139,26 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     }
   };
 
+  const handleResetPreset = (preset: Preset) => {
+    if (preset.name === "Mirror Website Locally") {
+      setPresets((prev) =>
+        prev.map((p) =>
+          p.name === preset.name ? { ...defaultMirrorPreset } : p
+        )
+      );
+      if (activePreset === preset.name) {
+        setOptions({
+          ...options,
+          ...defaultMirrorPreset.options,
+        });
+      }
+      toast({
+        title: "Success",
+        description: "Preset has been reset to default settings",
+      });
+    }
+  };
+
   const addCommand = (presetName: string) => {
     setPresets((prev) =>
       prev.map((preset) =>
@@ -194,7 +213,6 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     }
   };
 
-  // Watch for options changes and update active preset state
   useEffect(() => {
     if (activePreset) {
       const preset = presets.find((p) => p.name === activePreset);
@@ -230,6 +248,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
           onAddCommand={addCommand}
           onUpdateCommand={updateCommand}
           onRemoveCommand={removeCommand}
+          onResetPreset={handleResetPreset}
         />
       ))}
       <DeletePresetDialog

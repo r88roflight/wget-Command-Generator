@@ -1,13 +1,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Settings, Minus, RefreshCw } from "lucide-react";
+import { Settings, Minus, RotateCw } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { EditableText } from "../EditableText";
-import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { PresetCommands } from "./PresetCommands";
 import { Preset } from "../types/preset";
-import { WgetOptions } from "@/types/wget";
-import { useToast } from "@/components/ui/use-toast";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 
 interface PresetItemProps {
   preset: Preset;
@@ -21,7 +19,7 @@ interface PresetItemProps {
   onAddCommand: (presetName: string) => void;
   onUpdateCommand: (presetName: string, index: number, newCommand: string) => void;
   onRemoveCommand: (presetName: string, index: number) => void;
-  onResetPreset?: () => void;
+  onResetPreset?: (preset: Preset) => void;
 }
 
 export const PresetItem = ({
@@ -38,18 +36,6 @@ export const PresetItem = ({
   onRemoveCommand,
   onResetPreset,
 }: PresetItemProps) => {
-  const { toast } = useToast();
-
-  const handleResetPreset = () => {
-    if (onResetPreset) {
-      onResetPreset();
-      toast({
-        title: "Success",
-        description: "Preset has been reset to default settings",
-      });
-    }
-  };
-
   return (
     <Collapsible
       open={isExpanded}
@@ -77,9 +63,9 @@ export const PresetItem = ({
               variant="ghost"
               size="icon"
               className="hover:bg-zinc-900"
-              onClick={handleResetPreset}
+              onClick={() => onResetPreset(preset)}
             >
-              <RefreshCw className="h-4 w-4 text-white" />
+              <RotateCw className="h-4 w-4 text-white" />
             </Button>
           )}
           <Button
