@@ -1,7 +1,7 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { WgetOptions, FileTypeOption } from "@/types/wget";
+import { WgetOptions } from "@/types/wget";
 import { FILE_TYPE_OPTIONS } from "@/types/wget";
 import { Button } from "@/components/ui/button";
 
@@ -75,7 +75,7 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
           {FILE_TYPE_OPTIONS.map((category) => (
             <div key={category.value} className="space-y-2">
               <Label className="text-white font-medium">{category.label}</Label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 pl-4">
+              <div className="grid grid-cols-7 gap-2 pl-4">
                 {category.patterns.map((extension) => (
                   <div key={extension} className="flex items-center space-x-2">
                     <Checkbox
@@ -104,7 +104,7 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
           {FILE_TYPE_OPTIONS.map((category) => (
             <div key={category.value} className="space-y-2">
               <Label className="text-white font-medium">{category.label}</Label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 pl-4">
+              <div className="grid grid-cols-7 gap-2 pl-4">
                 {category.patterns.map((extension) => (
                   <div key={extension} className="flex items-center space-x-2">
                     <Checkbox
