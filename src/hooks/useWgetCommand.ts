@@ -59,7 +59,12 @@ export const useWgetCommand = () => {
     cacheDir: "",
     noCache: false,
     noCheckCertificate: false,
-    noVerbose: false
+    noVerbose: false,
+    followFtp: false,
+    contentDisposition: false,
+    adjustExtension: false,
+    noClobber: false,
+    continue: false,
   });
 
   const generateCommand = () => {
@@ -225,6 +230,26 @@ export const useWgetCommand = () => {
 
       if (options.noVerbose) {
         flags.push("--no-verbose");
+      }
+      
+      if (options.followFtp) {
+        flags.push("--follow-ftp");
+      }
+
+      if (options.contentDisposition) {
+        flags.push("--content-disposition");
+      }
+
+      if (options.adjustExtension) {
+        flags.push("--adjust-extension");
+      }
+
+      if (options.noClobber) {
+        flags.push("--no-clobber");
+      }
+
+      if (options.continue) {
+        flags.push("--continue");
       }
     }
     

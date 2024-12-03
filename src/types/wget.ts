@@ -55,6 +55,8 @@ export interface WgetOptions {
   noCache: boolean;
   noCheckCertificate: boolean;
   noVerbose: boolean;
+  followFtp: boolean;
+  contentDisposition: boolean;
 }
 
 export type FileTypeOption = {

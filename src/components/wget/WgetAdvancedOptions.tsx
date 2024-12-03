@@ -6,6 +6,7 @@ import { WgetOptions } from "@/types/wget";
 import { Card } from "@/components/ui/card";
 import { WgetSpiderOptions } from "./WgetSpiderOptions";
 import { WgetMirrorOptions } from "./WgetMirrorOptions";
+import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
 
 interface Props {
   options: WgetOptions;
@@ -98,6 +99,9 @@ export const WgetAdvancedOptions = ({ options, setOptions }: Props) => {
           />
         </div>
       </div>
+
+      {/* Download Behavior */}
+      <WgetDownloadBehavior options={options} setOptions={setOptions} />
 
       {/* Additional Features */}
       <div className="space-y-4">
