@@ -47,7 +47,7 @@ const WgetGUI = () => {
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-4xl font-bold text-center mb-8 text-primary">
-        Wget GUI
+        wget
       </h1>
       
       <form onSubmit={handleSubmit} className="space-y-8">
