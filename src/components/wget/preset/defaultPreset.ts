@@ -11,12 +11,11 @@ export const defaultMirrorPreset: Preset = {
     "--no-parent",
     "--limit-rate=1m",
     "--wait=1",
-    "--random-wait",
-    "-P ~/Downloads/ExampleSite"
+    "--random-wait"
   ],
   options: {
     url: "",
-    saveDirectory: "~/Downloads/ExampleSite",
+    saveDirectory: "",
     recursive: true,
     convertLinks: true,
     pageRequisites: true,
