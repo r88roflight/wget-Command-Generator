@@ -56,9 +56,25 @@ export const usePresetActions = (options: WgetOptions, setOptions: (options: Wge
     }
   };
 
+  const handleSavePreset = () => {
+    const newPreset: Preset = {
+      name: `Preset ${presets.length + 1}`,
+      description: 'New preset description',
+      options: { ...options },
+      commands: []
+    };
+    
+    setPresets([...presets, newPreset]);
+    toast({
+      title: "Success",
+      description: "New preset has been created",
+    });
+  };
+
   return {
     handleDeletePreset,
     handleRestorePresets,
     handleResetPreset,
+    handleSavePreset,
   };
 };
