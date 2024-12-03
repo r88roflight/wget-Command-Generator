@@ -57,7 +57,6 @@ export interface WgetOptions {
   spiderMode: boolean;
   pageRequisites: boolean;
   verifySSL: boolean;
-  level?: number;  // Adding this optional property
 }
 
 export type FileTypeOption = {

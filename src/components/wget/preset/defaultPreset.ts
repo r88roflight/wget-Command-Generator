@@ -8,27 +8,14 @@ export const defaultMirrorPreset: Preset = {
     url: "",
     saveDirectory: "",
     recursive: false,
-    level: 1,  // This will now be valid
     convertLinks: false,
     pageRequisites: false,
-    spanHosts: false,
-    includeDirectories: "",
-    excludeDirectories: "",
+    includeParents: false,
+    followLinks: false,
     followFtp: false,
-    waitRetry: "",
-    limitRate: "",
-    tries: "",
-    userAgent: "",
-    noParent: false,
-    rejectFileTypes: "",
-    acceptFileTypes: "",
-    debug: false,
-    quiet: false,
-    showProgress: false,
-    timestamping: false,
-    mirror: false,
-    infiniteRecursion: false,
-    backupConverted: false,
-    strictComments: false
+    contentDisposition: false,
+    adjustExtension: false,
+    continueTransfer: false,
+    ignoreRobots: false
   }
 };

@@ -40,7 +40,7 @@ const WgetGUI = () => {
               {generateCommand().split(' ').map((part, index) => (
                 <span
                   key={index}
-                  className={`${invalidFlags.some(flag => part.startsWith(flag)) ? 'text-red-500' : 'text-white'}`}
+                  className={`${part.startsWith('--level=0') ? 'text-red-500' : 'text-white'}`}
                 >
                   {part}{' '}
                 </span>
