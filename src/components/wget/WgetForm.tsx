@@ -71,7 +71,7 @@ const WgetForm = () => {
         Wget GUI
       </h1>
 
-      <Card className="p-4 mb-8 bg-zinc-900 border border-white/20">
+      <Card className="p-4 mb-8 bg-black border border-white/20">
         <div className="flex items-center gap-2">
           <code className="flex-1 text-white font-mono text-sm overflow-x-auto p-2">
             {generateCommand()}
@@ -96,7 +96,7 @@ const WgetForm = () => {
       </Card>
       
       <form className="space-y-8">
-        <Card className="p-6 bg-zinc-900 border border-white/20">
+        <Card className="p-6 bg-black border border-white/20">
           <div className="space-y-6">
             <WgetUrlInput options={options} setOptions={setOptions} />
             <WgetDirectoryInput options={options} setOptions={setOptions} />

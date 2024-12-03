@@ -1,10 +1,7 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Info } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { WgetOptions } from "@/types/wget";
 
 interface Props {
@@ -32,36 +29,16 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
       </div>
 
       <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Label className="text-white">Maximum Depth</Label>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Info className="h-4 w-4 text-zinc-400" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>How many levels deep to follow links</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-        <Select
-          value={options.maxDepth.toString()}
-          onValueChange={(value) =>
-            setOptions({ ...options, maxDepth: parseInt(value) })
+        <Label className="text-white">Maximum Depth</Label>
+        <Input
+          type="number"
+          value={options.maxDepth}
+          onChange={(e) =>
+            setOptions({ ...options, maxDepth: parseInt(e.target.value) || 0 })
           }
-        >
-          <SelectTrigger className="bg-zinc-800 border-white/20 text-white">
-            <SelectValue placeholder="Select depth" />
-          </SelectTrigger>
-          <SelectContent className="bg-zinc-800 border-white/20">
-            {[1, 2, 3, 4, 5, 10].map((depth) => (
-              <SelectItem key={depth} value={depth.toString()} className="text-white">
-                {depth}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          min="0"
+          className="bg-zinc-800 border-white/20 text-white"
+        />
       </div>
 
       <div className="space-y-2">
@@ -71,15 +48,15 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
             {options.waitTime}s
           </span>
         </div>
-        <Slider
-          value={[options.waitTime]}
-          min={0}
-          max={60}
-          step={1}
-          onValueChange={(value) =>
-            setOptions({ ...options, waitTime: value[0] })
+        <Input
+          type="number"
+          value={options.waitTime}
+          onChange={(e) =>
+            setOptions({ ...options, waitTime: parseInt(e.target.value) || 0 })
           }
-          className="[&>[role=slider]]:bg-white [&>[role=slider]]:border-white [&>div]:bg-white"
+          min="0"
+          max="60"
+          className="bg-zinc-800 border-white/20 text-white"
         />
       </div>
     </>

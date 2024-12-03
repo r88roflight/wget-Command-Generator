@@ -28,9 +28,29 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
     });
   };
 
+  const handleSelectAll = () => {
+    const allFileTypes = FILE_TYPE_OPTIONS.map(option => option.value);
+    const allPatterns = FILE_TYPE_OPTIONS.flatMap(option => option.patterns);
+    
+    setOptions({
+      ...options,
+      fileTypes: allFileTypes,
+      includePattern: allPatterns.join(",")
+    });
+  };
+
   return (
     <div className="space-y-4">
-      <Label className="text-white">File Types to Download</Label>
+      <div className="flex justify-between items-center">
+        <Label className="text-white">File Types to Download</Label>
+        <button
+          onClick={handleSelectAll}
+          type="button"
+          className="text-sm text-zinc-400 hover:text-white transition-colors"
+        >
+          Select All
+        </button>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {FILE_TYPE_OPTIONS.map((option) => (
           <div key={option.value} className="flex items-center space-x-2">
