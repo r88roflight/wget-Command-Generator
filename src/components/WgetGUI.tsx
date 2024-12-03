@@ -30,13 +30,13 @@ const WgetGUI = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-4xl font-bold text-center mb-8 text-white">wget</h1>
+    <div className="container mx-auto p-2 sm:p-4 max-w-4xl">
+      <h1 className="text-3xl sm:text-4xl font-bold text-center mb-4 sm:mb-8 text-white">wget</h1>
       
-      <div className="space-y-8">
-        <Card className="p-4 bg-black border border-white/20">
-          <div className="flex items-center gap-2">
-            <pre className="flex-1 whitespace-pre-wrap break-all font-mono text-sm">
+      <div className="space-y-4 sm:space-y-8">
+        <Card className="p-2 sm:p-4 bg-black border border-white/20">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <pre className="flex-1 w-full sm:w-auto whitespace-pre-wrap break-all font-mono text-xs sm:text-sm overflow-x-auto max-w-full">
               {generateCommand().split(' ').map((part, index) => (
                 <span
                   key={index}
@@ -46,31 +46,33 @@ const WgetGUI = () => {
                 </span>
               ))}
             </pre>
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={handleCopyCommand}
-              className="border-white/20 hover:bg-zinc-900 bg-black"
-            >
-              <Clipboard className="h-4 w-4 text-white" />
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={handleResetAll}
-              className="border-white/20 hover:bg-zinc-900 bg-black"
-            >
-              <RotateCw className="h-4 w-4 text-white" />
-            </Button>
+            <div className="flex gap-2 w-full sm:w-auto justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={handleCopyCommand}
+                className="border-white/20 hover:bg-zinc-900 bg-black"
+              >
+                <Clipboard className="h-4 w-4 text-white" />
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={handleResetAll}
+                className="border-white/20 hover:bg-zinc-900 bg-black"
+              >
+                <RotateCw className="h-4 w-4 text-white" />
+              </Button>
+            </div>
           </div>
         </Card>
 
-        <Card className="p-6 bg-black border border-white/20">
+        <Card className="p-4 sm:p-6 bg-black border border-white/20">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="url" className="text-lg font-medium text-white">URL</Label>
+              <Label htmlFor="url" className="text-base sm:text-lg font-medium text-white">URL</Label>
               <Input
                 id="url"
                 type="url"
@@ -82,8 +84,8 @@ const WgetGUI = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="saveDirectory" className="text-lg font-medium text-white">Save Directory</Label>
-              <div className="flex gap-2">
+              <Label htmlFor="saveDirectory" className="text-base sm:text-lg font-medium text-white">Save Directory</Label>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Input
                   id="saveDirectory"
                   placeholder="/path/to/directory"
@@ -94,7 +96,7 @@ const WgetGUI = () => {
                 <Button 
                   type="button"
                   variant="outline"
-                  className="bg-black border-white/20 text-white hover:bg-zinc-900"
+                  className="bg-black border-white/20 text-white hover:bg-zinc-900 w-full sm:w-auto"
                 >
                   Choose
                 </Button>
