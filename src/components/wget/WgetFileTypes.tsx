@@ -11,118 +11,123 @@ interface Props {
 }
 
 export const WgetFileTypes = ({ options, setOptions }: Props) => {
-  const handleFileTypeChange = (value: string, isExclude: boolean = false) => {
-    const selectedOption = FILE_TYPE_OPTIONS.find(opt => opt.value === value);
-    if (!selectedOption) return;
-
+  const handleFileTypeChange = (extension: string, isExclude: boolean = false) => {
     if (isExclude) {
-      const newExcludeTypes = options.excludeFileTypes.includes(value)
-        ? options.excludeFileTypes.filter(type => type !== value)
-        : [...options.excludeFileTypes, value];
+      const newExcludeTypes = options.excludeFileTypes.includes(extension)
+        ? options.excludeFileTypes.filter(type => type !== extension)
+        : [...options.excludeFileTypes, extension];
       
-      const allPatterns = newExcludeTypes
-        .map(type => FILE_TYPE_OPTIONS.find(opt => opt.value === type)?.patterns || [])
-        .flat();
-
       setOptions({
         ...options,
         excludeFileTypes: newExcludeTypes,
-        excludePattern: allPatterns.length > 0 ? allPatterns.join(",") : ""
+        excludePattern: newExcludeTypes.length > 0 ? newExcludeTypes.map(ext => `*.${ext}`).join(",") : ""
       });
     } else {
-      const newFileTypes = options.fileTypes.includes(value)
-        ? options.fileTypes.filter(type => type !== value)
-        : [...options.fileTypes, value];
+      const newFileTypes = options.fileTypes.includes(extension)
+        ? options.fileTypes.filter(type => type !== extension)
+        : [...options.fileTypes, extension];
       
-      const allPatterns = newFileTypes
-        .map(type => FILE_TYPE_OPTIONS.find(opt => opt.value === type)?.patterns || [])
-        .flat();
-
       setOptions({
         ...options,
         fileTypes: newFileTypes,
-        includePattern: allPatterns.length > 0 ? allPatterns.join(",") : ""
+        includePattern: newFileTypes.length > 0 ? newFileTypes.map(ext => `*.${ext}`).join(",") : ""
       });
     }
   };
 
-  const handleSelectAll = () => {
-    const allFileTypes = FILE_TYPE_OPTIONS.map(option => option.value);
-    const allPatterns = FILE_TYPE_OPTIONS.map(option => option.patterns).flat();
+  const handleSelectAllInCategory = (category: FileTypeOption) => {
+    const currentFileTypes = new Set(options.fileTypes);
+    const allSelected = category.patterns.every(pattern => currentFileTypes.has(pattern));
     
-    setOptions({
-      ...options,
-      fileTypes: allFileTypes,
-      includePattern: allPatterns.join(",")
-    });
+    if (allSelected) {
+      // Remove all patterns in this category
+      const newFileTypes = options.fileTypes.filter(type => !category.patterns.includes(type));
+      setOptions({
+        ...options,
+        fileTypes: newFileTypes,
+        includePattern: newFileTypes.length > 0 ? newFileTypes.map(ext => `*.${ext}`).join(",") : ""
+      });
+    } else {
+      // Add all patterns in this category
+      const newFileTypes = [...new Set([...options.fileTypes, ...category.patterns])];
+      setOptions({
+        ...options,
+        fileTypes: newFileTypes,
+        includePattern: newFileTypes.map(ext => `*.${ext}`).join(",")
+      });
+    }
   };
-
-  const handleClearAll = () => {
-    setOptions({
-      ...options,
-      fileTypes: [],
-      includePattern: ""
-    });
-  };
-
-  const allSelected = FILE_TYPE_OPTIONS.every(option => 
-    options.fileTypes.includes(option.value)
-  );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <div className="flex justify-between items-center mb-4">
-          <Label className="text-white">Include File Types</Label>
-          <div className="space-x-2">
-            <Button
-              onClick={allSelected ? handleClearAll : handleSelectAll}
-              type="button"
-              variant="outline"
-              size="sm"
-              className="text-sm text-zinc-400 hover:text-white transition-colors"
-            >
-              {allSelected ? "Clear All" : "Select All"}
-            </Button>
-          </div>
+          <Label className="text-lg font-semibold text-white">Include File Types</Label>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {FILE_TYPE_OPTIONS.map((option) => (
-            <div key={option.value} className="flex items-start space-x-2">
-              <Checkbox
-                id={`include-${option.value}`}
-                checked={options.fileTypes.includes(option.value)}
-                onCheckedChange={() => handleFileTypeChange(option.value)}
-                className="mt-1 border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
-              />
-              <Label
-                htmlFor={`include-${option.value}`}
-                className="text-sm font-medium leading-tight text-white cursor-pointer"
-              >
-                {option.label}
-              </Label>
+        <div className="space-y-6">
+          {FILE_TYPE_OPTIONS.map((category) => (
+            <div key={category.value} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label className="text-white font-medium">{category.label}</Label>
+                <Button
+                  onClick={() => handleSelectAllInCategory(category)}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="text-xs text-zinc-400 hover:text-white transition-colors h-7"
+                >
+                  {category.patterns.every(pattern => options.fileTypes.includes(pattern)) 
+                    ? "Deselect All" 
+                    : "Select All"}
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 pl-4">
+                {category.patterns.map((extension) => (
+                  <div key={extension} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`include-${extension}`}
+                      checked={options.fileTypes.includes(extension)}
+                      onCheckedChange={() => handleFileTypeChange(extension)}
+                      className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                    />
+                    <Label
+                      htmlFor={`include-${extension}`}
+                      className="text-sm font-medium leading-none text-white cursor-pointer"
+                    >
+                      .{extension}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       <div>
-        <Label className="text-white mb-4 block">Exclude File Types</Label>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {FILE_TYPE_OPTIONS.map((option) => (
-            <div key={option.value} className="flex items-start space-x-2">
-              <Checkbox
-                id={`exclude-${option.value}`}
-                checked={options.excludeFileTypes.includes(option.value)}
-                onCheckedChange={() => handleFileTypeChange(option.value, true)}
-                className="mt-1 border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
-              />
-              <Label
-                htmlFor={`exclude-${option.value}`}
-                className="text-sm font-medium leading-tight text-white cursor-pointer"
-              >
-                {option.label}
-              </Label>
+        <Label className="text-lg font-semibold text-white mb-4 block">Exclude File Types</Label>
+        <div className="space-y-6">
+          {FILE_TYPE_OPTIONS.map((category) => (
+            <div key={category.value} className="space-y-2">
+              <Label className="text-white font-medium">{category.label}</Label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 pl-4">
+                {category.patterns.map((extension) => (
+                  <div key={extension} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`exclude-${extension}`}
+                      checked={options.excludeFileTypes.includes(extension)}
+                      onCheckedChange={() => handleFileTypeChange(extension, true)}
+                      className="border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                    />
+                    <Label
+                      htmlFor={`exclude-${extension}`}
+                      className="text-sm font-medium leading-none text-white cursor-pointer"
+                    >
+                      .{extension}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

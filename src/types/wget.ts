@@ -67,28 +67,28 @@ export type FileTypeOption = {
 
 export const FILE_TYPE_OPTIONS: FileTypeOption[] = [
   {
-    label: "Text (.txt, .html, .htm, .xml, .json, .md, .csv)",
+    label: "Text",
     value: "text",
-    patterns: ["*.txt", "*.html", "*.htm", "*.xml", "*.json", "*.md", "*.csv"]
+    patterns: ["txt", "html", "htm", "xml", "json", "md", "csv"]
   },
   {
-    label: "Images (.jpg, .jpeg, .png, .gif, .bmp, .webp, .svg)",
+    label: "Images",
     value: "images",
-    patterns: ["*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp", "*.webp", "*.svg"]
+    patterns: ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"]
   },
   {
-    label: "Videos (.mp4, .webm, .avi, .mov, .mkv)",
+    label: "Videos",
     value: "videos",
-    patterns: ["*.mp4", "*.webm", "*.avi", "*.mov", "*.mkv"]
+    patterns: ["mp4", "webm", "avi", "mov", "mkv"]
   },
   {
-    label: "Audio (.mp3, .wav, .ogg, .m4a, .flac)",
+    label: "Audio",
     value: "audio",
-    patterns: ["*.mp3", "*.wav", "*.ogg", "*.m4a", "*.flac"]
+    patterns: ["mp3", "wav", "ogg", "m4a", "flac"]
   },
   {
-    label: "Documents (.pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx)",
+    label: "Documents",
     value: "documents",
-    patterns: ["*.pdf", "*.doc", "*.docx", "*.xls", "*.xlsx", "*.ppt", "*.pptx"]
+    patterns: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"]
   }
 ];
