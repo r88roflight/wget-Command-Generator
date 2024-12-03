@@ -67,8 +67,7 @@ export interface WgetOptions {
   postData: string;
   ftpUser: string;
   ftpPassword: string;
-  executeCommand?: string;
-  // Add missing properties
+  executeCommand: string;
   basicUser: string;
   basicPassword: string;
   noCheckCert: boolean;
@@ -81,6 +80,8 @@ export interface WgetOptions {
   inet6Only: boolean;
   useCache: boolean;
   noCache: boolean;
+  background: boolean;
+  verbose: boolean;
 }
 
 export type FileTypeOption = {
