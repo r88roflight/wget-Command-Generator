@@ -30,7 +30,6 @@ const defaultMirrorPreset: Preset = {
     convertLinks: true,
     adjustExtension: true,
     mirror: true,
-    includeParents: false, // Removed from default preset
     followLinks: true,
     spiderMode: false,
     timestamping: true,
@@ -53,6 +52,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [presets, setPresets] = useState<Preset[]>([defaultMirrorPreset]);
+  const [deletedPresets, setDeletedPresets] = useState<Preset[]>([]);
 
   const togglePresetExpansion = (presetName: string) => {
     setExpandedPresets((prev) =>
@@ -123,8 +123,19 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   };
 
   const handleDeletePreset = (presetName: string) => {
+    const presetToDelete = presets.find(p => p.name === presetName);
+    if (presetToDelete) {
+      setDeletedPresets(prev => [...prev, presetToDelete]);
+    }
     setSelectedPreset(presetName);
     setDeleteDialogOpen(true);
+  };
+
+  const handleRestorePresets = () => {
+    if (deletedPresets.length > 0) {
+      setPresets(prev => [...prev, ...deletedPresets]);
+      setDeletedPresets([]);
+    }
   };
 
   const confirmDeletePreset = () => {
@@ -233,7 +244,11 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
 
   return (
     <div className="space-y-4">
-      <PresetHeader handleSavePreset={handleSavePreset} />
+      <PresetHeader 
+        handleSavePreset={handleSavePreset} 
+        onRestorePresets={handleRestorePresets}
+        presets={presets}
+      />
       {presets.map((preset) => (
         <PresetItem
           key={preset.name}
