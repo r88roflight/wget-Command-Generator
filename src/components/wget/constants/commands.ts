@@ -24,7 +24,14 @@ export const AVAILABLE_COMMANDS = [
   "No Verbose",
   "Show Progress",
   "Retry Connection Refused",
-  "No Clobber"
+  "No Clobber",
+  "Input File",
+  "Tries",
+  "Timeout",
+  "Background",
+  "Directory Prefix",
+  "No Host Directories",
+  "Skip Directory Levels"
 ];
 
 export const commandToFlag: { [key: string]: string } = {
@@ -53,7 +60,14 @@ export const commandToFlag: { [key: string]: string } = {
   "No Verbose": "--no-verbose",
   "Show Progress": "--show-progress",
   "Retry Connection Refused": "--retry-connrefused",
-  "No Clobber": "--no-clobber"
+  "No Clobber": "--no-clobber",
+  "Input File": "--input-file=",
+  "Tries": "--tries=0",
+  "Timeout": "--timeout=60",
+  "Background": "--background",
+  "Directory Prefix": "--directory-prefix=",
+  "No Host Directories": "--no-host-directories",
+  "Skip Directory Levels": "--cut-dirs=0"
 };
 
 export const flagToCommand = Object.entries(commandToFlag).reduce((acc, [key, value]) => {
