@@ -4,14 +4,19 @@ export const defaultMirrorPreset: Preset = {
   name: "Mirror Website Locally",
   description: "Downloads a complete copy of a website for offline viewing",
   commands: [
-    "--recursive",
-    "--no-parent",
+    "--mirror",
     "--convert-links",
-    "--page-requisites"
+    "--adjust-extension",
+    "--page-requisites",
+    "--no-parent",
+    "--limit-rate=1m",
+    "--wait=1",
+    "--random-wait",
+    "-P ~/Downloads/ExampleSite"
   ],
   options: {
     url: "",
-    saveDirectory: "",
+    saveDirectory: "~/Downloads/ExampleSite",
     recursive: true,
     convertLinks: true,
     pageRequisites: true,
@@ -19,8 +24,12 @@ export const defaultMirrorPreset: Preset = {
     followLinks: false,
     followFtp: false,
     contentDisposition: false,
-    adjustExtension: false,
+    adjustExtension: true,
     continueTransfer: false,
-    ignoreRobots: false
+    ignoreRobots: false,
+    mirror: true,
+    waitTime: 1,
+    randomWait: true,
+    limitRate: "1m"
   }
 };

@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PresetCommand } from "../PresetCommand";
 import { Preset } from "../types/preset";
-import { AVAILABLE_COMMANDS } from "../constants/commands";
+import { AVAILABLE_COMMANDS, flagToCommand } from "../constants/commands";
 
 interface PresetCommandsProps {
   preset: Preset;
@@ -19,13 +19,8 @@ export const PresetCommands = ({
   onUpdateCommand,
   onRemoveCommand,
 }: PresetCommandsProps) => {
-  // Function to get command title from the literal command
   const getCommandTitle = (command: string) => {
-    // Remove dashes and convert to title case for matching
-    const normalizedCommand = command.replace(/^-+/, '').split('-').join(' ');
-    return AVAILABLE_COMMANDS.find(cmd => 
-      cmd.toLowerCase().replace(/\s+/g, '') === normalizedCommand.toLowerCase()
-    ) || command;
+    return flagToCommand[command] || command;
   };
 
   return (
