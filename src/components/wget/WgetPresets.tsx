@@ -21,6 +21,13 @@ import {
 } from "@/components/ui/collapsible";
 import { PresetCommand } from "./PresetCommand";
 import { DeletePresetDialog } from "./DeletePresetDialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Props {
   options: WgetOptions;
@@ -34,6 +41,21 @@ interface Preset {
   options: Partial<WgetOptions>;
 }
 
+const AVAILABLE_COMMANDS = [
+  "Mirror Website",
+  "Follow Links",
+  "Convert Links",
+  "Adjust Extensions",
+  "No Clobber",
+  "Include Parents",
+  "Follow FTP",
+  "Content Disposition",
+  "Continue Transfer",
+  "Spider Mode",
+  "Use Timestamping",
+  "Debug Mode",
+];
+
 export const WgetPresets = ({ options, setOptions }: Props) => {
   const { toast } = useToast();
   const [presetName, setPresetName] = useState("");
@@ -42,6 +64,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   const [expandedPresets, setExpandedPresets] = useState<string[]>([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
+  const [activePreset, setActivePreset] = useState<string | null>(null);
   const [presets, setPresets] = useState<Preset[]>([
     {
       name: "Mirror Website Locally",
@@ -166,7 +189,22 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     setPresets((prev) =>
       prev.map((preset) =>
         preset.name === presetName
-          ? { ...preset, commands: [...preset.commands, "New Command"] }
+          ? { ...preset, commands: [...preset.commands, ""] }
+          : preset
+      )
+    );
+  };
+
+  const updateCommand = (presetName: string, index: number, newCommand: string) => {
+    setPresets((prev) =>
+      prev.map((preset) =>
+        preset.name === presetName
+          ? {
+              ...preset,
+              commands: preset.commands.map((cmd, i) =>
+                i === index ? newCommand : cmd
+              ),
+            }
           : preset
       )
     );
@@ -184,6 +222,25 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
       )
     );
   };
+
+  // Watch for options changes and update active preset state
+  React.useEffect(() => {
+    if (activePreset) {
+      const preset = presets.find((p) => p.name === activePreset);
+      if (preset) {
+        const isPresetActive = Object.entries(preset.options).every(
+          ([key, value]) => options[key as keyof WgetOptions] === value
+        );
+        if (!isPresetActive) {
+          setActivePreset(null);
+          toast({
+            title: "Preset Deactivated",
+            description: "Options have been modified outside the preset.",
+          });
+        }
+      }
+    }
+  }, [options, activePreset, presets]);
 
   return (
     <Card className="p-6 bg-black border border-white/20">
@@ -242,18 +299,21 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
                       <Minus className="h-4 w-4 text-white" />
                     </Button>
                     <Switch
-                      checked={Object.entries(preset.options).every(
-                        ([key, value]) => options[key as keyof WgetOptions] === value
-                      )}
-                      onCheckedChange={() => {
-                        setOptions({
-                          ...options,
-                          ...preset.options,
-                        });
-                        toast({
-                          title: "Success",
-                          description: `${preset.name} preset has been applied`,
-                        });
+                      checked={activePreset === preset.name}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setOptions({
+                            ...options,
+                            ...preset.options,
+                          });
+                          setActivePreset(preset.name);
+                          toast({
+                            title: "Success",
+                            description: `${preset.name} preset has been applied`,
+                          });
+                        } else {
+                          setActivePreset(null);
+                        }
                       }}
                       className="bg-zinc-700 data-[state=checked]:bg-white ml-4"
                     />
@@ -265,11 +325,27 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
                       <h5 className="text-sm font-medium text-white mb-2">Commands</h5>
                       <div className="space-y-2">
                         {preset.commands.map((command, index) => (
-                          <PresetCommand
-                            key={index}
-                            command={command}
-                            onDelete={() => removeCommand(preset.name, index)}
-                          />
+                          <div key={index} className="flex items-center gap-2">
+                            <Select
+                              value={command}
+                              onValueChange={(value) => updateCommand(preset.name, index, value)}
+                            >
+                              <SelectTrigger className="flex-1 bg-black border-white/20 text-white">
+                                <SelectValue placeholder="Select a command" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-black border-white/20">
+                                {AVAILABLE_COMMANDS.map((cmd) => (
+                                  <SelectItem key={cmd} value={cmd} className="text-white hover:bg-zinc-800">
+                                    {cmd}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <PresetCommand
+                              command={command}
+                              onDelete={() => removeCommand(preset.name, index)}
+                            />
+                          </div>
                         ))}
                         <Button
                           variant="outline"
