@@ -27,7 +27,6 @@ export const PresetCommand = ({ command, onDelete }: PresetCommandProps) => {
   const handleClick = () => {
     if (showX) {
       onDelete();
-      setShowX(false);
     } else {
       setShowX(true);
     }
