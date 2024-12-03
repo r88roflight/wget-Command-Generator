@@ -50,6 +50,14 @@ export interface WgetOptions {
   parallelDownloads: number;
   connectionLimit: string;
   logOnlyErrors: boolean;
+  // Adding missing properties from error messages
+  followFtp: boolean;
+  contentDisposition: boolean;
+  continueTransfer: boolean;
+  mirror: boolean;
+  spiderMode: boolean;
+  pageRequisites: boolean;
+  verifySSL: boolean;
 }
 
 export type FileTypeOption = {
