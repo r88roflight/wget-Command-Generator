@@ -1,3 +1,5 @@
+import { WgetOptions } from "@/types/wget";
+
 const escapeValue = (value: string) => {
   // Escape special characters and wrap in quotes if contains spaces
   if (!value) return '';
