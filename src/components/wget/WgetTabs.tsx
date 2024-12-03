@@ -5,6 +5,8 @@ import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
 import { WgetFileTypes } from "./WgetFileTypes";
 import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
 import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 interface Props {
   options: WgetOptions;
