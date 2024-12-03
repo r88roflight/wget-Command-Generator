@@ -13,10 +13,21 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
     }
   }
 
-  // File type handling
-  if (options.fileTypes && options.fileTypes.length > 0) {
+  // File type handling - use --accept='*' if all types are selected
+  const allFileTypes = ['txt', 'html', 'htm', 'xml', 'json', 'md', 'csv', 
+    'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg',
+    'mp4', 'webm', 'avi', 'mov', 'mkv',
+    'mp3', 'wav', 'ogg', 'm4a', 'flac',
+    'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+
+  const isAllTypesSelected = allFileTypes.every(type => options.fileTypes.includes(type));
+
+  if (isAllTypesSelected) {
+    flags.push(`--accept='*'`);
+  } else if (options.fileTypes && options.fileTypes.length > 0) {
     flags.push(`--accept=${options.fileTypes.join(',')}`);
   }
+
   if (options.excludeFileTypes && options.excludeFileTypes.length > 0) {
     flags.push(`--reject=${options.excludeFileTypes.join(',')}`);
   }
