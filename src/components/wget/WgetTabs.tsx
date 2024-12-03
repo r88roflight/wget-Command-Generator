@@ -19,6 +19,10 @@ interface Props {
 export const WgetTabs = ({ options, setOptions }: Props) => {
   const [activeTab, setActiveTab] = React.useState<string | undefined>(undefined);
 
+  const handleTabClick = (value: string) => {
+    setActiveTab(currentTab => currentTab === value ? undefined : value);
+  };
+
   return (
     <PresetProvider>
       <Tabs 
@@ -30,42 +34,42 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 bg-transparent gap-2 px-2 sm:px-0">
             <TabsTrigger 
               value="presets" 
-              onClick={() => setActiveTab(activeTab === "presets" ? undefined : "presets")}
+              onClick={() => handleTabClick("presets")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Presets
             </TabsTrigger>
             <TabsTrigger 
               value="options"
-              onClick={() => setActiveTab(activeTab === "options" ? undefined : "options")}
+              onClick={() => handleTabClick("options")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Options
             </TabsTrigger>
             <TabsTrigger 
               value="advanced"
-              onClick={() => setActiveTab(activeTab === "advanced" ? undefined : "advanced")}
+              onClick={() => handleTabClick("advanced")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Advanced
             </TabsTrigger>
             <TabsTrigger 
               value="flags"
-              onClick={() => setActiveTab(activeTab === "flags" ? undefined : "flags")}
+              onClick={() => handleTabClick("flags")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Flags
             </TabsTrigger>
             <TabsTrigger 
               value="behavior"
-              onClick={() => setActiveTab(activeTab === "behavior" ? undefined : "behavior")}
+              onClick={() => handleTabClick("behavior")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Behavior
             </TabsTrigger>
             <TabsTrigger 
               value="debugging"
-              onClick={() => setActiveTab(activeTab === "debugging" ? undefined : "debugging")}
+              onClick={() => handleTabClick("debugging")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Debug
