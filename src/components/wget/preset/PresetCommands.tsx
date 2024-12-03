@@ -1,11 +1,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { PresetCommand } from "../PresetCommand";
 import { Preset } from "../types/preset";
-import { AVAILABLE_COMMANDS, commandToFlag } from "../constants/commands";
+import { AVAILABLE_COMMANDS, commandToFlag, flagToCommand } from "../constants/commands";
 
 interface PresetCommandsProps {
   preset: Preset;
@@ -25,13 +25,8 @@ export const PresetCommands = ({
   };
 
   const getCommandTitle = (command: string) => {
-    // For commands with parameters (e.g., --limit-rate=1m), get the base command
     const baseCommand = command.split("=")[0];
-    
-    // Find the human-readable title by looking through commandToFlag
-    const title = Object.entries(commandToFlag).find(([_, value]) => value === baseCommand)?.[0];
-    
-    return title || command;
+    return flagToCommand[baseCommand] || command;
   };
 
   return (
@@ -71,7 +66,7 @@ export const PresetCommands = ({
               }}
             >
               <SelectTrigger className="w-8 h-8 bg-black border-white/20 p-0">
-                <ChevronDown className="h-4 w-4 text-white" />
+                <Plus className="h-4 w-4 text-white" />
               </SelectTrigger>
               <SelectContent className="bg-black border-white/20">
                 {AVAILABLE_COMMANDS.map((cmd) => (
