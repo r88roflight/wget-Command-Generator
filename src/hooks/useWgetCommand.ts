@@ -154,22 +154,22 @@ export const useWgetCommand = () => {
         flags.push("--https-only");
       }
 
-      if (!options.verifySSL) {
-        flags.push("--no-check-certificate");
+      // Additional features
+      if (options.continueDownload) {
+        flags.push("-c");
+      }
+
+      if (options.followFtp) {
+        flags.push("--follow-ftp");
+      }
+
+      if (options.contentDisposition) {
+        flags.push("--content-disposition");
       }
 
       // Directory options
       if (options.saveDirectory) {
         flags.push(`-P "${options.saveDirectory}"`);
-      }
-
-      // Additional features
-      if (options.noCache) {
-        flags.push("--no-cache");
-      }
-
-      if (options.noVerbose) {
-        flags.push("--no-verbose");
       }
 
       return `wget ${flags.join(" ")} "${options.url}"`;
