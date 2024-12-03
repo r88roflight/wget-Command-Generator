@@ -11,6 +11,8 @@ export const useWgetCommand = () => {
     followLinks: true,
     includePattern: "",
     excludePattern: "",
+    saveDirectory: "",
+    fileTypes: []
   });
 
   const generateCommand = () => {
@@ -37,7 +39,6 @@ export const useWgetCommand = () => {
       flags.push(`--reject=${options.excludePattern}`);
     }
     
-    // Add more wget options here
     flags.push("--no-clobber"); // Don't overwrite existing files
     flags.push("--continue"); // Resume downloads
     flags.push("--content-disposition"); // Honor Content-Disposition headers

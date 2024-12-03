@@ -74,12 +74,12 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
         <Slider
           value={[options.waitTime]}
           min={0}
-          max={10}
+          max={60}
           step={1}
           onValueChange={(value) =>
             setOptions({ ...options, waitTime: value[0] })
           }
-          className="bg-zinc-700"
+          className="[&>[role=slider]]:bg-white [&>[role=slider]]:border-white [&>div]:bg-white"
         />
       </div>
     </>

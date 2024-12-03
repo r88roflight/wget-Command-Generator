@@ -3,7 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WgetUrlInput } from "./WgetUrlInput";
 import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
-import { WgetPatternOptions } from "./WgetPatternOptions";
+import { WgetDirectoryInput } from "./WgetDirectoryInput";
+import { WgetFileTypes } from "./WgetFileTypes";
 import { useWgetCommand } from "@/hooks/useWgetCommand";
 import { Terminal } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -23,16 +24,25 @@ const WgetForm = () => {
       return;
     }
 
+    if (!options.saveDirectory) {
+      toast({
+        title: "Error",
+        description: "Please select a save directory",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const command = generateCommand();
-    // Run AppleScript to open Terminal and execute wget command
     const script = `
       tell application "Terminal"
         activate
-        do script "${command}"
+        do script "cd ${options.saveDirectory} && ${command}"
       end tell
     `;
     
     try {
+      // @ts-ignore - This is a webkit API that exists in desktop browsers
       await window.webkit.messageHandlers.runAppleScript.postMessage(script);
       toast({
         title: "Success",
@@ -57,8 +67,9 @@ const WgetForm = () => {
         <Card className="p-6 bg-zinc-900 border-zinc-800">
           <div className="space-y-6">
             <WgetUrlInput options={options} setOptions={setOptions} />
+            <WgetDirectoryInput options={options} setOptions={setOptions} />
             <WgetRecursiveOptions options={options} setOptions={setOptions} />
-            <WgetPatternOptions options={options} setOptions={setOptions} />
+            <WgetFileTypes options={options} setOptions={setOptions} />
           </div>
         </Card>
 
@@ -72,7 +83,7 @@ const WgetForm = () => {
             "Processing..."
           ) : (
             <>
-              <Terminal className="w-4 h-4" />
+              <Terminal className="w-4 h-4 mr-2" />
               Open in Terminal
             </>
           )}
