@@ -62,9 +62,7 @@ export const useWgetCommand = () => {
     noVerbose: false,
     followFtp: false,
     contentDisposition: false,
-    adjustExtension: false,
-    noClobber: false,
-    continue: false,
+    continueTransfer: false,
   });
 
   const generateCommand = () => {
@@ -248,7 +246,7 @@ export const useWgetCommand = () => {
         flags.push("--no-clobber");
       }
 
-      if (options.continue) {
+      if (options.continueTransfer) {
         flags.push("--continue");
       }
     }

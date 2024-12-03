@@ -57,6 +57,7 @@ export interface WgetOptions {
   noVerbose: boolean;
   followFtp: boolean;
   contentDisposition: boolean;
+  continueTransfer: boolean;
 }
 
 export type FileTypeOption = {

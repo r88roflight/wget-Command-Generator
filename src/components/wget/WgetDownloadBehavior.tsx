@@ -75,9 +75,9 @@ export const WgetDownloadBehavior = ({ options, setOptions }: Props) => {
           <p className="text-sm text-zinc-400">Resume getting a partially-downloaded file</p>
         </div>
         <Switch
-          checked={options.continue}
+          checked={options.continueTransfer}
           onCheckedChange={(checked) =>
-            setOptions({ ...options, continue: checked })
+            setOptions({ ...options, continueTransfer: checked })
           }
           className="bg-zinc-700 data-[state=checked]:bg-white"
         />
