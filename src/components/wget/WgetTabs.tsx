@@ -17,43 +17,55 @@ interface Props {
 }
 
 export const WgetTabs = ({ options, setOptions }: Props) => {
+  const [activeTab, setActiveTab] = React.useState<string | undefined>(undefined);
+
   return (
     <PresetProvider>
-      <Tabs defaultValue="presets" className="w-full mt-6 sm:mt-0">
+      <Tabs 
+        value={activeTab} 
+        onValueChange={setActiveTab}
+        className="w-full mt-6 sm:mt-0"
+      >
         <div className="flex flex-col gap-6">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 bg-transparent gap-2 px-2 sm:px-0">
             <TabsTrigger 
               value="presets" 
+              onClick={() => setActiveTab(activeTab === "presets" ? undefined : "presets")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Presets
             </TabsTrigger>
             <TabsTrigger 
-              value="flags" 
-              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
-            >
-              Flags
-            </TabsTrigger>
-            <TabsTrigger 
-              value="options" 
+              value="options"
+              onClick={() => setActiveTab(activeTab === "options" ? undefined : "options")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Options
             </TabsTrigger>
             <TabsTrigger 
-              value="advanced" 
+              value="advanced"
+              onClick={() => setActiveTab(activeTab === "advanced" ? undefined : "advanced")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Advanced
             </TabsTrigger>
             <TabsTrigger 
-              value="behavior" 
+              value="flags"
+              onClick={() => setActiveTab(activeTab === "flags" ? undefined : "flags")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
-              Download
+              Flags
             </TabsTrigger>
             <TabsTrigger 
-              value="debugging" 
+              value="behavior"
+              onClick={() => setActiveTab(activeTab === "behavior" ? undefined : "behavior")}
+              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
+            >
+              Behavior
+            </TabsTrigger>
+            <TabsTrigger 
+              value="debugging"
+              onClick={() => setActiveTab(activeTab === "debugging" ? undefined : "debugging")}
               className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
             >
               Debug
@@ -63,10 +75,6 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
           <div className="mt-16 sm:mt-6 px-2 sm:px-0">
             <TabsContent value="presets" className="m-0">
               <WgetPresets options={options} setOptions={setOptions} />
-            </TabsContent>
-
-            <TabsContent value="flags" className="m-0">
-              <WgetFlags options={options} setOptions={setOptions} />
             </TabsContent>
 
             <TabsContent value="options" className="m-0">
@@ -80,6 +88,10 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
             
             <TabsContent value="advanced" className="m-0">
               <WgetAdvancedOptions options={options} setOptions={setOptions} />
+            </TabsContent>
+
+            <TabsContent value="flags" className="m-0">
+              <WgetFlags options={options} setOptions={setOptions} />
             </TabsContent>
             
             <TabsContent value="behavior" className="m-0">
