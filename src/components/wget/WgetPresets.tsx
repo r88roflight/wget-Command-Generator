@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { WgetOptions } from "@/types/wget";
 import { useToast } from "@/components/ui/use-toast";
-import { Settings, Minus, Plus, ChevronDown } from "lucide-react";
+import { Settings, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   ContextMenu,
@@ -18,6 +18,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { PresetCommand } from "./PresetCommand";
+import { DeletePresetDialog } from "./DeletePresetDialog";
 
 interface Props {
   options: WgetOptions;
@@ -27,6 +29,7 @@ interface Props {
 interface Preset {
   name: string;
   description: string;
+  commands: string[];
   options: Partial<WgetOptions>;
 }
 
@@ -36,33 +39,38 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   const [presetDescription, setPresetDescription] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [expandedPresets, setExpandedPresets] = useState<string[]>([]);
-  const [presets, setPresets] = useState<Preset[]>([{
-    name: "Mirror Website Locally",
-    description: "Optimized settings for creating a complete local copy of a website",
-    options: {
-      recursive: true,
-      pageRequisites: true,
-      noClobber: true,
-      convertLinks: true,
-      adjustExtension: true,
-      mirror: true,
-      includeParents: true,
-      followLinks: true,
-      spiderMode: false,
-      timestamping: true,
-      continueTransfer: true,
-      followFtp: true,
-      contentDisposition: true,
-      debug: false,
-      logOnlyErrors: false,
-      verifySSL: true
-    }
-  }]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
+  const [presets, setPresets] = useState<Preset[]>([
+    {
+      name: "Mirror Website Locally",
+      description: "Optimized settings for creating a complete local copy of a website",
+      commands: ["wget --mirror", "wget --page-requisites"],
+      options: {
+        recursive: true,
+        pageRequisites: true,
+        noClobber: true,
+        convertLinks: true,
+        adjustExtension: true,
+        mirror: true,
+        includeParents: true,
+        followLinks: true,
+        spiderMode: false,
+        timestamping: true,
+        continueTransfer: true,
+        followFtp: true,
+        contentDisposition: true,
+        debug: false,
+        logOnlyErrors: false,
+        verifySSL: true,
+      },
+    },
+  ]);
 
   const togglePresetExpansion = (presetName: string) => {
-    setExpandedPresets(prev => 
-      prev.includes(presetName) 
-        ? prev.filter(name => name !== presetName)
+    setExpandedPresets((prev) =>
+      prev.includes(presetName)
+        ? prev.filter((name) => name !== presetName)
         : [...prev, presetName]
     );
   };
@@ -72,7 +80,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
       toast({
         title: "Error",
         description: "Please enter a preset name",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -80,6 +88,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     const newPreset: Preset = {
       name: presetName,
       description: presetDescription || "Custom preset",
+      commands: [],
       options: {
         recursive: options.recursive,
         pageRequisites: options.pageRequisites,
@@ -96,47 +105,79 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
         contentDisposition: options.contentDisposition,
         debug: options.debug,
         logOnlyErrors: options.logOnlyErrors,
-        verifySSL: options.verifySSL
-      }
+        verifySSL: options.verifySSL,
+      },
     };
 
     setPresets([...presets, newPreset]);
     setPresetName("");
     setPresetDescription("");
     setIsCreating(false);
-    
+
     toast({
       title: "Success",
-      description: "Preset saved successfully"
+      description: "Preset saved successfully",
     });
   };
 
   const handleRenamePreset = (oldName: string, newName: string) => {
-    setPresets(prev => prev.map(preset => 
-      preset.name === oldName 
-        ? { ...preset, name: newName }
-        : preset
-    ));
+    setPresets((prev) =>
+      prev.map((preset) =>
+        preset.name === oldName ? { ...preset, name: newName } : preset
+      )
+    );
   };
 
   const handleDeletePreset = (presetName: string) => {
-    setPresets(prev => prev.filter(preset => preset.name !== presetName));
-    toast({
-      title: "Success",
-      description: "Preset deleted successfully"
-    });
+    setSelectedPreset(presetName);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeletePreset = () => {
+    if (selectedPreset) {
+      setPresets((prev) => prev.filter((preset) => preset.name !== selectedPreset));
+      setDeleteDialogOpen(false);
+      setSelectedPreset(null);
+      toast({
+        title: "Success",
+        description: "Preset deleted successfully",
+      });
+    }
   };
 
   const handleApplyPreset = (preset: Preset) => {
     setOptions({
       ...options,
-      ...preset.options
+      ...preset.options,
     });
-    
+
     toast({
       title: "Success",
-      description: `${preset.name} preset has been applied`
+      description: `${preset.name} preset has been applied`,
     });
+  };
+
+  const addCommand = (presetName: string) => {
+    setPresets((prev) =>
+      prev.map((preset) =>
+        preset.name === presetName
+          ? { ...preset, commands: [...preset.commands, "New Command"] }
+          : preset
+      )
+    );
+  };
+
+  const removeCommand = (presetName: string, index: number) => {
+    setPresets((prev) =>
+      prev.map((preset) =>
+        preset.name === presetName
+          ? {
+              ...preset,
+              commands: preset.commands.filter((_, i) => i !== index),
+            }
+          : preset
+      )
+    );
   };
 
   return (
@@ -232,15 +273,6 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
                     >
                       <Minus className="h-4 w-4 text-white" />
                     </Button>
-                    <CollapsibleTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="hover:bg-zinc-900"
-                      >
-                        <ChevronDown className="h-4 w-4 text-white" />
-                      </Button>
-                    </CollapsibleTrigger>
                     <Switch
                       checked={Object.entries(preset.options).every(
                         ([key, value]) => options[key as keyof WgetOptions] === value
@@ -251,14 +283,29 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
                   </div>
                 </div>
                 <CollapsibleContent>
-                  <div className="p-4 border-t border-white/20 space-y-2">
-                    {Object.entries(preset.options)
-                      .filter(([, value]) => value === true)
-                      .map(([key]) => (
-                        <div key={key} className="text-sm text-zinc-400">
-                          • {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
-                        </div>
-                      ))}
+                  <div className="p-4 border-t border-white/20">
+                    <div className="mb-4">
+                      <h5 className="text-sm font-medium text-white mb-2">Commands</h5>
+                      <div className="space-y-2">
+                        {preset.commands.map((command, index) => (
+                          <PresetCommand
+                            key={index}
+                            command={command}
+                            onDelete={() => removeCommand(preset.name, index)}
+                            onAdd={() => addCommand(preset.name)}
+                          />
+                        ))}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full bg-black border-white/20 text-white hover:bg-zinc-900"
+                          onClick={() => addCommand(preset.name)}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Command
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </CollapsibleContent>
               </Collapsible>
@@ -279,6 +326,13 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
           </ContextMenu>
         ))}
       </div>
+
+      <DeletePresetDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeletePreset}
+        presetName={selectedPreset || ""}
+      />
     </Card>
   );
 };
