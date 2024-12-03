@@ -6,34 +6,11 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { WgetTabs } from "./wget/WgetTabs";
 import { useWgetCommand } from "@/hooks/useWgetCommand";
-import { Clipboard, ChevronDown } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Clipboard } from "lucide-react";
 
 const WgetGUI = () => {
   const { toast } = useToast();
-  const { options, setOptions, loading, generateCommand } = useWgetCommand();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!options.url) {
-      toast({
-        title: "Error",
-        description: "Please enter a URL",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Success",
-      description: "Started downloading from " + options.url,
-    });
-  };
+  const { options, setOptions, generateCommand } = useWgetCommand();
 
   const handleCopyCommand = async () => {
     const command = generateCommand();
@@ -46,11 +23,11 @@ const WgetGUI = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-4xl font-bold text-center mb-8 text-primary">
+      <h1 className="text-4xl font-bold text-center mb-8 text-white">
         wget
       </h1>
       
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="space-y-8">
         {/* Command Preview */}
         <Card className="p-4 bg-black border border-white/20">
           <div className="flex items-center gap-2">
@@ -114,33 +91,8 @@ const WgetGUI = () => {
           </div>
         </Card>
 
-        {/* Collapsible Advanced Options */}
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-          <CollapsibleTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full bg-black border-white/20 text-white hover:bg-zinc-900 flex items-center justify-between"
-            >
-              Advanced Options
-              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="pt-4">
-              <WgetTabs options={options} setOptions={setOptions} />
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-
-        <Button
-          type="submit"
-          className="w-full"
-          size="lg"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : "Start Download"}
-        </Button>
-      </form>
+        <WgetTabs options={options} setOptions={setOptions} />
+      </div>
     </div>
   );
 };
