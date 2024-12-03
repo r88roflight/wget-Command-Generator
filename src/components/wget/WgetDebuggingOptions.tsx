@@ -41,12 +41,12 @@ export const WgetDebuggingOptions = ({ options, setOptions }: Props) => {
 
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <Label className="text-base text-white">Follow FTP Links</Label>
-            <p className="text-sm text-zinc-400">Follow links to FTP resources</p>
+            <Label className="text-base text-white">Verify SSL</Label>
+            <p className="text-sm text-zinc-400">Verify SSL certificates</p>
           </div>
           <Switch
-            checked={options.followFtp}
-            onCheckedChange={(checked) => setOptions({ ...options, followFtp: checked })}
+            checked={options.verifySSL}
+            onCheckedChange={(checked) => setOptions({ ...options, verifySSL: checked })}
             className="bg-zinc-700 data-[state=checked]:bg-white"
           />
         </div>
