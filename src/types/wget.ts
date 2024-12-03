@@ -67,7 +67,20 @@ export interface WgetOptions {
   postData: string;
   ftpUser: string;
   ftpPassword: string;
-  executeCommand?: string; // Added new field for additional command execution
+  executeCommand?: string;
+  // Add missing properties
+  basicUser: string;
+  basicPassword: string;
+  noCheckCert: boolean;
+  retryConnRefused: boolean;
+  progressBar: boolean;
+  quota: string;
+  dnsTimeout: number;
+  dnsCache: boolean;
+  inet4Only: boolean;
+  inet6Only: boolean;
+  useCache: boolean;
+  noCache: boolean;
 }
 
 export type FileTypeOption = {
