@@ -76,22 +76,6 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
         />
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">Page Requirements</Label>
-          <p className="text-sm text-zinc-400">
-            Download all page requisites (CSS, images, etc.)
-          </p>
-        </div>
-        <Switch
-          checked={options.pageRequisites}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, pageRequisites: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
       {options.recursive && (
         <div className="space-y-2">
           <Label className="text-base text-white">Maximum Depth</Label>

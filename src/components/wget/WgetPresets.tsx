@@ -7,6 +7,7 @@ import { WgetOptions } from "@/types/wget";
 import { useToast } from "@/components/ui/use-toast";
 import { Settings, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "./EditableText";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -45,10 +46,19 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     {
       name: "Mirror Website Locally",
       description: "Optimized settings for creating a complete local copy of a website",
-      commands: ["wget --mirror", "wget --page-requisites"],
+      commands: [
+        "Mirror Website",
+        "Follow Links",
+        "Convert Links",
+        "Adjust Extensions",
+        "No Clobber",
+        "Include Parents",
+        "Follow FTP",
+        "Content Disposition",
+        "Continue Transfer",
+      ],
       options: {
         recursive: true,
-        pageRequisites: true,
         noClobber: true,
         convertLinks: true,
         adjustExtension: true,
@@ -86,12 +96,11 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     }
 
     const newPreset: Preset = {
-      name: presetName,
-      description: presetDescription || "Custom preset",
+      name: "New Preset",
+      description: "Description",
       commands: [],
       options: {
         recursive: options.recursive,
-        pageRequisites: options.pageRequisites,
         noClobber: options.noClobber,
         convertLinks: options.convertLinks,
         adjustExtension: options.adjustExtension,
@@ -128,6 +137,14 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     );
   };
 
+  const handleUpdatePresetDescription = (presetName: string, newDescription: string) => {
+    setPresets((prev) =>
+      prev.map((preset) =>
+        preset.name === presetName ? { ...preset, description: newDescription } : preset
+      )
+    );
+  };
+
   const handleDeletePreset = (presetName: string) => {
     setSelectedPreset(presetName);
     setDeleteDialogOpen(true);
@@ -143,18 +160,6 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
         description: "Preset deleted successfully",
       });
     }
-  };
-
-  const handleApplyPreset = (preset: Preset) => {
-    setOptions({
-      ...options,
-      ...preset.options,
-    });
-
-    toast({
-      title: "Success",
-      description: `${preset.name} preset has been applied`,
-    });
   };
 
   const addCommand = (presetName: string) => {
@@ -185,7 +190,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-white">Presets</h3>
         <Button
-          onClick={() => setIsCreating(true)}
+          onClick={handleSavePreset}
           variant="outline"
           size="sm"
           className="bg-black border-white/20 text-white hover:bg-zinc-900"
@@ -194,47 +199,6 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
           Add Preset
         </Button>
       </div>
-
-      {isCreating && (
-        <div className="space-y-4 mb-6 p-4 border border-white/20 rounded-md">
-          <div className="space-y-2">
-            <Label className="text-white">Preset Name</Label>
-            <Input
-              value={presetName}
-              onChange={(e) => setPresetName(e.target.value)}
-              placeholder="Enter preset name"
-              className="bg-black border-white/20 text-white"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-white">Description</Label>
-            <Input
-              value={presetDescription}
-              onChange={(e) => setPresetDescription(e.target.value)}
-              placeholder="Enter preset description"
-              className="bg-black border-white/20 text-white"
-            />
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button
-              onClick={() => setIsCreating(false)}
-              variant="outline"
-              size="sm"
-              className="bg-black border-white/20 text-white hover:bg-zinc-900"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSavePreset}
-              variant="outline"
-              size="sm"
-              className="bg-black border-white/20 text-white hover:bg-zinc-900"
-            >
-              Save Preset
-            </Button>
-          </div>
-        </div>
-      )}
 
       <div className="space-y-4">
         {presets.map((preset) => (
@@ -247,29 +211,23 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
               >
                 <div className="flex items-center justify-between p-4">
                   <div className="flex-1">
-                    <h4 className="text-base text-white">{preset.name}</h4>
-                    <p className="text-sm text-zinc-400">{preset.description}</p>
+                    <EditableText
+                      text={preset.name}
+                      onSave={(newName) => handleRenamePreset(preset.name, newName)}
+                      className="text-base text-white block mb-1"
+                    />
+                    <EditableText
+                      text={preset.description}
+                      onSave={(newDescription) => handleUpdatePresetDescription(preset.name, newDescription)}
+                      className="text-sm text-zinc-400 block"
+                    />
                   </div>
                   <div className="flex items-center space-x-2">
                     <Button
                       variant="ghost"
                       size="icon"
                       className="hover:bg-zinc-900"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        togglePresetExpansion(preset.name);
-                      }}
-                    >
-                      <Settings className="h-4 w-4 text-white" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="hover:bg-zinc-900"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeletePreset(preset.name);
-                      }}
+                      onClick={() => handleDeletePreset(preset.name)}
                     >
                       <Minus className="h-4 w-4 text-white" />
                     </Button>
@@ -277,7 +235,16 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
                       checked={Object.entries(preset.options).every(
                         ([key, value]) => options[key as keyof WgetOptions] === value
                       )}
-                      onCheckedChange={() => handleApplyPreset(preset)}
+                      onCheckedChange={() => {
+                        setOptions({
+                          ...options,
+                          ...preset.options,
+                        });
+                        toast({
+                          title: "Success",
+                          description: `${preset.name} preset has been applied`,
+                        });
+                      }}
                       className="bg-zinc-700 data-[state=checked]:bg-white ml-4"
                     />
                   </div>
@@ -292,7 +259,6 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
                             key={index}
                             command={command}
                             onDelete={() => removeCommand(preset.name, index)}
-                            onAdd={() => addCommand(preset.name)}
                           />
                         ))}
                         <Button
