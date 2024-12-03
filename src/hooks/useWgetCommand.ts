@@ -101,143 +101,6 @@ export const useWgetCommand = () => {
         flags.push(`--reject=${options.excludePattern}`);
       }
 
-      if (options.userAgent) {
-        flags.push(`--user-agent="${options.userAgent}"`);
-      }
-
-      if (options.limitRate) {
-        flags.push(`--limit-rate=${options.limitRate}`);
-      }
-
-      if (options.username && options.password) {
-        flags.push(`--user=${options.username}`);
-        flags.push(`--password=${options.password}`);
-      }
-
-      if (options.retries > 0) {
-        flags.push(`--tries=${options.retries}`);
-      }
-
-      if (options.timeout > 0) {
-        flags.push(`--timeout=${options.timeout}`);
-      }
-
-      if (options.continueDownload) {
-        flags.push("--continue");
-      }
-
-      if (options.convertLinks) {
-        flags.push("--convert-links");
-      }
-
-      if (options.adjustExtension) {
-        flags.push("--adjust-extension");
-      }
-
-      if (options.httpsOnly) {
-        flags.push("--https-only");
-      }
-
-      if (options.randomWait) {
-        flags.push("--random-wait");
-      }
-
-      if (options.noClobber) {
-        flags.push("--no-clobber");
-      }
-
-      if (options.debug) {
-        flags.push("--debug");
-      }
-
-      if (options.timestamping) {
-        flags.push("--timestamping");
-      }
-
-      if (options.ignoreRobots) {
-        flags.push("--execute robots=off");
-      }
-
-      if (options.backupConverted) {
-        flags.push("--backup-converted");
-      }
-
-      if (options.deleteAfter) {
-        flags.push("--delete-after");
-      }
-
-      if (!options.verifySSL) {
-        flags.push("--no-check-certificate");
-      }
-
-      if (options.pageRequisites) {
-        flags.push("--page-requisites");
-      }
-
-      if (options.domains) {
-        flags.push(`--domains=${options.domains}`);
-      }
-
-      if (options.excludeDomains) {
-        flags.push(`--exclude-domains=${options.excludeDomains}`);
-      }
-
-      if (options.noParent) {
-        flags.push("--no-parent");
-      }
-
-      if (options.relativePaths) {
-        flags.push("--relative");
-      }
-
-      if (options.backupOriginal) {
-        flags.push("--backup-converted");
-      }
-
-      if (options.strictComments) {
-        flags.push("--strict-comments");
-      }
-
-      if (options.infiniteRecursion) {
-        flags.push("--level=inf");
-      }
-
-      if (options.dontRemoveListings) {
-        flags.push("--no-remove-listing");
-      }
-
-      if (options.quotaCommand) {
-        flags.push(`--quota=${options.quotaCommand}`);
-      }
-
-      if (options.bindAddress) {
-        flags.push(`--bind-address=${options.bindAddress}`);
-      }
-
-      if (options.cacheDir) {
-        flags.push(`--cache=${options.cacheDir}`);
-      }
-
-      if (options.noCache) {
-        flags.push("--no-cache");
-      }
-
-      if (options.noCheckCertificate) {
-        flags.push("--no-check-certificate");
-      }
-
-      if (options.noVerbose) {
-        flags.push("--no-verbose");
-      }
-      
-      if (options.followFtp) {
-        flags.push("--follow-ftp");
-      }
-
-      if (options.contentDisposition) {
-        flags.push("--content-disposition");
-      }
-
       if (options.adjustExtension) {
         flags.push("--adjust-extension");
       }
@@ -248,6 +111,19 @@ export const useWgetCommand = () => {
 
       if (options.continueTransfer) {
         flags.push("--continue");
+      }
+
+      if (options.contentDisposition) {
+        flags.push("--content-disposition");
+      }
+
+      if (options.followFtp) {
+        flags.push("--follow-ftp");
+      }
+
+      // Add save directory if specified
+      if (options.saveDirectory) {
+        flags.push(`-P ${options.saveDirectory}`);
       }
     }
     
