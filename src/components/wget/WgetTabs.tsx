@@ -6,6 +6,7 @@ import { WgetFileTypes } from "./WgetFileTypes";
 import { WgetRecursiveOptions } from "./WgetRecursiveOptions";
 import { Card } from "@/components/ui/card";
 import { WgetDebuggingOptions } from "./WgetDebuggingOptions";
+import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
 
 interface Props {
   options: WgetOptions;
@@ -57,10 +58,7 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
       
       <TabsContent value="behavior" className="mt-4">
         <Card className="p-6 bg-black border border-white/20">
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-white">Download Behavior</h3>
-            {/* Add download behavior specific options here */}
-          </div>
+          <WgetDownloadBehavior options={options} setOptions={setOptions} />
         </Card>
       </TabsContent>
       
