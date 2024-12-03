@@ -19,6 +19,15 @@ export const PresetCommands = ({
   onUpdateCommand,
   onRemoveCommand,
 }: PresetCommandsProps) => {
+  // Function to get command title from the literal command
+  const getCommandTitle = (command: string) => {
+    // Remove dashes and convert to title case for matching
+    const normalizedCommand = command.replace(/^-+/, '').split('-').join(' ');
+    return AVAILABLE_COMMANDS.find(cmd => 
+      cmd.toLowerCase().replace(/\s+/g, '') === normalizedCommand.toLowerCase()
+    ) || command;
+  };
+
   return (
     <div className="mb-4">
       <h5 className="text-sm font-medium text-white mb-2">Commands</h5>
@@ -30,7 +39,9 @@ export const PresetCommands = ({
               onValueChange={(value) => onUpdateCommand(preset.name, index, value)}
             >
               <SelectTrigger className="flex-1 bg-black border-white/20 text-white">
-                <SelectValue placeholder="Select a command">{command}</SelectValue>
+                <SelectValue placeholder="Select a command">
+                  {getCommandTitle(command)}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-black border-white/20">
                 {AVAILABLE_COMMANDS.map((cmd) => (
