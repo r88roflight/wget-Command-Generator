@@ -1,60 +1,15 @@
-import React, { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import React, { useState, useEffect } from "react";
 import { WgetOptions } from "@/types/wget";
 import { useToast } from "@/components/ui/use-toast";
-import { Settings, Minus, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { EditableText } from "./EditableText";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { PresetCommand } from "./PresetCommand";
+import { PresetHeader } from "./preset/PresetHeader";
+import { PresetItem } from "./preset/PresetItem";
 import { DeletePresetDialog } from "./DeletePresetDialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Preset } from "./types/preset";
 
 interface Props {
   options: WgetOptions;
   setOptions: (options: WgetOptions) => void;
 }
-
-interface Preset {
-  name: string;
-  description: string;
-  commands: string[];
-  options: Partial<WgetOptions>;
-}
-
-const AVAILABLE_COMMANDS = [
-  "Mirror Website",
-  "Follow Links",
-  "Convert Links",
-  "Adjust Extensions",
-  "No Clobber",
-  "Include Parents",
-  "Follow FTP",
-  "Content Disposition",
-  "Continue Transfer",
-  "Spider Mode",
-  "Use Timestamping",
-  "Debug Mode",
-];
 
 export const WgetPresets = ({ options, setOptions }: Props) => {
   const { toast } = useToast();
@@ -223,8 +178,24 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     );
   };
 
+  const handleTogglePreset = (checked: boolean, preset: Preset) => {
+    if (checked) {
+      setOptions({
+        ...options,
+        ...preset.options,
+      });
+      setActivePreset(preset.name);
+      toast({
+        title: "Success",
+        description: `${preset.name} preset has been applied`,
+      });
+    } else {
+      setActivePreset(null);
+    }
+  };
+
   // Watch for options changes and update active preset state
-  React.useEffect(() => {
+  useEffect(() => {
     if (activePreset) {
       const preset = presets.find((p) => p.name === activePreset);
       if (preset) {
@@ -243,148 +214,30 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
   }, [options, activePreset, presets]);
 
   return (
-    <Card className="p-6 bg-black border border-white/20">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium text-white">Presets</h3>
-        <Button
-          onClick={handleSavePreset}
-          variant="outline"
-          size="sm"
-          className="bg-black border-white/20 text-white hover:bg-zinc-900"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Add Preset
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        {presets.map((preset) => (
-          <ContextMenu key={preset.name}>
-            <ContextMenuTrigger>
-              <Collapsible
-                open={expandedPresets.includes(preset.name)}
-                onOpenChange={() => togglePresetExpansion(preset.name)}
-                className="border border-white/20 rounded-md"
-              >
-                <div className="flex items-center justify-between p-4">
-                  <div className="flex-1">
-                    <EditableText
-                      text={preset.name}
-                      onSave={(newName) => handleRenamePreset(preset.name, newName)}
-                      className="text-base text-white block mb-1"
-                    />
-                    <EditableText
-                      text={preset.description}
-                      onSave={(newDescription) =>
-                        handleUpdatePresetDescription(preset.name, newDescription)
-                      }
-                      className="text-sm text-zinc-400 block"
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="hover:bg-zinc-900"
-                      onClick={() => togglePresetExpansion(preset.name)}
-                    >
-                      <Settings className="h-4 w-4 text-white" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="hover:bg-zinc-900"
-                      onClick={() => handleDeletePreset(preset.name)}
-                    >
-                      <Minus className="h-4 w-4 text-white" />
-                    </Button>
-                    <Switch
-                      checked={activePreset === preset.name}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setOptions({
-                            ...options,
-                            ...preset.options,
-                          });
-                          setActivePreset(preset.name);
-                          toast({
-                            title: "Success",
-                            description: `${preset.name} preset has been applied`,
-                          });
-                        } else {
-                          setActivePreset(null);
-                        }
-                      }}
-                      className="bg-zinc-700 data-[state=checked]:bg-white ml-4"
-                    />
-                  </div>
-                </div>
-                <CollapsibleContent>
-                  <div className="p-4 border-t border-white/20">
-                    <div className="mb-4">
-                      <h5 className="text-sm font-medium text-white mb-2">Commands</h5>
-                      <div className="space-y-2">
-                        {preset.commands.map((command, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <Select
-                              value={command}
-                              onValueChange={(value) => updateCommand(preset.name, index, value)}
-                            >
-                              <SelectTrigger className="flex-1 bg-black border-white/20 text-white">
-                                <SelectValue placeholder="Select a command" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-black border-white/20">
-                                {AVAILABLE_COMMANDS.map((cmd) => (
-                                  <SelectItem key={cmd} value={cmd} className="text-white hover:bg-zinc-800">
-                                    {cmd}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <PresetCommand
-                              command={command}
-                              onDelete={() => removeCommand(preset.name, index)}
-                            />
-                          </div>
-                        ))}
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full bg-black border-white/20 text-white hover:bg-zinc-900"
-                          onClick={() => addCommand(preset.name)}
-                        >
-                          <Plus className="h-4 w-4 mr-2" />
-                          Add Command
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            </ContextMenuTrigger>
-            <ContextMenuContent className="bg-black border border-white/20">
-              <ContextMenuItem
-                className="text-white hover:bg-zinc-900"
-                onSelect={() => {
-                  const newName = window.prompt("Enter new name", preset.name);
-                  if (newName && newName !== preset.name) {
-                    handleRenamePreset(preset.name, newName);
-                  }
-                }}
-              >
-                Rename
-              </ContextMenuItem>
-            </ContextMenuContent>
-          </ContextMenu>
-        ))}
-      </div>
-
+    <div className="space-y-4">
+      <PresetHeader handleSavePreset={handleSavePreset} />
+      {presets.map((preset) => (
+        <PresetItem
+          key={preset.name}
+          preset={preset}
+          isExpanded={expandedPresets.includes(preset.name)}
+          activePreset={activePreset}
+          onToggleExpansion={togglePresetExpansion}
+          onRename={handleRenamePreset}
+          onUpdateDescription={handleUpdatePresetDescription}
+          onDelete={handleDeletePreset}
+          onTogglePreset={handleTogglePreset}
+          onAddCommand={addCommand}
+          onUpdateCommand={updateCommand}
+          onRemoveCommand={removeCommand}
+        />
+      ))}
       <DeletePresetDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         onConfirm={confirmDeletePreset}
         presetName={selectedPreset || ""}
       />
-    </Card>
+    </div>
   );
 };
