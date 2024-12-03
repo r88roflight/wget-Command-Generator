@@ -35,25 +35,21 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
     }
   };
 
-  const handleSelectAllInCategory = (category: FileTypeOption) => {
-    const currentFileTypes = new Set(options.fileTypes);
-    const allSelected = category.patterns.every(pattern => currentFileTypes.has(pattern));
+  const handleSelectAll = () => {
+    const allExtensions = FILE_TYPE_OPTIONS.flatMap(category => category.patterns);
+    const allSelected = allExtensions.every(ext => options.fileTypes.includes(ext));
     
     if (allSelected) {
-      // Remove all patterns in this category
-      const newFileTypes = options.fileTypes.filter(type => !category.patterns.includes(type));
       setOptions({
         ...options,
-        fileTypes: newFileTypes,
-        includePattern: newFileTypes.length > 0 ? newFileTypes.map(ext => `*.${ext}`).join(",") : ""
+        fileTypes: [],
+        includePattern: ""
       });
     } else {
-      // Add all patterns in this category
-      const newFileTypes = [...new Set([...options.fileTypes, ...category.patterns])];
       setOptions({
         ...options,
-        fileTypes: newFileTypes,
-        includePattern: newFileTypes.map(ext => `*.${ext}`).join(",")
+        fileTypes: allExtensions,
+        includePattern: allExtensions.map(ext => `*.${ext}`).join(",")
       });
     }
   };
@@ -63,24 +59,22 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
       <div>
         <div className="flex justify-between items-center mb-4">
           <Label className="text-lg font-semibold text-white">Include File Types</Label>
+          <Button
+            onClick={handleSelectAll}
+            type="button"
+            variant="outline"
+            size="sm"
+            className="text-xs text-zinc-400 hover:text-white transition-colors h-7"
+          >
+            {FILE_TYPE_OPTIONS.flatMap(category => category.patterns).every(ext => options.fileTypes.includes(ext))
+              ? "Deselect All"
+              : "Select All"}
+          </Button>
         </div>
         <div className="space-y-6">
           {FILE_TYPE_OPTIONS.map((category) => (
             <div key={category.value} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label className="text-white font-medium">{category.label}</Label>
-                <Button
-                  onClick={() => handleSelectAllInCategory(category)}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="text-xs text-zinc-400 hover:text-white transition-colors h-7"
-                >
-                  {category.patterns.every(pattern => options.fileTypes.includes(pattern)) 
-                    ? "Deselect All" 
-                    : "Select All"}
-                </Button>
-              </div>
+              <Label className="text-white font-medium">{category.label}</Label>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 pl-4">
                 {category.patterns.map((extension) => (
                   <div key={extension} className="flex items-center space-x-2">
