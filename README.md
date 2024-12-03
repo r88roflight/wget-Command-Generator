@@ -1,69 +1,36 @@
-# Welcome to your Lovable project
+# wget Command Generator
+#### Welcome to wget Command Generator, a simple, user-friendly tool that helps you create accurate wget commands effortlessly. Whether you’re new to command-line tools or a seasoned pro, this app makes it easy to configure, preview, and copy fully functional wget commands.
 
-## Project info
+## Features
+Intuitive Interface: A sleek, modern GUI for building wget commands without needing to memorize complex options.
+Customizable Options: Tailor your download commands with options for saving directories, recursive downloading, mirroring websites, and more.
+Copy & Paste Simplicity: Generate your desired command and copy it directly into your terminal.
+Dynamic Command Preview: See your command update in real-time as you configure options.
 
-**URL**: https://lovable.dev/projects/34beb3a0-4eaa-4846-9708-45e1b3ce5117
+## How to Use
+Enter a URL: Start by typing the URL of the file or website you want to download.
+Select Options: Use the intuitive toggles and dropdowns to customize your wget command.
+Copy the Command: Once satisfied, click the Copy button to copy the generated command to your clipboard.
+Run in Terminal: Paste the command into your terminal and hit enter to execute it.
 
-## How can I edit this code?
+```
+Example
+Here’s a basic example of how the app works:
 
-There are several ways of editing your application.
+If you enter https://example.com and select the "Recursive Download" option, the app will generate:
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/34beb3a0-4eaa-4846-9708-45e1b3ce5117) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+bash
+Copy code
+wget -r https://example.com
+Copy and paste this into your terminal to start downloading recursively!
 ```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## About the UI
+Dark, Minimal Design: The app features a clean, modern dark theme for easy navigation.
+Real-Time Feedback: Adjustments to options are reflected instantly in the displayed command.
+Accessible Controls: Options are organized logically, making it easy for anyone to create commands without hassle.
 
-**Use GitHub Codespaces**
+## Deployment
+You can use the app directly online at: wget.lovable.app
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/34beb3a0-4eaa-4846-9708-45e1b3ce5117) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
