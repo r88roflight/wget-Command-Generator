@@ -13,6 +13,14 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
     }
   }
 
+  // File type handling
+  if (options.fileTypes && options.fileTypes.length > 0) {
+    flags.push(`--accept=${options.fileTypes.join(',')}`);
+  }
+  if (options.excludeFileTypes && options.excludeFileTypes.length > 0) {
+    flags.push(`--reject=${options.excludeFileTypes.join(',')}`);
+  }
+
   if (options.pageRequisites) flags.push('--page-requisites');
   if (!options.includeParents) flags.push('--no-parent');
   if (options.waitTime > 0) flags.push(`--wait=${options.waitTime}`);
@@ -29,7 +37,7 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
   if (options.executeCommand) flags.push(`-e ${options.executeCommand}`);
   if (options.ignoreRobots) flags.push('--no-robots');
   
-  // Add missing flags for advanced options
+  // Advanced options flags
   if (options.followLinks) flags.push('--follow-links');
   if (options.userAgent) flags.push(`--user-agent="${options.userAgent}"`);
   if (options.limitRate) flags.push(`--limit-rate=${options.limitRate}`);

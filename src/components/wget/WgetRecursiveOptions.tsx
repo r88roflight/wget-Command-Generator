@@ -30,20 +30,36 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
         />
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">Recursive Download</Label>
-          <p className="text-sm text-zinc-400">
-            Download subdirectories recursively
-          </p>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex-1 space-y-0.5">
+            <Label className="text-base text-white">Recursive Download</Label>
+            <p className="text-sm text-zinc-400">
+              Download subdirectories recursively
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            {options.recursive && (
+              <Input
+                type="number"
+                min="0"
+                value={options.maxDepth}
+                onChange={(e) =>
+                  setOptions({ ...options, maxDepth: parseInt(e.target.value) || 0 })
+                }
+                placeholder="Max Depth"
+                className="w-24 bg-black border-white/20 text-white"
+              />
+            )}
+            <Switch
+              checked={options.recursive}
+              onCheckedChange={(checked) =>
+                setOptions({ ...options, recursive: checked })
+              }
+              className="bg-zinc-700 data-[state=checked]:bg-white"
+            />
+          </div>
         </div>
-        <Switch
-          checked={options.recursive}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, recursive: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
       </div>
 
       <div className="flex items-center justify-between">
@@ -75,21 +91,6 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
           className="bg-zinc-700 data-[state=checked]:bg-white"
         />
       </div>
-
-      {options.recursive && (
-        <div className="space-y-2">
-          <Label className="text-base text-white">Maximum Depth</Label>
-          <Input
-            type="number"
-            min="0"
-            value={options.maxDepth}
-            onChange={(e) =>
-              setOptions({ ...options, maxDepth: parseInt(e.target.value) || 0 })
-            }
-            className="bg-black border-white/20 text-white"
-          />
-        </div>
-      )}
     </div>
   );
 };
