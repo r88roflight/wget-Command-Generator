@@ -13,7 +13,7 @@ export const useWgetCommandGenerator = () => {
       }
     }
 
-    // Handle parent directory option explicitly
+    // Handle parent directory option independently of recursive
     if (!options.includeParents) {
       flags.push("--no-parent");
     }
