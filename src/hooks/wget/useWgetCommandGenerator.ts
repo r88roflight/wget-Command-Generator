@@ -6,12 +6,52 @@ export const useWgetCommandGenerator = () => {
     
     if (!options.url && !options.inputFile) return "wget";
     
+    // Input/Output flags
     if (options.inputFile) {
       flags.push(`-i "${options.inputFile}"`);
     }
 
     if (options.directoryPrefix) {
       flags.push(`-P "${options.directoryPrefix}"`);
+    }
+
+    if (options.outputDocument) {
+      flags.push(`-O "${options.outputDocument}"`);
+    }
+
+    if (options.appendOutput) {
+      flags.push(`-a "${options.appendOutput}"`);
+    }
+
+    // Directory options
+    if (options.cutDirs > 0) {
+      flags.push(`--cut-dirs=${options.cutDirs}`);
+    }
+
+    if (options.noDirectories) {
+      flags.push('-nd');
+    }
+
+    // HTTP options
+    if (options.httpUser) {
+      flags.push(`-U "${options.httpUser}"`);
+    }
+
+    if (options.httpPassword) {
+      flags.push(`--password="${options.httpPassword}"`);
+    }
+
+    if (options.postData) {
+      flags.push(`--post-data="${options.postData}"`);
+    }
+
+    // FTP options
+    if (options.ftpUser) {
+      flags.push(`--ftp-user="${options.ftpUser}"`);
+    }
+
+    if (options.ftpPassword) {
+      flags.push(`--ftp-password="${options.ftpPassword}"`);
     }
 
     if (options.recursive) {

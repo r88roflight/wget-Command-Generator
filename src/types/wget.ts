@@ -57,8 +57,16 @@ export interface WgetOptions {
   spiderMode: boolean;
   pageRequisites: boolean;
   verifySSL: boolean;
-  inputFile: string;  // New option for -i flag
-  directoryPrefix: string;  // New option for -P flag
+  inputFile: string;
+  directoryPrefix: string;
+  outputDocument: string;
+  appendOutput: string;
+  noDirectories: string;
+  httpUser: string;
+  httpPassword: string;
+  postData: string;
+  ftpUser: string;
+  ftpPassword: string;
 }
 
 export type FileTypeOption = {

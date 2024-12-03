@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { WgetDebuggingOptions } from "./WgetDebuggingOptions";
 import { WgetDownloadBehavior } from "./WgetDownloadBehavior";
 import { WgetPresets } from "./WgetPresets";
+import { WgetFlags } from "./WgetFlags";
 
 interface Props {
   options: WgetOptions;
@@ -18,12 +19,18 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
   return (
     <Tabs defaultValue="presets" className="w-full">
       <div className="flex flex-col gap-4">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 bg-transparent gap-2">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-6 bg-transparent gap-2">
           <TabsTrigger 
             value="presets" 
             className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4"
           >
             Presets
+          </TabsTrigger>
+          <TabsTrigger 
+            value="flags" 
+            className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4"
+          >
+            Flags
           </TabsTrigger>
           <TabsTrigger 
             value="options" 
@@ -54,6 +61,10 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
         <div className="mt-0">
           <TabsContent value="presets" className="m-0">
             <WgetPresets options={options} setOptions={setOptions} />
+          </TabsContent>
+
+          <TabsContent value="flags" className="m-0">
+            <WgetFlags options={options} setOptions={setOptions} />
           </TabsContent>
 
           <TabsContent value="options" className="m-0">
