@@ -20,7 +20,9 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
   const [activeTab, setActiveTab] = React.useState<string | undefined>(undefined);
 
   const handleTabClick = (value: string) => {
-    setActiveTab(prev => prev === value ? undefined : value);
+    // If the clicked tab is already active, close it by setting activeTab to undefined
+    // Otherwise, open the clicked tab by setting it as active
+    setActiveTab((currentTab) => currentTab === value ? undefined : value);
   };
 
   return (
@@ -31,48 +33,23 @@ export const WgetTabs = ({ options, setOptions }: Props) => {
       >
         <div className="flex flex-col gap-6">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 bg-transparent gap-2 px-2 sm:px-0">
-            <TabsTrigger 
-              value="presets"
-              onClick={() => handleTabClick("presets")}
-              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
-            >
-              Presets
-            </TabsTrigger>
-            <TabsTrigger 
-              value="options"
-              onClick={() => handleTabClick("options")}
-              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
-            >
-              Options
-            </TabsTrigger>
-            <TabsTrigger 
-              value="advanced"
-              onClick={() => handleTabClick("advanced")}
-              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
-            >
-              Advanced
-            </TabsTrigger>
-            <TabsTrigger 
-              value="flags"
-              onClick={() => handleTabClick("flags")}
-              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
-            >
-              Flags
-            </TabsTrigger>
-            <TabsTrigger 
-              value="behavior"
-              onClick={() => handleTabClick("behavior")}
-              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
-            >
-              Behavior
-            </TabsTrigger>
-            <TabsTrigger 
-              value="debugging"
-              onClick={() => handleTabClick("debugging")}
-              className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
-            >
-              Debug
-            </TabsTrigger>
+            {[
+              { value: "presets", label: "Presets" },
+              { value: "options", label: "Options" },
+              { value: "advanced", label: "Advanced" },
+              { value: "flags", label: "Flags" },
+              { value: "behavior", label: "Behavior" },
+              { value: "debugging", label: "Debug" }
+            ].map((tab) => (
+              <TabsTrigger 
+                key={tab.value}
+                value={tab.value}
+                onClick={() => handleTabClick(tab.value)}
+                className="bg-black border border-white/20 text-white data-[state=active]:bg-zinc-800 data-[state=active]:border-primary text-xs sm:text-sm whitespace-nowrap px-2 sm:px-4 py-2"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
           <div className="mt-16 sm:mt-6 px-2 sm:px-0">
