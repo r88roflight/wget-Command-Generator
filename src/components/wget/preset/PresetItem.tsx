@@ -52,24 +52,22 @@ export const PresetItem = ({
       onOpenChange={() => onToggleExpansion(preset.name)}
       className="border border-white/20 rounded-md"
     >
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center gap-2">
-          <div>
-            <EditableText
-              text={preset.name}
-              onSave={(newName) => onRename(preset.name, newName)}
-              className="text-base text-white block mb-1"
-            />
-            <EditableText
-              text={preset.description}
-              onSave={(newDescription) =>
-                onUpdateDescription(preset.name, newDescription)
-              }
-              className="text-sm text-zinc-400 block"
-            />
-          </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 gap-4 sm:gap-2">
+        <div className="flex-1 min-w-0">
+          <EditableText
+            text={preset.name}
+            onSave={(newName) => onRename(preset.name, newName)}
+            className="text-base text-white block mb-1 truncate"
+          />
+          <EditableText
+            text={preset.description}
+            onSave={(newDescription) =>
+              onUpdateDescription(preset.name, newDescription)
+            }
+            className="text-sm text-zinc-400 block truncate"
+          />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
           <Button
             variant="ghost"
             size="icon"
@@ -104,7 +102,7 @@ export const PresetItem = ({
           <Switch
             checked={activePreset === preset.name}
             onCheckedChange={(checked) => onTogglePreset(checked, preset)}
-            className="bg-zinc-700 data-[state=checked]:bg-white ml-4"
+            className="bg-zinc-700 data-[state=checked]:bg-white"
           />
         </div>
       </div>
