@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { PresetCommand } from "../PresetCommand";
 import { Preset } from "../types/preset";
-import { AVAILABLE_COMMANDS, flagToCommand, commandToFlag } from "../constants/commands";
+import { AVAILABLE_COMMANDS, flagToCommand } from "../constants/commands";
 
 interface PresetCommandsProps {
   preset: Preset;
@@ -25,8 +25,10 @@ export const PresetCommands = ({
   };
 
   const getCommandTitle = (command: string) => {
-    const baseCommand = command.split("=")[0];
-    return Object.entries(commandToFlag).find(([_, value]) => value === baseCommand)?.[0] || command;
+    // First, handle commands with parameters by removing the parameter part
+    const baseCommand = command.split("=")[0] + (command.includes("=") ? "=" : "");
+    // Look up the command in our flagToCommand mapping
+    return flagToCommand[baseCommand] || command;
   };
 
   return (
@@ -61,8 +63,7 @@ export const PresetCommands = ({
             <Select
               value={command}
               onValueChange={(value) => {
-                const newCommand = commandToFlag[value] || value;
-                onUpdateCommand(preset.name, index, newCommand);
+                onUpdateCommand(preset.name, index, value);
               }}
             >
               <SelectTrigger className="w-8 h-8 bg-black border-white/20 p-0">
@@ -73,7 +74,7 @@ export const PresetCommands = ({
                   <SelectItem 
                     key={cmd} 
                     value={cmd}
-                    className="text-white hover:bg-zinc-800"
+                    className="text-white hover:bg-zinc-900"
                   >
                     {cmd}
                   </SelectItem>
