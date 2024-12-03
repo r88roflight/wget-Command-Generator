@@ -7,6 +7,12 @@ export const useWgetCommand = () => {
   const { options, setOptions, resetOptions } = useWgetOptions();
   const { generateCommand } = useWgetCommandGenerator();
 
+  // Flags that should be highlighted in red if they appear in the command
+  const invalidFlags = [
+    '--level=0',
+    '--level=',
+  ];
+
   return {
     options,
     setOptions,
@@ -14,5 +20,6 @@ export const useWgetCommand = () => {
     setLoading,
     resetOptions,
     generateCommand: () => generateCommand(options),
+    invalidFlags,
   };
 };

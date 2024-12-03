@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { WgetOptions } from "@/types/wget";
 import { FILE_TYPE_OPTIONS } from "@/types/wget";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   options: WgetOptions;
@@ -15,60 +16,63 @@ export const WgetFileTypes = ({ options, setOptions }: Props) => {
       const newExcludeTypes = options.excludeFileTypes.includes(value)
         ? options.excludeFileTypes.filter(type => type !== value)
         : [...options.excludeFileTypes, value];
-
-      const selectedOptions = FILE_TYPE_OPTIONS.filter(option => 
-        newExcludeTypes.includes(option.value)
-      );
-      
-      const excludePatterns = selectedOptions.flatMap(option => option.patterns);
       
       setOptions({
         ...options,
         excludeFileTypes: newExcludeTypes,
-        excludePattern: excludePatterns.join(",")
+        excludePattern: newExcludeTypes.length > 0 ? `*.${newExcludeTypes.join(",*.")}` : ""
       });
     } else {
       const newFileTypes = options.fileTypes.includes(value)
         ? options.fileTypes.filter(type => type !== value)
         : [...options.fileTypes, value];
-
-      const selectedOptions = FILE_TYPE_OPTIONS.filter(option => 
-        newFileTypes.includes(option.value)
-      );
-      
-      const includePatterns = selectedOptions.flatMap(option => option.patterns);
       
       setOptions({
         ...options,
         fileTypes: newFileTypes,
-        includePattern: includePatterns.join(",")
+        includePattern: newFileTypes.length > 0 ? `*.${newFileTypes.join(",*.")}` : ""
       });
     }
   };
 
   const handleSelectAll = () => {
     const allFileTypes = FILE_TYPE_OPTIONS.map(option => option.value);
-    const allPatterns = FILE_TYPE_OPTIONS.flatMap(option => option.patterns);
     
     setOptions({
       ...options,
       fileTypes: allFileTypes,
-      includePattern: allPatterns.join(",")
+      includePattern: "*"  // Using * to include all files instead of listing extensions
     });
   };
+
+  const handleClearAll = () => {
+    setOptions({
+      ...options,
+      fileTypes: [],
+      includePattern: ""
+    });
+  };
+
+  const allSelected = FILE_TYPE_OPTIONS.every(option => 
+    options.fileTypes.includes(option.value)
+  );
 
   return (
     <div className="space-y-6">
       <div>
         <div className="flex justify-between items-center mb-4">
           <Label className="text-white">Include File Types</Label>
-          <button
-            onClick={handleSelectAll}
-            type="button"
-            className="text-sm text-zinc-400 hover:text-white transition-colors"
-          >
-            Select All
-          </button>
+          <div className="space-x-2">
+            <Button
+              onClick={allSelected ? handleClearAll : handleSelectAll}
+              type="button"
+              variant="outline"
+              size="sm"
+              className="text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              {allSelected ? "Clear All" : "Select All"}
+            </Button>
+          </div>
         </div>
         <div className="flex justify-between gap-4">
           {FILE_TYPE_OPTIONS.map((option) => (

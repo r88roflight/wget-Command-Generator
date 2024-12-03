@@ -10,7 +10,7 @@ import { Clipboard, RotateCw } from "lucide-react";
 
 const WgetGUI = () => {
   const { toast } = useToast();
-  const { options, setOptions, generateCommand, resetOptions } = useWgetCommand();
+  const { options, setOptions, generateCommand, resetOptions, invalidFlags } = useWgetCommand();
 
   const handleCopyCommand = async () => {
     const command = generateCommand();
@@ -39,8 +39,18 @@ const WgetGUI = () => {
         {/* Command Preview */}
         <Card className="p-4 bg-black border border-white/20">
           <div className="flex items-center gap-2">
-            <pre className="flex-1 whitespace-pre-wrap break-all text-white font-mono text-sm">
-              {generateCommand()}
+            <pre className="flex-1 whitespace-pre-wrap break-all font-mono text-sm">
+              {generateCommand().split(' ').map((part, index) => {
+                const isInvalid = invalidFlags.some(flag => part.startsWith(flag));
+                return (
+                  <span
+                    key={index}
+                    className={`${isInvalid ? 'text-red-500' : 'text-white'}`}
+                  >
+                    {part}{' '}
+                  </span>
+                );
+              })}
             </pre>
             <Button
               type="button"
