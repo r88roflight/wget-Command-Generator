@@ -44,14 +44,6 @@ export const PresetItem = ({
     >
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hover:bg-zinc-900"
-            onClick={() => onToggleExpansion(preset.name)}
-          >
-            <Settings className="h-4 w-4 text-white" />
-          </Button>
           <div>
             <EditableText
               text={preset.name}
@@ -68,6 +60,14 @@ export const PresetItem = ({
           </div>
         </div>
         <div className="flex items-center space-x-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-zinc-900"
+            onClick={() => onToggleExpansion(preset.name)}
+          >
+            <Settings className="h-4 w-4 text-white" />
+          </Button>
           {preset.name === "Mirror Website Locally" && onResetPreset && (
             <Button
               variant="ghost"
