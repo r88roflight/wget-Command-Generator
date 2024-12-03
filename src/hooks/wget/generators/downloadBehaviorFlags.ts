@@ -29,5 +29,20 @@ export const generateDownloadBehaviorFlags = (options: WgetOptions): string[] =>
   if (options.executeCommand) flags.push(`-e ${options.executeCommand}`);
   if (options.ignoreRobots) flags.push('--no-robots');
   
+  // Add missing flags for advanced options
+  if (options.followLinks) flags.push('--follow-links');
+  if (options.userAgent) flags.push(`--user-agent="${options.userAgent}"`);
+  if (options.limitRate) flags.push(`--limit-rate=${options.limitRate}`);
+  if (options.httpsProxy) flags.push(`--https-proxy=${options.httpsProxy}`);
+  if (options.backupConverted) flags.push('--backup-converted');
+  if (options.deleteAfter) flags.push('--delete-after');
+  if (options.tempFile) flags.push('--output-document=-');
+  if (options.maxFileSize) flags.push(`--max-filesize=${options.maxFileSize}`);
+  if (options.minFileSize) flags.push(`--min-filesize=${options.minFileSize}`);
+  if (options.rejectRegex) flags.push(`--reject-regex="${options.rejectRegex}"`);
+  if (options.caCertificate) flags.push(`--ca-certificate=${options.caCertificate}`);
+  if (options.connectionLimit) flags.push(`--limit-rate=${options.connectionLimit}`);
+  if (options.timestamping) flags.push('--timestamping');
+  
   return flags;
 };
