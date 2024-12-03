@@ -5,8 +5,19 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { WgetOptions } from "@/types/wget";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus, Save } from "lucide-react";
+import { Settings, Minus, Plus, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface Props {
   options: WgetOptions;
@@ -15,15 +26,19 @@ interface Props {
 
 interface Preset {
   name: string;
+  description: string;
   options: Partial<WgetOptions>;
 }
 
 export const WgetPresets = ({ options, setOptions }: Props) => {
   const { toast } = useToast();
   const [presetName, setPresetName] = useState("");
+  const [presetDescription, setPresetDescription] = useState("");
   const [isCreating, setIsCreating] = useState(false);
+  const [expandedPresets, setExpandedPresets] = useState<string[]>([]);
   const [presets, setPresets] = useState<Preset[]>([{
     name: "Mirror Website Locally",
+    description: "Optimized settings for creating a complete local copy of a website",
     options: {
       recursive: true,
       pageRequisites: true,
@@ -44,6 +59,14 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
     }
   }]);
 
+  const togglePresetExpansion = (presetName: string) => {
+    setExpandedPresets(prev => 
+      prev.includes(presetName) 
+        ? prev.filter(name => name !== presetName)
+        : [...prev, presetName]
+    );
+  };
+
   const handleSavePreset = () => {
     if (!presetName.trim()) {
       toast({
@@ -56,6 +79,7 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
 
     const newPreset: Preset = {
       name: presetName,
+      description: presetDescription || "Custom preset",
       options: {
         recursive: options.recursive,
         pageRequisites: options.pageRequisites,
@@ -78,11 +102,28 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
 
     setPresets([...presets, newPreset]);
     setPresetName("");
+    setPresetDescription("");
     setIsCreating(false);
     
     toast({
       title: "Success",
       description: "Preset saved successfully"
+    });
+  };
+
+  const handleRenamePreset = (oldName: string, newName: string) => {
+    setPresets(prev => prev.map(preset => 
+      preset.name === oldName 
+        ? { ...preset, name: newName }
+        : preset
+    ));
+  };
+
+  const handleDeletePreset = (presetName: string) => {
+    setPresets(prev => prev.filter(preset => preset.name !== presetName));
+    toast({
+      title: "Success",
+      description: "Preset deleted successfully"
     });
   };
 
@@ -124,6 +165,15 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
               className="bg-black border-white/20 text-white"
             />
           </div>
+          <div className="space-y-2">
+            <Label className="text-white">Description</Label>
+            <Input
+              value={presetDescription}
+              onChange={(e) => setPresetDescription(e.target.value)}
+              placeholder="Enter preset description"
+              className="bg-black border-white/20 text-white"
+            />
+          </div>
           <div className="flex justify-end gap-2">
             <Button
               onClick={() => setIsCreating(false)}
@@ -139,7 +189,6 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
               size="sm"
               className="bg-black border-white/20 text-white hover:bg-zinc-900"
             >
-              <Save className="h-4 w-4 mr-2" />
               Save Preset
             </Button>
           </div>
@@ -147,22 +196,87 @@ export const WgetPresets = ({ options, setOptions }: Props) => {
       )}
 
       <div className="space-y-4">
-        {presets.map((preset, index) => (
-          <div key={index} className="flex items-start space-x-3 p-4 border border-white/20 rounded-md">
-            <div className="flex-1">
-              <h4 className="text-base text-white">{preset.name}</h4>
-              <p className="text-sm text-zinc-400">
-                Optimized settings for creating a complete local copy of a website
-              </p>
-            </div>
-            <Switch
-              checked={Object.entries(preset.options).every(
-                ([key, value]) => options[key as keyof WgetOptions] === value
-              )}
-              onCheckedChange={() => handleApplyPreset(preset)}
-              className="bg-zinc-700 data-[state=checked]:bg-white"
-            />
-          </div>
+        {presets.map((preset) => (
+          <ContextMenu key={preset.name}>
+            <ContextMenuTrigger>
+              <Collapsible
+                open={expandedPresets.includes(preset.name)}
+                onOpenChange={() => togglePresetExpansion(preset.name)}
+                className="border border-white/20 rounded-md"
+              >
+                <div className="flex items-center justify-between p-4">
+                  <div className="flex-1">
+                    <h4 className="text-base text-white">{preset.name}</h4>
+                    <p className="text-sm text-zinc-400">{preset.description}</p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="hover:bg-zinc-900"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        togglePresetExpansion(preset.name);
+                      }}
+                    >
+                      <Settings className="h-4 w-4 text-white" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="hover:bg-zinc-900"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeletePreset(preset.name);
+                      }}
+                    >
+                      <Minus className="h-4 w-4 text-white" />
+                    </Button>
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-zinc-900"
+                      >
+                        <ChevronDown className="h-4 w-4 text-white" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <Switch
+                      checked={Object.entries(preset.options).every(
+                        ([key, value]) => options[key as keyof WgetOptions] === value
+                      )}
+                      onCheckedChange={() => handleApplyPreset(preset)}
+                      className="bg-zinc-700 data-[state=checked]:bg-white ml-4"
+                    />
+                  </div>
+                </div>
+                <CollapsibleContent>
+                  <div className="p-4 border-t border-white/20 space-y-2">
+                    {Object.entries(preset.options)
+                      .filter(([, value]) => value === true)
+                      .map(([key]) => (
+                        <div key={key} className="text-sm text-zinc-400">
+                          • {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                        </div>
+                      ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </ContextMenuTrigger>
+            <ContextMenuContent className="bg-black border border-white/20">
+              <ContextMenuItem
+                className="text-white hover:bg-zinc-900"
+                onSelect={() => {
+                  const newName = window.prompt("Enter new name", preset.name);
+                  if (newName && newName !== preset.name) {
+                    handleRenamePreset(preset.name, newName);
+                  }
+                }}
+              >
+                Rename
+              </ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
         ))}
       </div>
     </Card>
