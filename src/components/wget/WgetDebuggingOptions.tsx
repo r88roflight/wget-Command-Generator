@@ -98,30 +98,6 @@ export const WgetDebuggingOptions = ({ options, setOptions }: Props) => {
             className="bg-zinc-700 data-[state=checked]:bg-white"
           />
         </div>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label className="text-base text-white">Spider Mode</Label>
-            <p className="text-sm text-zinc-400">Preview files without downloading</p>
-          </div>
-          <Switch
-            checked={options.spiderMode}
-            onCheckedChange={(checked) => setOptions({ ...options, spiderMode: checked })}
-            className="bg-zinc-700 data-[state=checked]:bg-white"
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label className="text-base text-white">Mirror Website</Label>
-            <p className="text-sm text-zinc-400">Create complete offline copy</p>
-          </div>
-          <Switch
-            checked={options.mirror}
-            onCheckedChange={(checked) => setOptions({ ...options, mirror: checked })}
-            className="bg-zinc-700 data-[state=checked]:bg-white"
-          />
-        </div>
       </div>
     </Card>
   );

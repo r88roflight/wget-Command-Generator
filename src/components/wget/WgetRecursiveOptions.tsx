@@ -48,34 +48,6 @@ export const WgetRecursiveOptions = ({ options, setOptions }: Props) => {
 
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
-          <Label className="text-base text-white">Include Parent Directories</Label>
-          <p className="text-sm text-zinc-400">Download parent directories</p>
-        </div>
-        <Switch
-          checked={options.includeParents}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, includeParents: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <Label className="text-base text-white">No Clobber</Label>
-          <p className="text-sm text-zinc-400">Don't overwrite existing files</p>
-        </div>
-        <Switch
-          checked={options.noClobber}
-          onCheckedChange={(checked) =>
-            setOptions({ ...options, noClobber: checked })
-          }
-          className="bg-zinc-700 data-[state=checked]:bg-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
           <Label className="text-base text-white">Mirror Website</Label>
           <p className="text-sm text-zinc-400">
             Create a mirror of the website
