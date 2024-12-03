@@ -9,6 +9,8 @@ interface PresetContextType {
   setActivePreset: (preset: string | null) => void;
   expandedPresets: string[];
   setExpandedPresets: (presets: string[]) => void;
+  deletedPresets: Preset[];
+  setDeletedPresets: (presets: Preset[]) => void;
 }
 
 const PresetContext = createContext<PresetContextType | undefined>(undefined);
@@ -17,6 +19,7 @@ export const PresetProvider = ({ children }: { children: React.ReactNode }) => {
   const [presets, setPresets] = useState<Preset[]>([defaultMirrorPreset]);
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [expandedPresets, setExpandedPresets] = useState<string[]>([]);
+  const [deletedPresets, setDeletedPresets] = useState<Preset[]>([]);
 
   return (
     <PresetContext.Provider
@@ -27,6 +30,8 @@ export const PresetProvider = ({ children }: { children: React.ReactNode }) => {
         setActivePreset,
         expandedPresets,
         setExpandedPresets,
+        deletedPresets,
+        setDeletedPresets,
       }}
     >
       {children}
